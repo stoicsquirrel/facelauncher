@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @program.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @program.description %>
+</p>
+
+<p>
+  <b>State:</b>
+  <%= @program.state %>
+</p>
+
+<p>
+  <b>Facebook app:</b>
+  <%= @program.facebook_app_id %>
+</p>
+
+<p>
+  <b>Facebook app secret:</b>
+  <%= @program.facebook_app_secret %>
+</p>
+
+<p>
+  <b>Google analytics tracking code:</b>
+  <%= @program.google_analytics_tracking_code %>
+</p>
+
+<p>
+  <b>Production:</b>
+  <%= @program.production %>
+</p>
+
+<p>
+  <b>Repo:</b>
+  <%= @program.repo %>
+</p>
+
+
+<%= link_to 'Edit', edit_program_path(@program) %> |
+<%= link_to 'Back', programs_path %>
