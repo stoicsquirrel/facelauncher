@@ -1,0 +1,33 @@
+en:
+  admin:
+    actions:
+      activate:
+        title: "Activate %{object_label}"
+        menu: "Activate"
+        breadcrumb: "Activate"
+        link: "Activate %{model_label}"
+        done: "activated"
+      deactivate:
+        title: "Deactivate %{object_label}"
+        menu: "Deactivate"
+        breadcrumb: "Deactivate"
+        link: "Deactivate %{model_label}"
+        done: "deactivated"
+      validate:
+        title: "Validate %{object_label}"
+        menu: "Validate"
+        breadcrumb: "Validate"
+        link: "Validate %{model_label}"
+        done: "validated"
+      invalidate:
+        title: "Invalidate %{object_label}"
+        menu: "Invalidate"
+        breadcrumb: "Invalidate"
+        link: "Invalidate %{model_label}"
+        done: "invalidated"
+    form:
+      are_you_sure_you_want_to_activate_the_object: "Are you sure you want to activate the %{model_name}"
+      are_you_sure_you_want_to_deactivate_the_object: "Are you sure you want to deactivate the %{model_name}"
+      are_you_sure_you_want_to_validate_the_object: "Are you sure you want to validate the %{model_name}"
+      are_you_sure_you_want_to_invalidate_the_object: "Are you sure you want to invalidate the %{model_name}"
+

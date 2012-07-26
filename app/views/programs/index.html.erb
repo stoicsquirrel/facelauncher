@@ -1,0 +1,39 @@
+<h1>Listing programs</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>State</th>
+    <th>Facebook app</th>
+    <th>Facebook app secret</th>
+    <th>Google analytics tracking code</th>
+    <th>Production</th>
+    <th>Repo</th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @programs.each do |program| %>
+  <tr>
+    <td><%= program.name %></td>
+    <td><%= program.description %></td>
+    <td><%= program.state %></td>
+    <td><%= program.facebook_app_id %></td>
+    <td><%= program.facebook_app_secret %></td>
+    <td><%= program.google_analytics_tracking_code %></td>
+    <td><%= program.production %></td>
+    <td><%= program.repo %></td>
+    <td><%= link_to 'Deploy', deploy_program_path(program), method: :post %></td>
+    <td><%= link_to 'Show', program %></td>
+    <td><%= link_to 'Edit', edit_program_path(program) %></td>
+    <td><%= link_to 'Destroy', program, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Program', new_program_path %>

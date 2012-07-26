@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  description: MyString
+  state: MyString
+  facebook_app_id: MyString
+  facebook_app_secret: MyString
+  google_analytics_tracking_code: MyString
+  production: MyString
+  repo: MyString
+
+two:
+  name: MyString
+  description: MyString
+  state: MyString
+  facebook_app_id: MyString
+  facebook_app_secret: MyString
+  google_analytics_tracking_code: MyString
+  production: MyString
+  repo: MyString

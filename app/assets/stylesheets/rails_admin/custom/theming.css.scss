@@ -1,0 +1,51 @@
+@import "custom/font-awesome.css";
+
+[class^="icon-"],
+[class*=" icon-"] {
+  background: none !important;
+  color: black;
+}
+a,
+a:hover {
+  [class^="icon-"],
+  [class*=" icon-"] {
+    color: black;
+    text-decoration: none;
+  }
+}
+a.btn,
+button, {
+  [class^="icon-"],
+  [class*=" icon-"] {
+    color: white;
+    padding-top: 2px;
+  }
+}
+button[name="_continue"] {
+  [class^="icon-"],
+  [class*=" icon-"] {
+    color: black !important;
+  }
+}
+
+.navbar ul.pull-right > li > img {
+  display: block;
+  border-radius: 2px;
+  padding-top: 0 !important;
+  margin-top: 5px;
+}
+
+.links {
+  .activate_member_link > a {
+    [class^="icon-"],
+    [class*=" icon-"] {
+      color: green;
+    }
+  }
+  .deactivate_member_link > a {
+    [class^="icon-"],
+    [class*=" icon-"] {
+      color: red;
+    }
+  }
+}

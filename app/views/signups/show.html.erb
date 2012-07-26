@@ -1,0 +1,67 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Project:</b>
+  <%= @signup.project.name %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%= @signup.email %>
+</p>
+
+<p>
+  <b>First name:</b>
+  <%= @signup.first_name %>
+</p>
+
+<p>
+  <b>Last name:</b>
+  <%= @signup.last_name %>
+</p>
+
+<p>
+  <b>Address1:</b>
+  <%= @signup.address1 %>
+</p>
+
+<p>
+  <b>Address2:</b>
+  <%= @signup.address2 %>
+</p>
+
+<p>
+  <b>City:</b>
+  <%= @signup.city %>
+</p>
+
+<p>
+  <b>State:</b>
+  <%= @signup.state %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%= @signup.status %>
+</p>
+
+<p>
+  <b>Zip:</b>
+  <%= @signup.zip %>
+</p>
+
+<% @signup.fields_keys.each do |field| %>
+  <p>
+    <b><%= field.humanize %></b>
+    <%= @signup.fields[field] %>
+  </p>
+<% end %>
+
+<p>
+  <b>Ip address:</b>
+  <%= @signup.ip_address %>
+</p>
+
+
+<%= link_to 'Edit', edit_signup_path(@signup) %> |
+<%= link_to 'Back', signups_path %>
