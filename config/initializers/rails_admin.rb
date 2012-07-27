@@ -306,8 +306,9 @@ RailsAdmin.config do |config|
         label "Git repository URL"
         help "Optional. Use an SSH URL, such as git@github.com:bigfuel/facelauncher.git"
       end
-      field :encrypted_instance_password do
-        label "Instance password"
+      field :program_access_token do
+        read_only true
+        label "Program access token"
         help "Required. This is needed by an app running an instance of Facelauncher to access the database for this program."
       end
       field :active do

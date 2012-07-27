@@ -5,13 +5,12 @@ class Program < ActiveRecord::Base
   attr_accessible :active, :set_active_date, :set_inactive_date, :description,
                   :facebook_app_id, :facebook_app_secret, :facebook_is_like_gated,
                   :google_analytics_tracking_code, :name, :short_name, :production,
-                  :repo, :encrypted_instance_password
+                  :repo
 
   validate :facebook_app_secret, :valid_fb_app_secret
   validates :name, presence: true
   validates :short_name, presence: true, length: { maximum: 50 },
                          format: { with: /^[a-zA-Z][a-zA-Z1-9\-]+$/ }
-  validates :encrypted_instance_password, presence: true
 
   def valid_fb_app_secret
     if !facebook_app_id.blank? && !facebook_app_secret.blank?
@@ -48,6 +47,12 @@ class Program < ActiveRecord::Base
         end
       end
     end
+  end
+
+  before_create :generate_program_access_token
+
+  def generate_program_access_token
+    self.program_access_token = SecureRandom.hex
   end
 
   def deploy
