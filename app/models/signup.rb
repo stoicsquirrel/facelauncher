@@ -12,7 +12,6 @@ class Signup < ActiveRecord::Base
   validates :last_name, length: { maximum: 50 }
   validates :city, length: { maximum: 40 }
   validates :zip, length: { maximum: 9 }
-
   validates :facebook_user_id, length: { maximum: 25 }
 
   all_fields_keys = ActiveRecord::Base.connection.execute("SELECT DISTINCT UNNEST(akeys(fields)) AS key FROM signups ORDER BY key").map {|f| f['key']}

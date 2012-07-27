@@ -294,6 +294,7 @@ RailsAdmin.config do |config|
     configure :created_at, :datetime
     configure :updated_at, :datetime
     configure :facebook_app_developer_link, :string
+    configure :encrypted_instance_password, :string
 
     group :basic_info do
       field :name
@@ -304,6 +305,10 @@ RailsAdmin.config do |config|
       field :repo do
         label "Git repository URL"
         help "Optional. Use an SSH URL, such as git@github.com:bigfuel/facelauncher.git"
+      end
+      field :encrypted_instance_password do
+        label "Instance password"
+        help "Required. This is needed by an app running an instance of Facelauncher to access the database for this program."
       end
       field :active do
         read_only true
