@@ -11,10 +11,10 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120723170447) do
+ActiveRecord::Schema.define(:version => 20120726214909) do
 
   create_table "programs", :force => true do |t|
-    t.string   "name"
+    t.string   "name",                                             :null => false
     t.string   "description"
     t.string   "state"
     t.string   "facebook_app_id"
@@ -27,6 +27,9 @@ ActiveRecord::Schema.define(:version => 20120723170447) do
     t.boolean  "active",                         :default => true, :null => false
     t.datetime "set_active_date"
     t.datetime "set_inactive_date"
+    t.string   "facebook_app_access_token"
+    t.boolean  "facebook_is_like_gated"
+    t.string   "short_name",                     :default => "",   :null => false
   end
 
   create_table "rails_admin_histories", :force => true do |t|
@@ -43,21 +46,22 @@ ActiveRecord::Schema.define(:version => 20120723170447) do
   add_index "rails_admin_histories", ["item", "table", "month", "year"], :name => "index_rails_admin_histories"
 
   create_table "signups", :force => true do |t|
-    t.string   "email",            :null => false
-    t.string   "first_name"
-    t.string   "last_name"
+    t.string   "email",            :limit => 100, :null => false
+    t.string   "first_name",       :limit => 50
+    t.string   "last_name",        :limit => 50
     t.string   "address1"
     t.string   "address2"
-    t.string   "city"
-    t.string   "state"
-    t.string   "status"
-    t.string   "zip"
-    t.string   "ip_address"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.string   "city",             :limit => 40
+    t.string   "state",            :limit => 2
+    t.string   "zip",              :limit => 9
+    t.string   "ip_address",       :limit => 15,  :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
     t.hstore   "fields"
-    t.integer  "program_id",       :null => false
+    t.integer  "program_id",                      :null => false
     t.string   "facebook_user_id"
+    t.string   "country",          :limit => 2
+    t.boolean  "is_valid"
   end
 
   add_index "signups", ["fields"], :name => "signups_fields"
