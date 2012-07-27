@@ -173,7 +173,7 @@ RailsAdmin.config do |config|
 
       http_methods [:get, :post]
       i18n_key :validate
-      link_icon 'icon-thumbs-down'
+      link_icon 'icon-thumbs-up'
     end
 
     member :invalidate do
@@ -205,7 +205,7 @@ RailsAdmin.config do |config|
 
       http_methods [:get, :post]
       i18n_key :invalidate
-      link_icon 'icon-thumbs-up'
+      link_icon 'icon-thumbs-down'
     end
   end
 
@@ -279,6 +279,7 @@ RailsAdmin.config do |config|
     configure :signups, :has_many_association
     configure :id, :integer
     configure :name, :string
+    configure :short_name, :string
     configure :description, :string
     configure :facebook_app_id, :string
     configure :facebook_app_secret, :string
@@ -296,6 +297,9 @@ RailsAdmin.config do |config|
 
     group :basic_info do
       field :name
+      field :short_name do
+        help "Required. Must start with a letter and consist of only letters, numbers, and dashes."
+      end
       field :description
       field :repo do
         label "Git repository URL"
@@ -320,9 +324,9 @@ RailsAdmin.config do |config|
       end
       field :facebook_app_settings_url do
         label "App settings URL"
-        help ''
+        help 'You must be logged in to Facebook as an admin of this app in order to see this page.'
         formatted_value do
-          "<a href=\"#{bindings[:object].facebook_app_settings_url}\" target=\"blank\">#{bindings[:object].facebook_app_settings_url}</a>".html_safe
+          "<a href=\"#{bindings[:object].facebook_app_settings_url}\" target=\"blank\">#{bindings[:object].facebook_app_settings_url}</a> <i class=\"icon-external-link\"></i>".html_safe unless bindings[:object].facebook_app_settings_url.blank?
         end
       end
       field :facebook_is_like_gated do
@@ -330,7 +334,10 @@ RailsAdmin.config do |config|
       end
     end
     group :additional_info do
-      field :google_analytics_tracking_code
+      field :google_analytics_tracking_code do
+        label "GA tracking code"
+        help "Optional. For Google Analytics."
+      end
       field :set_active_date
       field :set_inactive_date
       field :created_at do
