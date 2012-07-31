@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120727203829) do
+ActiveRecord::Schema.define(:version => 20120731202054) do
 
   create_table "programs", :force => true do |t|
     t.string   "name",                                             :null => false
@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(:version => 20120727203829) do
     t.string   "facebook_app_access_token"
     t.boolean  "facebook_is_like_gated"
     t.string   "short_name",                     :default => "",   :null => false
-    t.string   "program_access_token",           :default => "",   :null => false
+    t.string   "program_access_key",             :default => "",   :null => false
   end
 
   create_table "rails_admin_histories", :force => true do |t|
