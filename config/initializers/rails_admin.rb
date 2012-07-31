@@ -53,6 +53,7 @@ RailsAdmin.config do |config|
               @object.send("#{name}=", value)
             end
 
+            # TODO: Remove this, since we are collecting IP addresses from the client apps.
             # Save the user's IP address
             @object.ip_address = request.ip
 
@@ -306,9 +307,9 @@ RailsAdmin.config do |config|
         label "Git repository URL"
         help "Optional. Use an SSH URL, such as git@github.com:bigfuel/facelauncher.git"
       end
-      field :program_access_token do
+      field :program_access_key do
         read_only true
-        label "Program access token"
+        label "Program access key"
         help "Required. This is needed by an app running an instance of Facelauncher to access the database for this program."
       end
       field :active do
@@ -326,7 +327,7 @@ RailsAdmin.config do |config|
       field :facebook_app_access_token do
         read_only true
         label "App access token"
-        help "The access key will be pulled from Facebook whenever the app ID or secret have been changed."
+        help "The access token will be pulled from Facebook whenever the app ID or secret have been changed."
       end
       field :facebook_app_settings_url do
         label "App settings URL"

@@ -3,7 +3,7 @@ Facelauncher::Application.routes.draw do
 
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
-  resources :signups
+  resources :signups, :only => [:show, :create]
 
   resources :programs do
     member do

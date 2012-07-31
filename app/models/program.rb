@@ -49,10 +49,10 @@ class Program < ActiveRecord::Base
     end
   end
 
-  before_create :generate_program_access_token
+  before_create :generate_program_access_key
 
-  def generate_program_access_token
-    self.program_access_token = SecureRandom.hex
+  def generate_program_access_key
+    self.program_access_key = SecureRandom.hex
   end
 
   def deploy

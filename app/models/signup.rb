@@ -2,9 +2,11 @@ class Signup < ActiveRecord::Base
   belongs_to :program
 
   serialize :fields, ActiveRecord::Coders::Hstore
+  attr_accessor :program_access_key
   attr_accessible :program_id, :address1, :address2, :city, :email,
                   :first_name, :last_name, :state, :status, :zip,
-                  :facebook_user_id, :is_valid
+                  :facebook_user_id, :is_valid, :program_access_key,
+                  :ip_address, :country
 
   validates :program, presence: true
   validates :email, presence: true, length: { maximum: 100 }
