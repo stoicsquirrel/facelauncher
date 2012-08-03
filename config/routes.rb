@@ -5,7 +5,8 @@ Facelauncher::Application.routes.draw do
 
   resources :signups, :only => [:show, :create]
 
-  resources :programs do
+  resources :programs, :only => [:show] do
+    # TODO: Delete the member block because we are not deploying or deactivating through the API.
     member do
       post 'deploy'
       #post 'activate'

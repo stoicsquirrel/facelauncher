@@ -290,6 +290,7 @@ RailsAdmin.config do |config|
     configure :production, :string
     configure :repo, :string
     configure :active, :boolean
+    configure :set_signups_to_valid, :boolean
     configure :set_active_date, :datetime
     configure :set_inactive_date, :datetime
     configure :created_at, :datetime
@@ -347,6 +348,10 @@ RailsAdmin.config do |config|
       end
       field :set_active_date
       field :set_inactive_date
+      field :set_signups_to_valid do
+        label "Set signups to valid"
+        help "Required. Determines whether signups to this program will be valid upon submission."
+      end
       field :created_at do
         visible true
       end

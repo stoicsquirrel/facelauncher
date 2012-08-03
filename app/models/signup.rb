@@ -16,9 +16,7 @@ class Signup < ActiveRecord::Base
   validates :zip, length: { maximum: 9 }
   validates :facebook_user_id, length: { maximum: 25 }
 
-  validate :program_access_key, :validate_program_access_key
-
-  def valid_program_access_key
+  def validate_program_access_key
     if program_access_key.blank?
       errors.add(:program_access_key, "is missing.")
     elsif program_access_key != program.program_access_key
