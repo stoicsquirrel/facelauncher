@@ -5,14 +5,14 @@ class Program < ActiveRecord::Base
   attr_accessible :active, :set_active_date, :set_inactive_date, :description,
                   :facebook_app_id, :facebook_app_secret, :facebook_is_like_gated,
                   :google_analytics_tracking_code, :name, :short_name, :production,
-                  :repo
+                  :repo, :set_signups_to_valid
 
-  validate :facebook_app_secret, :valid_fb_app_secret
+  validate :facebook_app_secret, :validate_fb_app_id_and_secret
   validates :name, presence: true
   validates :short_name, presence: true, length: { maximum: 50 },
                          format: { with: /^[a-zA-Z][a-zA-Z1-9\-]+$/ }
 
-  def valid_fb_app_secret
+  def validate_fb_app_id_and_secret
     if !facebook_app_id.blank? && !facebook_app_secret.blank?
       begin
         self.facebook_app_access_token = Koala::Facebook::OAuth.new(facebook_app_id, facebook_app_secret).get_app_access_token
@@ -42,10 +42,18 @@ class Program < ActiveRecord::Base
             errors.add(:facebook_app_secret, "is invalid.")
           elsif (e.fb_error_message =~ /system error.$/)
             errors.add(:facebook_app_id, "may be invalid.")
-            errors.add(:facebook_app_secret, "may be invalid")
+            errors.add(:facebook_app_secret, "may be invalid.")
           end
         end
       end
+    elsif facebook_app_id.blank? and !facebook_app_secret.blank?
+      self.facebook_app_access_token = ''
+      errors.add(:facebook_app_id, "must be entered if a Facebook app secret has been entered.")
+    elsif facebook_app_secret.blank? and !facebook_app_id.blank?
+      self.facebook_app_access_token = ''
+      errors.add(:facebook_app_secret, "must be entered if a Facebook app ID has been entered.")
+    elsif facebook_app_id.blank? and facebook_app_secret.blank?
+      self.facebook_app_access_token = ''
     end
   end
 
@@ -69,20 +77,7 @@ class Program < ActiveRecord::Base
     self.update_attributes(active: false)
   end
 
-  #before_save :get_facebook_app_access_token
-
-  def get_facebook_app_access_token
-    if !facebook_app_id.blank? && !facebook_app_secret.blank? && facebook_app_secret_changed?
-      begin
-        self.facebook_app_access_token = Koala::Facebook::OAuth.new(facebook_app_id, facebook_app_secret).get_app_access_token
-      rescue Koala::Facebook::APIError => e
-        # Could not get an access token.
-        self.facebook_app_access_token = ''
-      end
-    end
-  end
-
   def facebook_app_settings_url
-    !self.facebook_app_id.blank? && !self.facebook_app_access_token.blank? ? "https://developers.facebook.com/apps/#{self.facebook_app_id}/" : ''
+    !self.facebook_app_id.blank? ? "https://developers.facebook.com/apps/#{self.facebook_app_id}/" : ''
   end
 end

@@ -11,10 +11,10 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120731202054) do
+ActiveRecord::Schema.define(:version => 20120803153900) do
 
   create_table "programs", :force => true do |t|
-    t.string   "name",                                             :null => false
+    t.string   "name",                                              :null => false
     t.string   "description"
     t.string   "state"
     t.string   "facebook_app_id"
@@ -22,15 +22,16 @@ ActiveRecord::Schema.define(:version => 20120731202054) do
     t.string   "google_analytics_tracking_code"
     t.string   "production"
     t.string   "repo"
-    t.datetime "created_at",                                       :null => false
-    t.datetime "updated_at",                                       :null => false
-    t.boolean  "active",                         :default => true, :null => false
+    t.datetime "created_at",                                        :null => false
+    t.datetime "updated_at",                                        :null => false
+    t.boolean  "active",                         :default => true,  :null => false
     t.datetime "set_active_date"
     t.datetime "set_inactive_date"
     t.string   "facebook_app_access_token"
     t.boolean  "facebook_is_like_gated"
-    t.string   "short_name",                     :default => "",   :null => false
-    t.string   "program_access_key",             :default => "",   :null => false
+    t.string   "short_name",                     :default => "",    :null => false
+    t.string   "program_access_key",             :default => "",    :null => false
+    t.boolean  "set_signups_to_valid",           :default => false, :null => false
   end
 
   create_table "rails_admin_histories", :force => true do |t|
