@@ -4,15 +4,7 @@ Facelauncher::Application.routes.draw do
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
   resources :signups, :only => [:show, :create]
-
-  resources :programs, :only => [:show] do
-    # TODO: Delete the member block because we are not deploying or deactivating through the API.
-    member do
-      post 'deploy'
-      #post 'activate'
-      post 'deactivate'
-    end
-  end
+  resources :programs, :only => [:show]
 
   root :to => 'signups#index'
 

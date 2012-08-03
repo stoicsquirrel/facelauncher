@@ -14,12 +14,10 @@ class ProgramsController < ApplicationController
   # GET /programs/1.json
   def show
     @program = Program.find(params[:id])
-    # Do not send the program access key to the client.
-    @program.delete(:program_access_key)
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @program }
+      format.json { render json: @program, except: [:program_access_key] }
     end
   end
 
