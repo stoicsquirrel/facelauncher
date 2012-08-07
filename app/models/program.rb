@@ -4,13 +4,15 @@ class Program < ActiveRecord::Base
   # attr_accessible :signups_attributes, allow_destroy: true
   attr_accessible :active, :set_active_date, :set_inactive_date, :description,
                   :facebook_app_id, :facebook_app_secret, :facebook_is_like_gated,
-                  :google_analytics_tracking_code, :name, :short_name, :production,
+                  :google_analytics_tracking_code, :name, :short_name, :app_url,
                   :repo, :set_signups_to_valid
 
   validate :facebook_app_secret, :validate_fb_app_id_and_secret
   validates :name, presence: true
-  validates :short_name, presence: true, length: { maximum: 50 },
+  validates :short_name, presence: true, length: { maximum: 100 },
                          format: { with: /^[a-zA-Z][a-zA-Z1-9\-]+$/ }
+  validates :facebook_app_id, length: { maximum: 30 }
+  validates :facebook_app_secret, length: { maximum: 60 }
 
   def validate_fb_app_id_and_secret
     if !facebook_app_id.blank? && !facebook_app_secret.blank?

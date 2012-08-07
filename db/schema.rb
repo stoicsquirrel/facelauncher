@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120803153900) do
+ActiveRecord::Schema.define(:version => 20120807211118) do
 
   create_table "programs", :force => true do |t|
     t.string   "name",                                              :null => false
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(:version => 20120803153900) do
     t.string   "facebook_app_id"
     t.string   "facebook_app_secret"
     t.string   "google_analytics_tracking_code"
-    t.string   "production"
+    t.string   "app_url"
     t.string   "repo"
     t.datetime "created_at",                                        :null => false
     t.datetime "updated_at",                                        :null => false
