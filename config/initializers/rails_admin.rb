@@ -80,11 +80,11 @@ RailsAdmin.config do |config|
     history_show
     show_in_app do
       visible do
-        authorized? && !bindings[:object].app_url.blank?
+        default_visible && bindings[:abstract_model].model_name == "Program" && !bindings[:object].app_url.blank?
       end
       controller do
         Proc.new do
-          if !@object.app_url.blank?
+          if @abstract_model.model_name == "Program" && !@object.app_url.blank?
             redirect_to @object.app_url
           else
             redirect_to :back
