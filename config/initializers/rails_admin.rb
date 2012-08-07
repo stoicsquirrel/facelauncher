@@ -66,7 +66,6 @@ RailsAdmin.config do |config|
             else
               handle_save_error
             end
-
           end
         end
       end
@@ -79,7 +78,20 @@ RailsAdmin.config do |config|
     edit
     delete
     history_show
-    show_in_app
+    show_in_app do
+      visible do
+        authorized? && !bindings[:object].app_url.blank?
+      end
+      controller do
+        Proc.new do
+          if !@object.app_url.blank?
+            redirect_to @object.app_url
+          else
+            redirect_to :back
+          end
+        end
+      end
+    end
 
     member :activate do
       visible do
@@ -287,7 +299,7 @@ RailsAdmin.config do |config|
     configure :facebook_app_access_token, :string
     configure :facebook_is_like_gated, :boolean
     configure :google_analytics_tracking_code, :string
-    configure :production, :string
+    configure :app_url, :string
     configure :repo, :string
     configure :active, :boolean
     configure :set_signups_to_valid, :boolean
@@ -301,12 +313,16 @@ RailsAdmin.config do |config|
     group :basic_info do
       field :name
       field :short_name do
-        help "Required. Must start with a letter and consist of only letters, numbers, and dashes."
+        help "Required. Length up to 100. Must start with a letter and consist of only letters, numbers, and dashes."
       end
       field :description
+      field :app_url do
+        label "App URL"
+        help "Optional. Length up to 255. This is the URL to the client app, and is required when the program is active"
+      end
       field :repo do
         label "Git repository URL"
-        help "Optional. Use an SSH URL, such as git@github.com:bigfuel/facelauncher.git"
+        help "Optional. Length up to 255. Use an SSH URL, such as git@github.com:bigfuel/facelauncher.git"
       end
       field :program_access_key do
         read_only true
@@ -339,12 +355,13 @@ RailsAdmin.config do |config|
       end
       field :facebook_is_like_gated do
         label "Like gated"
+        help "Required. Determines whether this program uses like-gate functionality."
       end
     end
     group :additional_info do
       field :google_analytics_tracking_code do
         label "GA tracking code"
-        help "Optional. For Google Analytics."
+        help "Optional. Length up to 255. For Google Analytics."
       end
       field :set_active_date
       field :set_inactive_date
