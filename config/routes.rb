@@ -1,12 +1,34 @@
 Facelauncher::Application.routes.draw do
   devise_for :users
 
+  root :to => 'rails_admin/main#dashboard'
+
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
-  resources :signups, :only => [:show, :create]
+  # The API
+  resources :signups, :only => [:create]
   resources :programs, :only => [:show]
 
-  root :to => 'signups#index'
+  if Rails.env.development?
+    mount ApiTaster::Engine => '/api_taster'
+    ApiTaster.routes do
+      desc 'Get a __program__'
+      get '/programs/:id', {
+        :id => 1,
+        :format => :json
+      }
+
+      desc 'Post a __signup__'
+      post '/signups', {
+        :format => :json,
+        :program_id => 1,
+        :program_access_key => '0625e21b0495c2eee75effbdf2016dc6',
+        :email => 'john_doe@test.com',
+        :first_name => 'John',
+        :last_name => 'Doe'
+      }
+    end
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

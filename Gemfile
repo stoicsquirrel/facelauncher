@@ -21,15 +21,14 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'thin'
-
+gem 'api_taster'
 gem 'carmen',   '>= 1.0.0.beta2'
 gem 'devise'
+gem 'jquery-rails'
 gem 'koala'
 gem 'rails_admin'
-
-gem 'jquery-rails'
 gem 'queue_classic'
+gem 'thin'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -48,5 +47,3 @@ group :development do
   gem 'pry'
   # gem 'ruby-debug19', :require => 'ruby-debug'
 end
-
-gem "devise"
