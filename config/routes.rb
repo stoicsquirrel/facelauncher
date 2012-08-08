@@ -21,11 +21,13 @@ Facelauncher::Application.routes.draw do
       desc 'Post a __signup__'
       post '/signups', {
         :format => :json,
+        :signup => {
         :program_id => 1,
         :program_access_key => '0625e21b0495c2eee75effbdf2016dc6',
         :email => 'john_doe@test.com',
         :first_name => 'John',
-        :last_name => 'Doe'
+        :last_name => 'Doe',
+        :ip_address => '255.255.255.255' }
       }
     end
   end
