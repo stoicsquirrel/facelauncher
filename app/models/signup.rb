@@ -5,7 +5,7 @@ class Signup < ActiveRecord::Base
   attr_accessor :program_access_key
   attr_accessible :program_id, :address1, :address2, :city, :email,
                   :first_name, :last_name, :state, :status, :zip,
-                  :facebook_user_id, :is_valid, :program_access_key,
+                  :facebook_user_id, :program_access_key,
                   :ip_address, :country
 
   validates :program, presence: true
@@ -47,11 +47,13 @@ class Signup < ActiveRecord::Base
   end
 
   def validate
-    self.update_attributes(is_valid: true)
+    self.is_valid = true
+    self.save!
   end
 
   def invalidate
-    self.update_attributes(is_valid: false)
+    self.is_valid = false
+    self.save!
   end
 
 end

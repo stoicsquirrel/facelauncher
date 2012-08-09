@@ -2,7 +2,7 @@ class Program < ActiveRecord::Base
   has_many :signups, dependent: :destroy #, inverse_of: :program
   # accepts_nested_attributes_for :signups, allow_destroy: true
   # attr_accessible :signups_attributes, allow_destroy: true
-  attr_accessible :active, :set_active_date, :set_inactive_date, :description,
+  attr_accessible :set_active_date, :set_inactive_date, :description,
                   :facebook_app_id, :facebook_app_secret, :facebook_is_like_gated,
                   :google_analytics_tracking_code, :name, :short_name, :app_url,
                   :repo, :set_signups_to_valid
@@ -72,11 +72,13 @@ class Program < ActiveRecord::Base
   end
 
   def activate
-    self.update_attributes(active: true)
+    self.active = true
+    self.save!
   end
 
   def deactivate
-    self.update_attributes(active: false)
+    self.active = false
+    self.save!
   end
 
   def facebook_app_settings_url
