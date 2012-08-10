@@ -407,8 +407,6 @@ RailsAdmin.config do |config|
     configure :created_at, :datetime
     configure :updated_at, :datetime
 
-    configure :optin_1, :string
-
     group :basic_info do
       field :email
       field :first_name
