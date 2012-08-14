@@ -1,5 +1,7 @@
 class Program < ActiveRecord::Base
   has_many :signups, dependent: :destroy #, inverse_of: :program
+  has_many :additional_fields, dependent: :destroy
+
   # accepts_nested_attributes_for :signups, allow_destroy: true
   # attr_accessible :signups_attributes, allow_destroy: true
   attr_accessible :set_active_date, :set_inactive_date, :description,

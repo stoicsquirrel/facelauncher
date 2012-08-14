@@ -56,5 +56,4 @@ class Signup < ActiveRecord::Base
     self.is_valid = false
     self.save!
   end
-
 end

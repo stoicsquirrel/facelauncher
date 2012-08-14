@@ -11,12 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120807211118) do
+ActiveRecord::Schema.define(:version => 20120814153326) do
+
+  create_table "additional_fields", :force => true do |t|
+    t.integer  "program_id",                 :null => false
+    t.string   "short_name",  :limit => 100, :null => false
+    t.string   "label"
+    t.boolean  "is_required",                :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+  end
+
+  add_index "additional_fields", ["program_id"], :name => "index_programs_additional_fields_on_program_id"
 
   create_table "programs", :force => true do |t|
     t.string   "name",                                              :null => false
     t.string   "description"
-    t.string   "state"
     t.string   "facebook_app_id"
     t.string   "facebook_app_secret"
     t.string   "google_analytics_tracking_code"
@@ -59,14 +69,11 @@ ActiveRecord::Schema.define(:version => 20120807211118) do
     t.string   "ip_address",       :limit => 15,  :null => false
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
-    t.hstore   "fields"
     t.integer  "program_id",                      :null => false
     t.string   "facebook_user_id"
     t.string   "country",          :limit => 2
     t.boolean  "is_valid"
   end
-
-  add_index "signups", ["fields"], :name => "signups_fields"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
