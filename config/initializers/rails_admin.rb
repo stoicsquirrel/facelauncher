@@ -389,6 +389,9 @@ RailsAdmin.config do |config|
     create do; end
     update do; end
   end
+  config.model AdditionalField do
+    parent Program
+  end
   config.model Signup do
     parent Program
     configure :program, :belongs_to_association

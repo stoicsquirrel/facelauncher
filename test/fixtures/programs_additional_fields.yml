@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  program: 
+  name: MyString
+  is_required: false
+
+two:
+  program: 
+  name: MyString
+  is_required: false
