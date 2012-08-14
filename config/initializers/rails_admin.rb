@@ -291,8 +291,8 @@ RailsAdmin.config do |config|
   config.model Program do
     configure :signups, :has_many_association
     configure :id, :integer
-    configure :name, :string
     configure :short_name, :string
+    configure :name, :string
     configure :description, :string
     configure :facebook_app_id, :string
     configure :facebook_app_secret, :string
@@ -307,90 +307,102 @@ RailsAdmin.config do |config|
     configure :set_inactive_date, :datetime
     configure :created_at, :datetime
     configure :updated_at, :datetime
-    configure :facebook_app_developer_link, :string
-    configure :encrypted_instance_password, :string
-
-    group :basic_info do
-      field :name
-      field :short_name do
-        help "Required. Length up to 100. Must start with a letter and consist of only letters, numbers, and dashes."
-      end
-      field :description
-      field :app_url do
-        label "App URL"
-        help "Optional. Length up to 255. This is the URL to the client app, and is required when the program is active"
-      end
-      field :repo do
-        label "Git repository URL"
-        help "Optional. Length up to 255. Use an SSH URL, such as git@github.com:bigfuel/facelauncher.git"
-      end
-      field :program_access_key do
-        read_only true
-        label "Program access key"
-        help "Required. This is needed by an app running an instance of Facelauncher to access the database for this program."
-      end
-      field :active do
-        read_only true
-      end
-    end
-    group :facebook_info do
-      help "The app ID and app secret can be found on the Facebook app's settings page."
-      field :facebook_app_id do
-        label "App ID"
-      end
-      field :facebook_app_secret do
-        label "App secret"
-      end
-      field :facebook_app_access_token do
-        read_only true
-        label "App access token"
-        help "The access token will be pulled from Facebook whenever the app ID or secret have been changed."
-      end
-      field :facebook_app_settings_url do
-        label "App settings URL"
-        help 'You must be logged in to Facebook as an admin of this app in order to see this page.'
-        formatted_value do
-          "<a href=\"#{bindings[:object].facebook_app_settings_url}\" target=\"blank\">#{bindings[:object].facebook_app_settings_url}</a> <i class=\"icon-external-link\"></i>".html_safe unless bindings[:object].facebook_app_settings_url.blank?
-        end
-      end
-      field :facebook_is_like_gated do
-        label "Like gated"
-        help "Required. Determines whether this program uses like-gate functionality."
-      end
-    end
-    group :additional_info do
-      field :google_analytics_tracking_code do
-        label "GA tracking code"
-        help "Optional. Length up to 255. For Google Analytics."
-      end
-      field :set_active_date
-      field :set_inactive_date
-      field :set_signups_to_valid do
-        label "Set signups to valid"
-        help "Required. Determines whether signups to this program will be valid upon submission."
-      end
-      field :created_at do
-        visible true
-      end
-      field :updated_at do
-        visible true
-      end
-      field :signups
-    end
+    configure :facebook_app_settings_url, :string
+    configure :program_access_key, :string
 
     list do
-      include_fields :id, :name, :created_at, :description, :active
+      field :short_name
+      field :name
+      field :set_active_date
+      field :set_inactive_date
+      field :active
     end
     export do; end
     show do; end
     edit do
-
+      group :basic_info do
+        field :short_name do
+          help "Required. Length up to 100. Must start with a letter and consist of only letters, numbers, and dashes."
+        end
+        field :name
+        field :description
+        field :app_url do
+          label "App URL"
+          help "Optional. Length up to 255. This is the URL to the client app, and is required when the program is active"
+        end
+        field :repo do
+          label "Git repository URL"
+          help "Optional. Length up to 255. Use an SSH URL, such as git@github.com:bigfuel/facelauncher.git"
+        end
+        field :program_access_key do
+          read_only true
+          label "Program access key"
+          help "Required. This is needed by an app running an instance of Facelauncher to access the database for this program."
+        end
+        field :active do
+          read_only true
+        end
+        field :additional_fields
+      end
+      group :facebook_info do
+        help "The app ID and app secret can be found on the Facebook app's settings page."
+        field :facebook_app_id do
+          label "App ID"
+        end
+        field :facebook_app_secret do
+          label "App secret"
+        end
+        field :facebook_app_access_token do
+          read_only true
+          label "App access token"
+          help "The access token will be pulled from Facebook whenever the app ID or secret have been changed."
+        end
+        field :facebook_app_settings_url do
+          label "App settings URL"
+          help 'You must be logged in to Facebook as an admin of this app in order to see this page.'
+          formatted_value do
+            "<a href=\"#{bindings[:object].facebook_app_settings_url}\" target=\"blank\">#{bindings[:object].facebook_app_settings_url}</a> <i class=\"icon-external-link\"></i>".html_safe unless bindings[:object].facebook_app_settings_url.blank?
+          end
+        end
+        field :facebook_is_like_gated do
+          label "Like gated"
+          help "Required. Determines whether this program uses like-gate functionality."
+        end
+      end
+      group :additional_info do
+        field :google_analytics_tracking_code do
+          label "GA tracking code"
+          help "Optional. Length up to 255. For Google Analytics."
+        end
+        field :set_active_date
+        field :set_inactive_date
+        field :set_signups_to_valid do
+          label "Set signups to valid"
+          help "Required. Determines whether signups to this program will be valid upon submission."
+        end
+        field :created_at do
+          visible true
+        end
+        field :updated_at do
+          visible true
+        end
+        field :signups
+      end
     end
     create do; end
     update do; end
   end
   config.model AdditionalField do
     parent Program
+    object_label_method :object_label
+
+    list do
+      field :program
+      field :short_name
+    end
+    nested do
+      field :short_name
+    end
   end
   config.model Signup do
     parent Program
@@ -410,58 +422,51 @@ RailsAdmin.config do |config|
     configure :created_at, :datetime
     configure :updated_at, :datetime
 
-    group :basic_info do
-      field :email
-      field :first_name
-      field :last_name
-      field :address1
-      field :address2
-      field :city
-      field :state do
-        help "Optional."
-        render do
-          # Default to US for now. Also, place this function in a helper.
-          us_states = Carmen::Country.coded('US')
-          bindings[:form].select('state', us_states.subregions.map { |s| [s.name, s.code] })
-        end
-      end
-      field :zip
-      field :is_valid do
-        read_only true
-      end
-    end
-    group :additional_info do
-      field :facebook_user_id do
-        label "Facebook user ID"
-      end
-      field :ip_address do
-        read_only true
-      end
-      field :created_at do
-        visible true
-      end
-      field :updated_at do
-        visible true
-      end
-    end
-
     list do; end
     export do; end
     show do; end
     edit do
-      # TODO: Signups should probably not be editable at all (except possibly in a sort of debug mode).
-      #exclude_fields :ip_address, :program
-    end
-    create do
-      group :additional_info do
+      group :basic_info do
         field :program
-      end
-    end
-    update do
-      group :additional_info do
-        field :program do
+        field :email
+        field :first_name
+        field :last_name
+        field :address1
+        field :address2
+        field :city
+        field :state do
+          help "Optional."
+          render do
+            # Default to US for now. Also, place this function in a helper.
+            us_states = Carmen::Country.coded('US')
+            bindings[:form].select('state', us_states.subregions.map { |s| [s.name, s.code] })
+          end
+        end
+        field :zip
+        field :is_valid do
           read_only true
         end
+      end
+      group :additional_info do
+        field :facebook_user_id do
+          label "Facebook user ID"
+        end
+        field :ip_address do
+          read_only true
+        end
+        field :created_at do
+          visible true
+        end
+        field :updated_at do
+          visible true
+        end
+      end
+    end
+    create do
+    end
+    update do
+      field :program do
+        read_only true
       end
     end
   end
