@@ -2,8 +2,8 @@ class Program < ActiveRecord::Base
   has_many :signups, dependent: :destroy #, inverse_of: :program
   has_many :additional_fields, dependent: :destroy
 
-  # accepts_nested_attributes_for :signups, allow_destroy: true
-  # attr_accessible :signups_attributes, allow_destroy: true
+  accepts_nested_attributes_for :additional_fields, allow_destroy: true
+  attr_accessible :additional_fields_attributes, allow_destroy: true
   attr_accessible :set_active_date, :set_inactive_date, :description,
                   :facebook_app_id, :facebook_app_secret, :facebook_is_like_gated,
                   :google_analytics_tracking_code, :name, :short_name, :app_url,
