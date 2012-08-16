@@ -25,6 +25,12 @@ en:
         breadcrumb: "Invalidate"
         link: "Invalidate %{model_label}"
         done: "invalidated"
+      regenerate_program_access_key:
+        title: "Regenerate Access Key"
+        menu: "Regenerate access key"
+        breadcrumb: "Regenerate Access Key"
+        link: "Regenerate access key"
+        done: "regenerated access key"
     form:
       are_you_sure_you_want_to_activate_the_object: "Are you sure you want to activate the %{model_name}"
       are_you_sure_you_want_to_deactivate_the_object: "Are you sure you want to deactivate the %{model_name}"

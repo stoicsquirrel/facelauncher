@@ -86,4 +86,8 @@ class Program < ActiveRecord::Base
   def facebook_app_settings_url
     !self.facebook_app_id.blank? ? "https://developers.facebook.com/apps/#{self.facebook_app_id}/" : ''
   end
+
+  def active?
+    self.active && (self.set_active_date.blank? || (!self.set_active_date.blank? && self.set_active_date < Date.now)) && (self.set_inactive_date.blank? || (!self.set_inactive_date.blank? && self.set_inactive_date > Date.now))
+  end
 end

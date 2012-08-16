@@ -93,6 +93,39 @@ RailsAdmin.config do |config|
       end
     end
 
+    #member_actions = [{name: :activate,
+    #                      visible_if: bindings[:abstract_model].model_name == "Program" && !bindings[:object].active,
+    #                      link_icon: 'icon-off'},
+    #                  {name: :deactivate,
+    #                      visible_if: bindings[:abstract_model].model_name == "Program" && bindings[:object].active,
+    #                      link_icon: 'icon-off'}] #, :regenerate_program_access_key]
+    #member_actions.each do |ma|
+
+    member :regenerate_program_access_key do
+      visible do
+        default_visible && bindings[:abstract_model].model_name == "Program"
+      end
+      controller do
+        Proc.new do
+          @object.generate_program_access_key
+
+          if @object.save
+            flash[:success] = t("admin.flash.successful", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+            redirect_path = :back
+          else
+            flash[:error] = t("admin.flash.error", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+            redirect_path = back_or_index
+          end
+
+          redirect_to redirect_path
+        end
+      end
+
+      http_methods [:get]
+      i18n_key :regenerate_program_access_key
+      link_icon 'icon-refresh'
+    end
+
     member :activate do
       visible do
         default_visible && bindings[:abstract_model].model_name == "Program" && !bindings[:object].active
@@ -399,9 +432,13 @@ RailsAdmin.config do |config|
     list do
       field :program
       field :short_name
+      field :label
+      field :is_required
     end
     nested do
       field :short_name
+      field :label
+      field :is_required
     end
   end
   config.model Signup do
