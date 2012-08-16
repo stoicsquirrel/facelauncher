@@ -16,11 +16,14 @@ class ProgramsController < ApplicationController
     @program = Program.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
       format.json do
-        render json: @program, only: [
-          :active, :facebook_app_id, :facebook_is_like_gated, :google_analytics_tracking_code,
-          :name, :set_active_date, :set_inactive_date, :short_name]
+        if !@program.active?
+          render json: { program: { active: false } }
+        else
+          render json: @program, only: [
+            :active, :facebook_app_id, :facebook_is_like_gated, :google_analytics_tracking_code,
+            :name, :set_active_date, :set_inactive_date, :short_name]
+        end
       end
     end
   end
