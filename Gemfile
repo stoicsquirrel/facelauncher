@@ -25,6 +25,7 @@ end
 gem 'api_taster'
 gem 'carmen',   '>= 1.0.0.beta2'
 gem 'devise'
+# gem 'facelauncher_chute'
 gem 'jquery-rails'
 gem 'koala'
 gem 'rails_admin'
