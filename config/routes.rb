@@ -1,7 +1,10 @@
 Facelauncher::Application.routes.draw do
-  devise_for :users
 
   root :to => 'rails_admin/main#dashboard'
+
+  #namespace :admin do
+    devise_for :users
+  #end
 
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
