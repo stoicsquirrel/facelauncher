@@ -26,7 +26,7 @@ RailsAdmin.config do |config|
     dashboard                     # mandatory
     # collection actions
     index                         # mandatory
-    new
+    new do
       controller do
         Proc.new do
           if request.get? # NEW
