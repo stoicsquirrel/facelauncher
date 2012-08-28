@@ -42,12 +42,12 @@ RailsAdmin.config do |config|
           end
           help "Bookmark this link for direct access to the program."
         end
-        field :edit_photos do
+        field :edit_additional_fields do
           read_only true
-          label "Photos"
+          label "Additional fields"
           formatted_value do
             url = bindings[:view].rails_admin.index_url('additional_field')
-            "<a href=\"#{url}\">View photos</a>".html_safe
+            "<a href=\"#{url}\">View additional fields</a>".html_safe
           end
         end
       end
@@ -61,19 +61,29 @@ RailsAdmin.config do |config|
           label "App URL"
           help "Optional. Length up to 255. This is the URL to the client app, and is required when the program is active"
         end
-        field :repo do
-          label "Git repository URL"
-          help "Optional. Length up to 255. Use an SSH URL, such as git@github.com:bigfuel/facelauncher.git"
+        field :active do
+          read_only true
+          help do
+            if bindings[:object].active?
+              'Click "Deactivate" on the top of the page to deactivate this program.'
+            else
+              'Click "Activate" on the top of the page to activate this program.'
+            end
+          end
         end
+      end
+      group :developer_info do
+        active false
         field :program_access_key do
           read_only true
           label "Program access key"
           help "Required. This is needed by an app running an instance of Facelauncher to access the database for this program."
         end
-        field :active do
-          read_only true
+        field :repo do
+          label "Git repository URL"
+          help "Optional. Length up to 255. Use an SSH URL, such as git@github.com:bigfuel/facelauncher.git"
         end
-        field :additional_fields
+        # field :additional_fields
       end
       group :facebook_info do
         active false
