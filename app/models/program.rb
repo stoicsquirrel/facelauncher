@@ -2,14 +2,15 @@ class Program < ActiveRecord::Base
   has_many :signups, dependent: :destroy #, inverse_of: :program
   has_many :additional_fields, dependent: :destroy
 
-  attr_accessor :permanent_link, :edit_photos
+  attr_accessor :permanent_link, :edit_photos, :edit_additional_fields
 
   accepts_nested_attributes_for :additional_fields, allow_destroy: true
   attr_accessible :additional_fields_attributes, allow_destroy: true
   attr_accessible :set_active_date, :set_inactive_date, :description,
                   :facebook_app_id, :facebook_app_secret, :facebook_is_like_gated,
                   :google_analytics_tracking_code, :name, :short_name, :app_url,
-                  :repo, :set_signups_to_valid, :permanent_link, :edit_photos
+                  :repo, :set_signups_to_valid, :permanent_link, :edit_photos,
+                  :edit_additional_fields
 
   validate :facebook_app_secret, :validate_fb_app_id_and_secret
   validates :name, presence: true
