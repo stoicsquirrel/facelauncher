@@ -20,12 +20,13 @@ RailsAdmin.config do |config|
   # or for a dynamic name:
   # config.main_app_name = Proc.new { |controller| [Rails.application.engine_name.titleize, controller.params['action'].titleize] }
 
+  # Note that this applies to ALL models.
   config.actions do
     # root actions
     dashboard                     # mandatory
     # collection actions
     index                         # mandatory
-    new do
+    new
       controller do
         Proc.new do
           if request.get? # NEW
@@ -52,10 +53,6 @@ RailsAdmin.config do |config|
             @authorization_adapter && @authorization_adapter.attributes_for(:create, @abstract_model).each do |name, value|
               @object.send("#{name}=", value)
             end
-
-            # TODO: Remove this, since we are collecting IP addresses from the client apps.
-            # Save the user's IP address
-            @object.ip_address = request.ip
 
             if @object.save
               @auditing_adapter && @auditing_adapter.create_object("Created #{@model_config.with(:object => @object).object_label}", @object, @abstract_model, _current_user)
