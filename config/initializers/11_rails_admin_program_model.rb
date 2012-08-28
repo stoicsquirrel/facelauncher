@@ -29,8 +29,28 @@ RailsAdmin.config do |config|
       field :active
     end
     export do; end
-    show do; end
+    show do
+
+    end
     edit do
+      group :management do
+        field :permanent_link do
+          read_only true
+          formatted_value do
+            url = bindings[:view].rails_admin.edit_url('program', bindings[:object].id)
+            "<a href=\"#{url}\">#{url}</a>".html_safe
+          end
+          help "Bookmark this link for direct access to the program."
+        end
+        field :edit_photos do
+          read_only true
+          label "Photos"
+          formatted_value do
+            url = bindings[:view].rails_admin.index_url('additional_field')
+            "<a href=\"#{url}\">View photos</a>".html_safe
+          end
+        end
+      end
       group :basic_info do
         field :short_name do
           help "Required. Length up to 100. Must start with a letter and consist of only letters, numbers, and dashes."
@@ -56,6 +76,7 @@ RailsAdmin.config do |config|
         field :additional_fields
       end
       group :facebook_info do
+        active false
         help "The app ID and app secret can be found on the Facebook app's settings page."
         field :facebook_app_id do
           label "App ID"
@@ -81,6 +102,7 @@ RailsAdmin.config do |config|
         end
       end
       group :additional_info do
+        active false
         field :google_analytics_tracking_code do
           label "GA tracking code"
           help "Optional. Length up to 255. For Google Analytics."
