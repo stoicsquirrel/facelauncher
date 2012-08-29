@@ -24,8 +24,10 @@ end
 
 gem 'api_taster'
 gem 'carmen',   '>= 1.0.0.beta2'
+gem 'carrierwave'
+gem 'cloudinary'
 gem 'devise'
-# gem 'facelauncher_chute'
+gem 'httparty'
 gem 'jquery-rails'
 gem 'koala'
 gem 'rails_admin'

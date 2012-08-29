@@ -123,6 +123,31 @@ RailsAdmin.config do |config|
       link_icon 'icon-refresh'
     end
 
+    member :pull_photos do
+      visible do
+        default_visible && bindings[:abstract_model].model_name == "Program"
+      end
+      controller do
+        Proc.new do
+          @object.get_instagram_photos_by_tags
+
+#          if @object.save
+#            flash[:success] = t("admin.flash.successful", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+#            redirect_path = :back
+#          else
+#            flash[:error] = t("admin.flash.error", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+#            redirect_path = back_or_index
+#          end
+
+          redirect_to back_or_index
+        end
+      end
+
+      http_methods [:get]
+      i18n_key :regenerate_program_access_key
+      link_icon 'icon-download'
+    end
+
     member :validate do
       visible do
         default_visible && bindings[:abstract_model].model_name == "Signup" && !bindings[:object].is_valid
@@ -271,6 +296,61 @@ RailsAdmin.config do |config|
       field :short_name
       field :label
       field :is_required
+    end
+  end
+  config.model Photo do
+    parent Program
+    configure :program, :belongs_to_association
+    object_label_method :object_label
+
+    list do
+      field :file, :string do
+        formatted_value do
+          show_photo_url = bindings[:view].rails_admin.show_url('photo', bindings[:object].id)
+          image_tag = bindings[:view].tag(:img, { src: bindings[:object].file_url(:rails_admin_thumbnail), alt: bindings[:object].file.my_public_id })
+          "<a href=\"#{show_photo_url}\">#{image_tag}</a>".html_safe
+        end
+      end
+    end
+    show do
+      field :file, :string do
+        formatted_value do
+          bindings[:view].tag(:img, { src: bindings[:object].file_url(:rails_admin_preview), alt: bindings[:object].file.my_public_id })
+        end
+      end
+    end
+    edit do
+      group :file_info do
+        field :program
+        field :file
+        field :position
+      end
+      group :additional_info do
+        field :title
+      end
+      group :social_media_info do
+        field :from_service do
+          read_only true
+          label "Pulled from"
+          help "This is automatically set if the image was pulled from a service, such as Twitter or Instagram."
+        end
+        field :from_user_full_name do
+          read_only true
+          label "Full name of poster"
+        end
+        field :from_user_username do
+          read_only true
+          label "Poster's username"
+        end
+        field :from_user_id do
+          read_only true
+          label "Poster's user ID"
+        end
+      end
+      field :photo_album_id
+    end
+    nested do
+
     end
   end
   config.model Signup do

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120814153326) do
+ActiveRecord::Schema.define(:version => 20120829164103) do
 
   create_table "additional_fields", :force => true do |t|
     t.integer  "program_id",                 :null => false
@@ -23,6 +23,25 @@ ActiveRecord::Schema.define(:version => 20120814153326) do
   end
 
   add_index "additional_fields", ["program_id"], :name => "index_programs_additional_fields_on_program_id"
+
+  create_table "photos", :force => true do |t|
+    t.integer  "program_id",                            :null => false
+    t.string   "file"
+    t.string   "title"
+    t.string   "caption"
+    t.integer  "like_count"
+    t.integer  "comment_count"
+    t.string   "from_user_username"
+    t.string   "from_user_full_name"
+    t.string   "from_user_id"
+    t.string   "from_service"
+    t.string   "original_file_id"
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+    t.integer  "position",            :default => 0,    :null => false
+    t.integer  "photo_album_id",                        :null => false
+    t.boolean  "is_valid",            :default => true, :null => false
+  end
 
   create_table "programs", :force => true do |t|
     t.string   "name",                                              :null => false
@@ -42,6 +61,11 @@ ActiveRecord::Schema.define(:version => 20120814153326) do
     t.string   "short_name",                     :default => "",    :null => false
     t.string   "program_access_key",             :default => "",    :null => false
     t.boolean  "set_signups_to_valid",           :default => false, :null => false
+    t.string   "instagram_client_id"
+    t.string   "instagram_client_secret"
+    t.string   "instagram_large_image_size"
+    t.string   "instagram_medium_image_size"
+    t.string   "instagram_thumbnail_image_size"
   end
 
   create_table "rails_admin_histories", :force => true do |t|
