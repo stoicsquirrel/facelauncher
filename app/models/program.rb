@@ -101,8 +101,9 @@ class Program < ActiveRecord::Base
         # Go through each media item
         response['data'].each do |item|
           # Make a temporary image file and save it if the file is good
-          File.open("#{Rails.root}/tmp/instagram/#{item['id']}.jpg", "w") do |file|
-            file.binmode
+          FileUtils.mkdir_p "#{Rails.root}/tmp/images/instagram"
+          File.open("#{Rails.root}/tmp/images/instagram/#{item['id']}.jpg", "w") do |file|
+            file.binmode # File must be downloaded as binary
 
             response = HTTParty.get(item['images']['standard_resolution']['url'])
             if response.code == 200
