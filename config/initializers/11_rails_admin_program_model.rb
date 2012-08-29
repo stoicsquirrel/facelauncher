@@ -111,6 +111,15 @@ RailsAdmin.config do |config|
           help "Required. Determines whether this program uses like-gate functionality."
         end
       end
+      group :instagram_info do
+        active false
+        field :instagram_client_id do
+          label "Client ID"
+        end
+        field :instagram_client_secret do
+          label "Client secret"
+        end
+      end
       group :additional_info do
         active false
         field :google_analytics_tracking_code do
