@@ -21,6 +21,24 @@ class Photo < ActiveRecord::Base
     self.save
   end
 
+  def self.approve(photos)
+    photos.each do |photo|
+      photo.approve
+    end
+    return photos
+  end
+
+  def self.unapprove(photos)
+    photos.each do |photo|
+      photo.unapprove
+    end
+    return photos
+  end
+
+  def approved?
+    self.is_approved
+  end
+
   private
   def object_label
     self.id

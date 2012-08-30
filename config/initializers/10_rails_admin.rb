@@ -30,7 +30,6 @@ RailsAdmin.config do |config|
       controller do
         Proc.new do
           if request.get? # NEW
-
             @object = @abstract_model.new
             @authorization_adapter && @authorization_adapter.attributes_for(:new, @abstract_model).each do |name, value|
               @object.send("#{name}=", value)
@@ -90,54 +89,73 @@ RailsAdmin.config do |config|
       end
     end
 
-    collection :bulk_approve_items do
+    collection :bulk_approve do
       bulkable true
       visible do
         default_visible && bindings[:abstract_model].model_name == "Photo"
       end
       controller do
         Proc.new do
-          @object.generate_program_access_key
+          if request.get? or request.post?
+            @objects = list_entries(@model_config, :approve, nil, true)
+            render @action.template_name
+          elsif request.put?
+            @objects = list_entries(@model_config, :approve, nil, true)
+            processed_objects = @abstract_model.model.approve(@objects)
 
-          if @object.save
-            flash[:success] = t("admin.flash.successful", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
-            redirect_path = :back
-          else
-            flash[:error] = t("admin.flash.error", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
-            redirect_path = back_or_index
+            approved = processed_objects.select(&:approved?)
+            not_approved = processed_objects - approved
+
+  #          processed_objects.each_with_index do |object, i|
+  #            if object.approved?
+  #              @auditing_adapter && @auditing_adapter.update_object(@abstract_model, object, nil, nil, nil, @objects[i], _current_user)
+  #              approved_count += 1
+  #            else
+  #              not_approved_count += 1
+  #            end
+  #          end
+
+            flash[:success] = t("admin.flash.successful", :name => pluralize(approved.count, @model_config.label), :action => t("admin.actions.bulk_approve.done")) unless approved.empty?
+            flash[:error] = t("admin.flash.error", :name => pluralize(not_approved.count, @model_config.label), :action => t("admin.actions.bulk_approve.done")) unless not_approved.empty?
+
+            redirect_to back_or_index
           end
-
-          redirect_to redirect_path
         end
       end
 
-      http_methods [:get]
-      i18n_key :regenerate_program_access_key
+      http_methods [:get, :post, :put]
+      i18n_key :bulk_approve
+      link_icon 'icon-thumbs-up'
     end
 
-    collection :bulk_unapprove_items do
+    collection :bulk_unapprove do
       bulkable true
       visible do
         default_visible && bindings[:abstract_model].model_name == "Photo"
       end
       controller do
         Proc.new do
-          @object.generate_program_access_key
+          if request.get? or request.post?
+            @objects = list_entries(@model_config, :unapprove, nil, true)
+            render @action.template_name
+          elsif request.put?
+            @objects = list_entries(@model_config, :unapprove, nil, true)
+            processed_objects = @abstract_model.model.unapprove(@objects)
 
-          if @object.save
-            flash[:success] = t("admin.flash.successful", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
-            redirect_path = :back
-          else
-            flash[:error] = t("admin.flash.error", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
-            redirect_path = back_or_index
+            approved = processed_objects.select(&:approved?)
+            not_approved = processed_objects - approved
+
+            flash[:success] = t("admin.flash.successful", :name => pluralize(not_approved.count, @model_config.label), :action => t("admin.actions.bulk_unapprove.done")) unless not_approved.empty?
+            flash[:error] = t("admin.flash.error", :name => pluralize(approved.count, @model_config.label), :action => t("admin.actions.bulk_unapprove.done")) unless approved.empty?
+
+            redirect_to back_or_index
           end
-
-          redirect_to redirect_path
         end
       end
 
-      http_methods [:get]
-      i18n_key :regenerate_program_access_key
+      http_methods [:get, :post, :put]
+      i18n_key :bulk_unapprove
+      link_icon 'icon-thumbs-down'
     end
 
     member :approve_item do
