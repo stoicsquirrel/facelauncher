@@ -1,0 +1,4 @@
+en:
+  activerecord:
+    models:
+      program_photo_import_tag: "Tags for photo import"

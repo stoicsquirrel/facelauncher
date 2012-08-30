@@ -2,17 +2,20 @@ class Program < ActiveRecord::Base
   has_many :signups, dependent: :destroy #, inverse_of: :program
   has_many :additional_fields, dependent: :destroy
   has_many :photos, dependent: :destroy
+  has_many :program_photo_import_tags, dependent: :destroy
 
   attr_accessor :permanent_link, :edit_photos, :edit_additional_fields
 
   accepts_nested_attributes_for :additional_fields, allow_destroy: true
   accepts_nested_attributes_for :photos, allow_destroy: true
+  accepts_nested_attributes_for :program_photo_import_tags, allow_destroy: true
   attr_accessible :additional_fields_attributes, allow_destroy: true
   attr_accessible :set_active_date, :set_inactive_date, :description,
                   :facebook_app_id, :facebook_app_secret, :facebook_is_like_gated,
                   :google_analytics_tracking_code, :name, :short_name, :app_url,
-                  :repo, :set_signups_to_valid, :permanent_link, :edit_photos,
-                  :edit_additional_fields, :instagram_client_id, :instagram_client_secret
+                  :repo, :moderate_signups, :moderate_photos, :permanent_link, :edit_photos,
+                  :edit_additional_fields, :instagram_client_id, :instagram_client_secret,
+                  :program_photo_import_tags_attributes
 
   validate :facebook_app_secret, :validate_fb_app_id_and_secret
   validates :name, presence: true
@@ -76,12 +79,12 @@ class Program < ActiveRecord::Base
 
   def activate
     self.active = true
-    self.save!
+    self.save
   end
 
   def deactivate
     self.active = false
-    self.save!
+    self.save
   end
 
   def facebook_app_settings_url
@@ -94,29 +97,36 @@ class Program < ActiveRecord::Base
 
   def get_instagram_photos_by_tags
     if !self.instagram_client_id.blank?
-      tag = "everythingtoprove"
-      response = HTTParty.get("https://api.instagram.com/v1/tags/#{tag}/media/recent?client_id=#{self.instagram_client_id}")
-      # If we get an "OK" response from the server, then continue
-      if response.code == 200
-        # Go through each media item
-        response['data'].each do |item|
-          # Make a temporary image file and save it if the file is good
-          FileUtils.mkdir_p "#{Rails.root}/tmp/images/instagram"
-          File.open("#{Rails.root}/tmp/images/instagram/#{item['id']}.jpg", "w") do |file|
-            file.binmode # File must be downloaded as binary
+      # Iterate through all of the program's tags
+      self.program_photo_import_tags.each do |tag|
+        # Pull feed of images for this tag
+        response = HTTParty.get("https://api.instagram.com/v1/tags/#{tag.tag}/media/recent?client_id=#{self.instagram_client_id}")
+        # If we get an "OK" response from the server, then continue
+        if response.code == 200
+          # Go through each media item
+          response['data'].each do |item|
+            # Make a temporary image file and save it if the file is good
+            FileUtils.mkdir_p "#{Rails.root}/tmp/images/instagram"
+            File.open("#{Rails.root}/tmp/images/instagram/#{item['id']}.jpg", "w") do |file|
+              file.binmode # File must be downloaded in binary mode
 
-            response = HTTParty.get(item['images']['standard_resolution']['url'])
-            if response.code == 200
-              file << response.body
+              # Get the URL of this image and save it, if we get a response from the server
+              response = HTTParty.get(item['images']['standard_resolution']['url'])
+              if response.code == 200
+                # Save the file
+                file << response.body
 
-              photo = self.photos.new
-              photo.file.store! file
-              photo[:from_service] = 'instagram'
-              photo[:caption] = item['caption']['text']
-              photo[:from_user_username] = item['user']['username']
-              photo[:photo_album_id] = 0
+                # Save the photo info
+                photo = self.photos.new
+                photo.file.store! file
+                photo[:from_service] = 'instagram'
+                photo[:caption] = item['caption']['text']
+                photo[:from_user_username] = item['user']['username']
+                photo[:photo_album_id] = 0
+                photo[:is_approved] = false if self.moderate_photos
 
-              photo.save
+                photo.save
+              end
             end
           end
         end

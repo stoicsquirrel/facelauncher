@@ -10,7 +10,7 @@ RailsAdmin.config do |config|
   config.current_user_method { current_user } # auto-generated
 
   # If you want to track changes on your models:
-  config.audit_with :history, Program
+  config.audit_with :history, User
 
   # Or with a PaperTrail: (you need to install it first)
   # config.audit_with :paper_trail, User
@@ -90,13 +90,105 @@ RailsAdmin.config do |config|
       end
     end
 
-    #member_actions = [{name: :activate,
-    #                      visible_if: bindings[:abstract_model].model_name == "Program" && !bindings[:object].active,
-    #                      link_icon: 'icon-off'},
-    #                  {name: :deactivate,
-    #                      visible_if: bindings[:abstract_model].model_name == "Program" && bindings[:object].active,
-    #                      link_icon: 'icon-off'}] #, :regenerate_program_access_key]
-    #member_actions.each do |ma|
+    collection :bulk_approve_items do
+      bulkable true
+      visible do
+        default_visible && bindings[:abstract_model].model_name == "Photo"
+      end
+      controller do
+        Proc.new do
+          @object.generate_program_access_key
+
+          if @object.save
+            flash[:success] = t("admin.flash.successful", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+            redirect_path = :back
+          else
+            flash[:error] = t("admin.flash.error", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+            redirect_path = back_or_index
+          end
+
+          redirect_to redirect_path
+        end
+      end
+
+      http_methods [:get]
+      i18n_key :regenerate_program_access_key
+    end
+
+    collection :bulk_unapprove_items do
+      bulkable true
+      visible do
+        default_visible && bindings[:abstract_model].model_name == "Photo"
+      end
+      controller do
+        Proc.new do
+          @object.generate_program_access_key
+
+          if @object.save
+            flash[:success] = t("admin.flash.successful", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+            redirect_path = :back
+          else
+            flash[:error] = t("admin.flash.error", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+            redirect_path = back_or_index
+          end
+
+          redirect_to redirect_path
+        end
+      end
+
+      http_methods [:get]
+      i18n_key :regenerate_program_access_key
+    end
+
+    member :approve_item do
+      visible do
+        default_visible && bindings[:abstract_model].model_name == "Photo"
+      end
+      controller do
+        Proc.new do
+          @object.generate_program_access_key
+
+          if @object.save
+            flash[:success] = t("admin.flash.successful", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+            redirect_path = :back
+          else
+            flash[:error] = t("admin.flash.error", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+            redirect_path = back_or_index
+          end
+
+          redirect_to redirect_path
+        end
+      end
+
+      http_methods [:get]
+      i18n_key :regenerate_program_access_key
+      link_icon 'icon-thumbs-up'
+    end
+
+    member :unapprove_item do
+      visible do
+        default_visible && bindings[:abstract_model].model_name == "Photo"
+      end
+      controller do
+        Proc.new do
+          @object.generate_program_access_key
+
+          if @object.save
+            flash[:success] = t("admin.flash.successful", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+            redirect_path = :back
+          else
+            flash[:error] = t("admin.flash.error", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+            redirect_path = back_or_index
+          end
+
+          redirect_to redirect_path
+        end
+      end
+
+      http_methods [:get]
+      i18n_key :regenerate_program_access_key
+      link_icon 'icon-thumbs-down'
+    end
 
     member :regenerate_program_access_key do
       visible do
@@ -130,15 +222,6 @@ RailsAdmin.config do |config|
       controller do
         Proc.new do
           @object.get_instagram_photos_by_tags
-
-#          if @object.save
-#            flash[:success] = t("admin.flash.successful", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
-#            redirect_path = :back
-#          else
-#            flash[:error] = t("admin.flash.error", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
-#            redirect_path = back_or_index
-#          end
-
           redirect_to back_or_index
         end
       end
@@ -298,6 +381,21 @@ RailsAdmin.config do |config|
       field :is_required
     end
   end
+  config.model ProgramPhotoImportTag do
+    parent Program
+    object_label_method :object_label
+
+    edit do
+      field :program
+      field :tag
+    end
+    nested do
+      field :program do
+        visible false
+      end
+      field :tag
+    end
+  end
   config.model Photo do
     parent Program
     configure :program, :belongs_to_association
@@ -311,6 +409,7 @@ RailsAdmin.config do |config|
           "<a href=\"#{show_photo_url}\">#{image_tag}</a>".html_safe
         end
       end
+      field :is_approved
     end
     show do
       field :file, :string do
@@ -318,12 +417,16 @@ RailsAdmin.config do |config|
           bindings[:view].tag(:img, { src: bindings[:object].file_url(:rails_admin_preview), alt: bindings[:object].file.my_public_id })
         end
       end
+      field :is_approved
     end
     edit do
       group :file_info do
         field :program
         field :file
         field :position
+        field :is_approved do
+          read_only true
+        end
       end
       group :additional_info do
         field :title

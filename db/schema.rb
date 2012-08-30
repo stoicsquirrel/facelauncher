@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120829164103) do
+ActiveRecord::Schema.define(:version => 20120830165704) do
 
   create_table "additional_fields", :force => true do |t|
     t.integer  "program_id",                 :null => false
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(:version => 20120829164103) do
     t.integer  "program_id",                            :null => false
     t.string   "file"
     t.string   "title"
-    t.string   "caption"
+    t.text     "caption"
     t.integer  "like_count"
     t.integer  "comment_count"
     t.string   "from_user_username"
@@ -40,8 +40,17 @@ ActiveRecord::Schema.define(:version => 20120829164103) do
     t.datetime "updated_at",                            :null => false
     t.integer  "position",            :default => 0,    :null => false
     t.integer  "photo_album_id",                        :null => false
-    t.boolean  "is_valid",            :default => true, :null => false
+    t.boolean  "is_approved",         :default => true, :null => false
   end
+
+  create_table "program_photo_import_tags", :force => true do |t|
+    t.integer  "program_id",               :null => false
+    t.string   "tag",        :limit => 50, :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+  end
+
+  add_index "program_photo_import_tags", ["program_id"], :name => "index_program_photo_import_tags_on_program_id"
 
   create_table "programs", :force => true do |t|
     t.string   "name",                                              :null => false
@@ -60,12 +69,13 @@ ActiveRecord::Schema.define(:version => 20120829164103) do
     t.boolean  "facebook_is_like_gated"
     t.string   "short_name",                     :default => "",    :null => false
     t.string   "program_access_key",             :default => "",    :null => false
-    t.boolean  "set_signups_to_valid",           :default => false, :null => false
+    t.boolean  "moderate_signups",               :default => false, :null => false
     t.string   "instagram_client_id"
     t.string   "instagram_client_secret"
     t.string   "instagram_large_image_size"
     t.string   "instagram_medium_image_size"
     t.string   "instagram_thumbnail_image_size"
+    t.boolean  "moderate_photos"
   end
 
   create_table "rails_admin_histories", :force => true do |t|

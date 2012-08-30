@@ -59,7 +59,13 @@ RailsAdmin.config do |config|
         field :description
         field :app_url do
           label "App URL"
-          help "Optional. Length up to 255. This is the URL to the client app, and is required when the program is active"
+          help "Optional. Length up to 255. This is the URL to the client app, and is required when the program is active."
+        end
+        field :moderate_signups do
+          help "Required. Determines whether signups to this program must be approved."
+        end
+        field :moderate_photos do
+          help "Required. Determines whether photos program must be approved."
         end
         field :active do
           read_only true
@@ -71,6 +77,7 @@ RailsAdmin.config do |config|
             end
           end
         end
+        field :program_photo_import_tags
       end
       group :developer_info do
         active false
@@ -128,10 +135,6 @@ RailsAdmin.config do |config|
         end
         field :set_active_date
         field :set_inactive_date
-        field :set_signups_to_valid do
-          label "Set signups to valid"
-          help "Required. Determines whether signups to this program will be valid upon submission."
-        end
         field :created_at do
           visible true
         end
