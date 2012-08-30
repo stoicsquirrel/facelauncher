@@ -13,7 +13,8 @@ RailsAdmin.config do |config|
     configure :app_url, :string
     configure :repo, :string
     configure :active, :boolean
-    configure :set_signups_to_valid, :boolean
+    configure :moderate_signups, :boolean
+    configure :moderate_photos, :boolean
     configure :set_active_date, :datetime
     configure :set_inactive_date, :datetime
     configure :created_at, :datetime

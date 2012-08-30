@@ -233,7 +233,7 @@ RailsAdmin.config do |config|
       link_icon 'icon-refresh'
     end
 
-    member :pull_photos do
+    member :import_photos do
       visible do
         default_visible && bindings[:abstract_model].model_name == "Program"
       end
@@ -245,7 +245,7 @@ RailsAdmin.config do |config|
       end
 
       http_methods [:get]
-      i18n_key :regenerate_program_access_key
+      i18n_key :import_photos
       link_icon 'icon-download'
     end
 
