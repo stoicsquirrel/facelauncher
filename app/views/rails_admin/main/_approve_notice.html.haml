@@ -1,0 +1,11 @@
+- object = approve_notice
+- show_enabled = RailsAdmin::Config::Actions.all.map(&:key).include?(:show)
+
+%li{:style => 'display:block; margin-top:10px'}
+  - if show_enabled
+    - if object.class.name == "Photo"
+      = link_to image_tag(object.file_url(:rails_admin_tiny_thumbnail), :alt => @model_config.with(:object => object).object_label), show_path(:model_name => @abstract_model.to_param, :id => object.id), :class => 'bulk_approve_photo'
+    %span.label= @abstract_model.pretty_name
+    = link_to @model_config.with(:object => object).object_label, show_path(:model_name => @abstract_model.to_param, :id => object.id)
+  - else
+    = @model_config.with(:object => object).object_label

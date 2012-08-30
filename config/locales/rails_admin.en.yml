@@ -31,7 +31,21 @@ en:
         breadcrumb: "Regenerate Access Key"
         link: "Regenerate access key"
         done: "regenerated access key"
+      bulk_approve:
+        title: "Approve %{model_label_plural}"
+        menu: "Multiple approve"
+        breadcrumb: "Multiple approve"
+        bulk_link: "Approve selected %{model_label}s"
+        done: "approved"
+      bulk_unapprove:
+        title: "Unapprove %{model_label_plural}"
+        menu: "Multiple unapprove"
+        breadcrumb: "Multiple unapprove"
+        bulk_link: "Unapprove selected %{model_label}s"
+        done: "unapproved"
     form:
+      bulk_approve: "The following objects will be approved:"
+      bulk_unapprove: "The following objects will be unapproved:"
       are_you_sure_you_want_to_activate_the_object: "Are you sure you want to activate the %{model_name}"
       are_you_sure_you_want_to_deactivate_the_object: "Are you sure you want to deactivate the %{model_name}"
       are_you_sure_you_want_to_validate_the_object: "Are you sure you want to validate the %{model_name}"

@@ -7,6 +7,10 @@ class PhotoUploader < CarrierWave::Uploader::Base
     process resize_to_fit: [225, 225]
   end
 
+  version :rails_admin_tiny_thumbnail do
+    process resize_to_fit: [100, 100]
+  end
+
   version :rails_admin_preview do
     process resize_to_limit: [1024, 1024]
   end

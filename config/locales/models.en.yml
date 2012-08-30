@@ -1,4 +1,6 @@
 en:
   activerecord:
     models:
-      program_photo_import_tag: "Tags for photo import"
+      program_photo_import_tag:
+        one: "Tag for photo import"
+        other: "Tags for photo import"
