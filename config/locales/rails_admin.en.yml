@@ -31,6 +31,12 @@ en:
         breadcrumb: "Regenerate Access Key"
         link: "Regenerate access key"
         done: "regenerated access key"
+      import_photos:
+        title: "Import photos"
+        menu: "Import photos"
+        breadcrumb: "Import photos"
+        link: "Import photos"
+        done: "imported photos"
       bulk_approve:
         title: "Approve %{model_label_plural}"
         menu: "Multiple approve"
