@@ -7,7 +7,7 @@ Facelauncher::Application.routes.draw do
 
   # The API
   resources :signups, :only => [:create]
-  resources :programs, :only => [:show]
+  resources :programs, :only => [:show, :index]
 
   if Rails.env.development?
     mount ApiTaster::Engine => '/api_taster'
