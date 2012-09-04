@@ -432,7 +432,7 @@ RailsAdmin.config do |config|
     show do
       field :file, :string do
         formatted_value do
-          bindings[:view].cl_image_tag(bindings[:object].file.filename, crop: :limit, :width => 800, :height => 800)
+          bindings[:view].cl_image_tag(bindings[:object].file.filename, crop: :limit, width: 800, height: 800)
         end
       end
       field :is_approved
@@ -447,13 +447,8 @@ RailsAdmin.config do |config|
           # to use cl_image_tag instead of image_tag.
           pretty_value do
             if value.presence
-              v = bindings[:view]
-              url = resource_url
               if self.image
-                thumb_url = resource_url(thumb_method)
-                (url != thumb_url) ? v.link_to(v.cl_image_tag(thumb_url), url, :class => 'thumbnail', :target => 'blank') : v.cl_image_tag(thumb_url)
-              else
-                v.link_to(nil, url, :target => 'blank')
+                bindings[:view].cl_image_tag(bindings[:object].file.filename, crop: :limit, width: 800, height: 800)
               end
             else
               nil
