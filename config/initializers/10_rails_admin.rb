@@ -433,8 +433,6 @@ RailsAdmin.config do |config|
       field :file, :string do
         formatted_value do
           bindings[:view].cl_image_tag(bindings[:object].file.filename, crop: :limit, :width => 800, :height => 800)
-
-          #bindings[:view].tag(:img, { src: bindings[:object].file_url(:rails_admin_preview), alt: bindings[:object].file.my_public_id })
         end
       end
       field :is_approved
@@ -442,7 +440,28 @@ RailsAdmin.config do |config|
     edit do
       group :file_info do
         field :program
-        field :file
+        field :file do
+          partial 'cl_form_file_upload'
+
+          # Modified from rails_admin/lib/rails_admin/config/fields/types/carrierwave.rb
+          # to use cl_image_tag instead of image_tag.
+          pretty_value do
+            if value.presence
+              v = bindings[:view]
+              url = resource_url
+              if self.image
+                thumb_url = resource_url(thumb_method)
+                (url != thumb_url) ? v.link_to(v.cl_image_tag(thumb_url), url, :class => 'thumbnail', :target => 'blank') : v.cl_image_tag(thumb_url)
+              else
+                v.link_to(nil, url, :target => 'blank')
+              end
+            else
+              nil
+            end
+          end
+
+          # read_only true
+        end
         field :position
         field :is_approved do
           read_only true
