@@ -105,27 +105,31 @@ class Program < ActiveRecord::Base
         if response.code == 200
           # Go through each media item
           response['data'].each do |item|
-            # Make a temporary image file and save it if the file is good
-            FileUtils.mkdir_p "#{Rails.root}/tmp/images/instagram"
-            File.open("#{Rails.root}/tmp/images/instagram/#{item['id']}.jpg", "w") do |file|
-              file.binmode # File must be downloaded in binary mode
+            # Save the image only if it doesn't already exist in our database.
+            if self.photos.find_by_original_file_id(item['id']).nil?
+              # Make a temporary image file and save it if the file is good
+              FileUtils.mkdir_p "#{Rails.root}/tmp/images/instagram"
+              File.open("#{Rails.root}/tmp/images/instagram/#{item['id']}.jpg", "w") do |file|
+                file.binmode # File must be downloaded in binary mode
 
-              # Get the URL of this image and save it, if we get a response from the server
-              response = HTTParty.get(item['images']['standard_resolution']['url'])
-              if response.code == 200
-                # Save the file
-                file << response.body
+                # Get the URL of this image and save it, if we get a response from the server
+                response = HTTParty.get(item['images']['standard_resolution']['url'])
+                if response.code == 200
+                  # Save the file
+                  file << response.body
 
-                # Save the photo info
-                photo = self.photos.new
-                photo.file.store! file
-                photo[:from_service] = 'instagram'
-                photo[:caption] = item['caption']['text']
-                photo[:from_user_username] = item['user']['username']
-                photo[:photo_album_id] = 0
-                photo[:is_approved] = false if self.moderate_photos
+                  # Save the photo info
+                  photo = self.photos.new
+                  photo.file.store! file
+                  photo[:from_service] = 'instagram'
+                  photo[:original_file_id] = item['id']
+                  photo[:caption] = item['caption']['text'] unless item['caption'].nil?
+                  photo[:from_user_username] = item['user']['username']
+                  photo[:photo_album_id] = 0
+                  photo[:is_approved] = false if self.moderate_photos
 
-                photo.save
+                  photo.save
+                end
               end
             end
           end
