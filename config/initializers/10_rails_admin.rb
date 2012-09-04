@@ -423,7 +423,7 @@ RailsAdmin.config do |config|
       field :file, :string do
         formatted_value do
           show_photo_url = bindings[:view].rails_admin.show_url('photo', bindings[:object].id)
-          image_tag = bindings[:view].tag(:img, { src: bindings[:object].file_url(:rails_admin_thumbnail), alt: bindings[:object].file.my_public_id })
+          image_tag = bindings[:view].cl_image_tag(bindings[:object].file.filename, crop: :fit, :width => 225, :height => 225)
           "<a href=\"#{show_photo_url}\">#{image_tag}</a>".html_safe
         end
       end
@@ -432,7 +432,9 @@ RailsAdmin.config do |config|
     show do
       field :file, :string do
         formatted_value do
-          bindings[:view].tag(:img, { src: bindings[:object].file_url(:rails_admin_preview), alt: bindings[:object].file.my_public_id })
+          bindings[:view].cl_image_tag(bindings[:object].file.filename, crop: :limit, :width => 800, :height => 800)
+
+          #bindings[:view].tag(:img, { src: bindings[:object].file_url(:rails_admin_preview), alt: bindings[:object].file.my_public_id })
         end
       end
       field :is_approved

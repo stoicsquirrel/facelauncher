@@ -48,6 +48,5 @@ gem 'thin'
 
 # To use debugger
 group :development do
-  gem 'pry'
-  # gem 'ruby-debug19', :require => 'ruby-debug'
+  gem 'pry-rails'
 end
