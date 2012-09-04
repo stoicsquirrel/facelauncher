@@ -450,12 +450,12 @@ RailsAdmin.config do |config|
               if self.image
                 bindings[:view].cl_image_tag(bindings[:object].file.filename, crop: :limit, width: 800, height: 800)
               end
-            else
-              nil
             end
           end
 
-          # read_only true
+          read_only do
+            !bindings[:object].from_service.blank?
+          end
         end
         field :position
         field :is_approved do
