@@ -129,6 +129,7 @@ class Program < ActiveRecord::Base
         client.search("##{tag.tag}", include_entities: true).results.each do |item|
           item.urls.each do |url|
             photo_id = photo_url = nil
+            twitter_image_service = :twitter
             # Determine if there are photos served on an external Twitter image service
             expressions = {
               twitpic: /^https?\:\/\/twitpic.com\/(?<id>\S+)$/
@@ -138,6 +139,7 @@ class Program < ActiveRecord::Base
               if !match.nil? && !match[:id].blank?
                 photo_id = match[:id]
                 photo_url = "http://twitpic.com/show/full/#{photo_id}" unless photo_id.nil?
+                twitter_image_service = service
                 break
               end
             end
@@ -147,6 +149,7 @@ class Program < ActiveRecord::Base
                 photo_id: photo_id,
                 caption: item.text,
                 from_user_username: item.from_user,
+                twitter_image_service: twitter_image_service,
 
                 photo_album_id: 0
               }
