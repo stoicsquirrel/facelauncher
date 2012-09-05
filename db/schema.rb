@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120830165704) do
+ActiveRecord::Schema.define(:version => 20120905182626) do
 
   create_table "additional_fields", :force => true do |t|
     t.integer  "program_id",                 :null => false
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(:version => 20120830165704) do
     t.string   "from_user_full_name"
     t.string   "from_user_id"
     t.string   "from_service"
-    t.string   "original_file_id"
+    t.string   "original_photo_id"
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
     t.integer  "position",            :default => 0,    :null => false
@@ -72,10 +72,11 @@ ActiveRecord::Schema.define(:version => 20120830165704) do
     t.boolean  "moderate_signups",               :default => false, :null => false
     t.string   "instagram_client_id"
     t.string   "instagram_client_secret"
-    t.string   "instagram_large_image_size"
-    t.string   "instagram_medium_image_size"
-    t.string   "instagram_thumbnail_image_size"
     t.boolean  "moderate_photos"
+    t.string   "twitter_consumer_key"
+    t.string   "twitter_consumer_secret"
+    t.string   "twitter_oauth_token"
+    t.string   "twitter_oauth_token_secret"
   end
 
   create_table "rails_admin_histories", :force => true do |t|
