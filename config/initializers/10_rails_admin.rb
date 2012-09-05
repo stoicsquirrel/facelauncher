@@ -240,6 +240,7 @@ RailsAdmin.config do |config|
       controller do
         Proc.new do
           @object.get_instagram_photos_by_tags
+          @object.get_twitter_photos_by_tags
           redirect_to back_or_index
         end
       end

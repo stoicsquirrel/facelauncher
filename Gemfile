@@ -33,6 +33,7 @@ gem 'koala'
 gem 'rails_admin'
 gem 'queue_classic'
 gem 'thin'
+gem 'twitter'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
