@@ -241,6 +241,7 @@ RailsAdmin.config do |config|
         Proc.new do
           @object.get_instagram_photos_by_tags
           @object.get_twitter_photos_by_tags
+          flash[:success] = "Completed importing photos."
           redirect_to back_or_index
         end
       end
@@ -465,12 +466,21 @@ RailsAdmin.config do |config|
       end
       group :additional_info do
         field :title
+        field :caption do
+          read_only do
+            !bindings[:object].from_service.blank?
+          end
+        end
       end
       group :social_media_info do
         field :from_service do
           read_only true
           label "Pulled from"
           help "This is automatically set if the image was pulled from a service, such as Twitter or Instagram."
+        end
+        field :from_twitter_image_service do
+          read_only true
+          label "This is automatically set if the image was pulled from an image hosting provider, via Twitter."
         end
         field :from_user_full_name do
           read_only true

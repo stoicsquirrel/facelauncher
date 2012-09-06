@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120905182626) do
+ActiveRecord::Schema.define(:version => 20120906210110) do
 
   create_table "additional_fields", :force => true do |t|
     t.integer  "program_id",                 :null => false
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(:version => 20120905182626) do
   add_index "additional_fields", ["program_id"], :name => "index_programs_additional_fields_on_program_id"
 
   create_table "photos", :force => true do |t|
-    t.integer  "program_id",                            :null => false
+    t.integer  "program_id",                                   :null => false
     t.string   "file"
     t.string   "title"
     t.text     "caption"
@@ -36,11 +36,12 @@ ActiveRecord::Schema.define(:version => 20120905182626) do
     t.string   "from_user_id"
     t.string   "from_service"
     t.string   "original_photo_id"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
-    t.integer  "position",            :default => 0,    :null => false
-    t.integer  "photo_album_id",                        :null => false
-    t.boolean  "is_approved",         :default => true, :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+    t.integer  "position",                   :default => 0,    :null => false
+    t.integer  "photo_album_id",                               :null => false
+    t.boolean  "is_approved",                :default => true, :null => false
+    t.string   "from_twitter_image_service"
   end
 
   create_table "program_photo_import_tags", :force => true do |t|
@@ -77,6 +78,7 @@ ActiveRecord::Schema.define(:version => 20120905182626) do
     t.string   "twitter_consumer_secret"
     t.string   "twitter_oauth_token"
     t.string   "twitter_oauth_token_secret"
+    t.string   "tumblr_consumer_key"
   end
 
   create_table "rails_admin_histories", :force => true do |t|

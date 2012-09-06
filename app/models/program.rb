@@ -15,7 +15,9 @@ class Program < ActiveRecord::Base
                   :google_analytics_tracking_code, :name, :short_name, :app_url,
                   :repo, :moderate_signups, :moderate_photos, :permanent_link, :edit_photos,
                   :edit_additional_fields, :instagram_client_id, :instagram_client_secret,
-                  :program_photo_import_tags_attributes
+                  :program_photo_import_tags_attributes, :tumblr_consumer_key,
+                  :twitter_consumer_key, :twitter_consumer_secret,
+                  :twitter_oauth_token, :twitter_oauth_token_secret
 
   validate :facebook_app_secret, :validate_fb_app_id_and_secret
   validates :name, presence: true
@@ -122,38 +124,50 @@ class Program < ActiveRecord::Base
   def get_twitter_photos_by_tags
     client = Twitter::Client.new
 
-    # Iterate through all of the program's tags
+    # Iterate through all of the program's tags.
     self.program_photo_import_tags.each do |tag|
-      # Pull tweets with the current tag that have images
+      # Pull tweets with the current tag that have images.
       begin
-        client.search("##{tag.tag}", include_entities: true).results.each do |item|
-          item.urls.each do |url|
-            photo_id = photo_url = nil
-            twitter_image_service = :twitter
-            # Determine if there are photos served on an external Twitter image service
-            expressions = {
-              twitpic: /^https?\:\/\/twitpic.com\/(?<id>\S+)$/
-            }
-            expressions.each do |service, exp|
-              match = exp.match(!url.expanded_url.blank? ? url.expanded_url : url.url)
-              if !match.nil? && !match[:id].blank?
-                photo_id = match[:id]
-                photo_url = "http://twitpic.com/show/full/#{photo_id}" unless photo_id.nil?
-                twitter_image_service = service
-                break
+        # Pull up to 1000 Twitter entries
+        2.times do |i|
+          page = i + 1
+          results = client.search("##{tag.tag}", include_entities: true, rpp: 100, page: page).results
+          # If there are no results on this page, then we're done
+          break if results.count == 0
+          # Iterate through results on this page
+          results.each do |item|
+            if item.media.any?
+              # Determine if there are any included images (hosted by Twitter/Photobucket).
+              item.media.each do |media|
+                attrs = {
+                  photo_id: media.id,
+                  caption: item.text,
+                  from_user_username: item.from_user,
+                  twitter_image_service: :twitter,
+
+                  photo_album_id: 0
+                }
+                save_imported_photo(:twitter, media.media_url, attrs)
               end
-            end
+            elsif item.urls.any?
+              # Determine if there are any images hosted on services such as Twitpic, YFrog, etc.
+              item.urls.each do |url|
+                expanded_url = !url.expanded_url.blank? ? url.expanded_url : url.url
+                photo = get_photo_from_service(expanded_url)
 
-            unless photo_id.nil?
-              attrs = {
-                photo_id: photo_id,
-                caption: item.text,
-                from_user_username: item.from_user,
-                twitter_image_service: twitter_image_service,
+                # If we found a photo, then save it
+                unless photo.nil?
+                  attrs = {
+                    photo_id: photo[:id],
+                    caption: item.text,
+                    from_user_username: item.from_user,
+                    twitter_image_service: photo[:twitter_image_service],
 
-                photo_album_id: 0
-              }
-              save_imported_photo(:twitter, photo_url, attrs)
+                    photo_album_id: 0
+                  }
+                  save_imported_photo(:twitter, photo[:url], attrs)
+                end
+              end
             end
           end
         end
@@ -165,9 +179,68 @@ class Program < ActiveRecord::Base
 
   private
 
+  # Recursive function to open URLs and search for photos.
+  def get_photo_from_service(expanded_url)
+    photo = Hash.new
+    twitter_image_service = nil
+
+    # Search expanded URLs for twitpic.com, yfrog.com, etc.
+    expressions = {
+      twitpic: /^https?\:\/\/twitpic.com\/(?<id>\S+)$/,
+      tumblr: /^https?\:\/\/(tmblr.co|\S+\.tumblr.com)\/\S+$/
+    }
+    expression = /^https?\:\/\/(?<service>tmblr.co|\S+\.tumblr.com|twitpic.com)\/(?<id>\S+)$/
+    match = expression.match(expanded_url)
+
+    # If there is no match, check if the URL redirects to another, and if it does,
+    # call this function again with the redirect URL.
+    # If there is no redirect, then the method ends.
+    if match.nil?
+      expanded_expanded_url = HTTParty.get(expanded_url, follow_redirects: false).headers["location"]
+      if !expanded_expanded_url.nil?
+        return get_photo_from_service(expanded_expanded_url)
+      end
+    else
+      case match[:service]
+      # Pull image from Twitpic
+      when 'twitpic.com'
+        unless match[:id].blank?
+          photo[:id] = match[:id]
+          photo[:url] = "http://twitpic.com/show/full/#{photo[:id]}" unless photo[:id].nil?
+          photo[:twitter_image_service] = :twitpic
+          return photo
+        end
+      # Pull image from Tumblr
+      when 'tumblr.com', 'tmblr.co'
+        unless self.tumblr_consumer_key.blank?
+          if (/tmblr\.co/ =~ expanded_url) >= 0
+            tumblr_page_url = HTTParty.get(expanded_url, follow_redirects: false).headers["location"]
+          else
+            tumblr_page_url = expanded_url
+          end
+          expanded_tumblr_page_url = HTTParty.get(tumblr_page_url, follow_redirects: false).headers["location"]
+          tumblr_page_info = /^https?\:\/\/(?<username>\S+)\.tumblr.com\/post\/(?<page_id>\d+)\/?\S*$/.match(expanded_tumblr_page_url)
+          tumblr_page_id = tumblr_page_info[:page_id]
+          tumblr_user_id = tumblr_page_info[:username]
+          response = HTTParty.get("https://api.tumblr.com/v2/blog/#{tumblr_user_id}.tumblr.com/posts/photo",
+            query: {api_key: self.tumblr_consumer_key, id: tumblr_page_id})
+
+          # If we get an OK response from the server, then save the photo
+          if response.code == 200
+            photo[:id] = tumblr_page_id
+            photo[:url] = response['response']['posts'][0]['photos'][0]['original_size']['url']
+            photo[:twitter_image_service] = :tumblr
+            return photo
+          end
+        end
+      end
+    end
+    return nil
+  end
+
   def save_imported_photo(service, photo_url, attrs)
     # Save the image only if it doesn't already exist in our database
-    if self.photos.find_by_original_photo_id_and_from_service(attrs[:photo_id], service.to_s).nil?
+    if self.photos.find_by_original_photo_id_and_from_service(attrs[:photo_id].to_s, service.to_s).nil?
       # Get the URL of this image and save it, if we get a response from the server
       response = HTTParty.get(photo_url)
       if response.code == 200
@@ -193,6 +266,7 @@ class Program < ActiveRecord::Base
           photo = self.photos.new
           photo.file.store! file
           photo[:from_service] = service.to_s
+          photo[:from_twitter_image_service] = attrs[:twitter_image_service]
           photo[:original_photo_id] = attrs[:photo_id]
           photo[:caption] = attrs[:caption]
           photo[:from_user_username] = attrs[:from_user_username]

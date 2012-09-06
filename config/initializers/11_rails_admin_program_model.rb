@@ -128,6 +128,19 @@ RailsAdmin.config do |config|
           label "Client secret"
         end
       end
+      group :twitter_info do
+        active false
+        field :twitter_consumer_key do
+          label "Consumer key"
+        end
+        field :twitter_consumer_secret do
+          label "Consumer secret"
+        end
+        field :tumblr_consumer_key do
+          label "Tumblr consumer key"
+          help "Optional. This is needed only if you need to pull Tumblr images from Tweets."
+        end
+      end
       group :additional_info do
         active false
         field :google_analytics_tracking_code do
