@@ -75,6 +75,10 @@ class Program < ActiveRecord::Base
 
   before_create :generate_program_access_key
 
+  def authenticate(key)
+    self.program_access_key == key
+  end
+
   def generate_program_access_key
     self.program_access_key = SecureRandom.hex
   end
@@ -87,6 +91,10 @@ class Program < ActiveRecord::Base
   def deactivate
     self.active = false
     self.save
+  end
+
+  def photo_tags
+    self.program_photo_import_tags.select([:tag])
   end
 
   def facebook_app_settings_url
@@ -129,7 +137,7 @@ class Program < ActiveRecord::Base
       # Pull tweets with the current tag that have images.
       begin
         # Pull up to 1000 Twitter entries
-        2.times do |i|
+        10.times do |i|
           page = i + 1
           results = client.search("##{tag.tag}", include_entities: true, rpp: 100, page: page).results
           # If there are no results on this page, then we're done
@@ -240,7 +248,7 @@ class Program < ActiveRecord::Base
 
   def save_imported_photo(service, photo_url, attrs)
     # Save the image only if it doesn't already exist in our database
-    if self.photos.find_by_original_photo_id_and_from_service(attrs[:photo_id].to_s, service.to_s).nil?
+    if !self.photos.where(original_photo_id: attrs[:photo_id].to_s, from_service: service.to_s).exists?
       # Get the URL of this image and save it, if we get a response from the server
       response = HTTParty.get(photo_url)
       if response.code == 200

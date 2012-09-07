@@ -17,14 +17,6 @@ class Signup < ActiveRecord::Base
   validates :zip, length: { maximum: 9 }
   validates :facebook_user_id, length: { maximum: 25 }
 
-  def validate_program_access_key
-    if program_access_key.blank?
-      errors.add(:program_access_key, "is missing.")
-    elsif program_access_key != program.program_access_key
-      errors.add(:program_access_key, "is invalid.")
-    end
-  end
-
   #all_fields_keys = ActiveRecord::Base.connection.execute("SELECT DISTINCT UNNEST(akeys(fields)) AS key FROM signups ORDER BY key").map {|f| f['key']}
   #all_fields_keys.each do |key|
   #  attr_accessible key

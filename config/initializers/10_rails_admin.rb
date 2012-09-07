@@ -241,7 +241,7 @@ RailsAdmin.config do |config|
         Proc.new do
           @object.get_instagram_photos_by_tags
           @object.get_twitter_photos_by_tags
-          flash[:success] = "Completed importing photos."
+          flash[:success] = t("admin.flash.successful", :name => @model_config.label, :action => t("admin.actions.import_photos.done"))
           redirect_to back_or_index
         end
       end

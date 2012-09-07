@@ -192,6 +192,7 @@ PLATFORMS
 
 DEPENDENCIES
   api_taster
+  bcrypt-ruby (~> 3.0.0)
   carmen (>= 1.0.0.beta2)
   carrierwave
   cloudinary

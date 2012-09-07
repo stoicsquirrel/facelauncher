@@ -3,26 +3,6 @@
 class PhotoUploader < CarrierWave::Uploader::Base
   include Cloudinary::CarrierWave
 
-  version :rails_admin_thumbnail do
-    process resize_to_fit: [225, 225]
-  end
-
-  version :rails_admin_tiny_thumbnail do
-    process resize_to_fit: [100, 100]
-  end
-
-  version :rails_admin_preview do
-    process resize_to_limit: [1024, 1024]
-  end
-
-  version :thumbnail do
-    #process :create_thumbnail
-  end
-
-  def create_thumbnail
-    #process resize_to_fill: [240, 135]
-  end
-
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
   def extension_white_list

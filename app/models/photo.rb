@@ -1,6 +1,8 @@
 class Photo < ActiveRecord::Base
   belongs_to :program
 
+  scope :approved, where(is_approved: true)
+
   mount_uploader :file, PhotoUploader
   attr_accessible :caption, :comment_count, :file, :from_service, :from_user_full_name,
                   :from_user_id, :from_user_username, :like_count, :original_file_id,
