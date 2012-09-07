@@ -6,9 +6,11 @@ Facelauncher::Application.routes.draw do
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
   # The API
+  resources :programs, :only => [:index, :show]
+  resources :photos, :only => [:index, :show]
   resources :signups, :only => [:create]
-  resources :programs, :only => [:show, :index]
 
+  # API Taster
   if Rails.env.development?
     mount ApiTaster::Engine => '/api_taster'
     ApiTaster.routes do

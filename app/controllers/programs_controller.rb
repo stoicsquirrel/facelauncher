@@ -18,11 +18,12 @@ class ProgramsController < ApplicationController
     respond_to do |format|
       format.json do
         if !@program.active?
-          render json: { program: { active: false } }
+          render json: { active: false }
         else
           render json: @program, only: [
             :active, :facebook_app_id, :facebook_is_like_gated, :google_analytics_tracking_code,
-            :name, :set_active_date, :set_inactive_date, :short_name]
+            :name, :set_active_date, :set_inactive_date, :short_name],
+            methods: [:photo_tags]
         end
       end
     end

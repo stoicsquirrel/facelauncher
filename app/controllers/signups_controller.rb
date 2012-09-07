@@ -41,7 +41,7 @@ class SignupsController < ApplicationController
   # POST /signups.json
   def create
     @signup = Signup.new(params[:signup])
-    @signup.validate_program_access_key
+    #@signup.program.validate_program_access_key(params[:program_access_key])
 
     respond_to do |format|
       if @signup.save
@@ -58,7 +58,7 @@ class SignupsController < ApplicationController
   # PUT /signups/1.json
   def update
     @signup = Signup.find(params[:id])
-    @signup.validate_program_access_key
+    #@signup.program.validate_program_access_key(params[:program_access_key])
 
     respond_to do |format|
       if @signup.update_attributes(params[:signup])
