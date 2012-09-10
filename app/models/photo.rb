@@ -1,4 +1,5 @@
 class Photo < ActiveRecord::Base
+  belongs_to :photo_album
   belongs_to :program
 
   scope :approved, where(is_approved: true)
@@ -6,12 +7,11 @@ class Photo < ActiveRecord::Base
   mount_uploader :file, PhotoUploader
   attr_accessible :caption, :comment_count, :file, :from_service, :from_user_full_name,
                   :from_user_id, :from_user_username, :like_count, :original_file_id,
-                  :title, :file_cache, :remove_file, :program_id, :photo_album_id,
+                  :title, :file_cache, :remove_file, :photo_album_id,
                   :position, :is_approved
 
-  validates :program, presence: true
+  # validates :photo_album, presence: true
   validates :position, presence: true, numericality: { greater_than_or_equal_to: 0 }
-  validates :photo_album_id, presence: true
 
   def approve
     self.is_approved = true
@@ -43,6 +43,10 @@ class Photo < ActiveRecord::Base
 
   private
   def object_label
-    self.id
+    if !self.caption.blank? && !self.from_user_username.blank?
+      "#{self.from_user_username.titleize} - #{self.caption.truncate(25).titleize}"
+    else
+      self.id
+    end
   end
 end

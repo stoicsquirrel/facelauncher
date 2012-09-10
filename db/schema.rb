@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120906210110) do
+ActiveRecord::Schema.define(:version => 20120910184120) do
 
   create_table "additional_fields", :force => true do |t|
     t.integer  "program_id",                 :null => false
@@ -24,8 +24,25 @@ ActiveRecord::Schema.define(:version => 20120906210110) do
 
   add_index "additional_fields", ["program_id"], :name => "index_programs_additional_fields_on_program_id"
 
+  create_table "photo_album_photo_import_tags", :force => true do |t|
+    t.integer  "photo_album_id"
+    t.string   "tag",            :limit => 50
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+  end
+
+  add_index "photo_album_photo_import_tags", ["photo_album_id"], :name => "index_photo_album_photo_import_tags_on_photo_album_id"
+
+  create_table "photo_albums", :force => true do |t|
+    t.integer  "program_id"
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "photo_albums", ["program_id"], :name => "index_photo_albums_on_program_id"
+
   create_table "photos", :force => true do |t|
-    t.integer  "program_id",                                   :null => false
     t.string   "file"
     t.string   "title"
     t.text     "caption"

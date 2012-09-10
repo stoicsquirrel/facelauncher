@@ -33,6 +33,11 @@ RailsAdmin.config do |config|
     show do
 
     end
+    create do
+      field :permanent_link do
+        visible false
+      end
+    end
     edit do
       group :management do
         field :permanent_link do
@@ -42,6 +47,9 @@ RailsAdmin.config do |config|
             "<a href=\"#{url}\">#{url}</a>".html_safe
           end
           help "Bookmark this link for direct access to the program."
+          visible do
+            !bindings[:object].id.nil?
+          end
         end
         field :edit_additional_fields do
           read_only true
