@@ -1,13 +1,14 @@
 class Program < ActiveRecord::Base
   has_many :signups, dependent: :destroy #, inverse_of: :program
   has_many :additional_fields, dependent: :destroy
-  has_many :photos, dependent: :destroy
+  has_many :photos
+  has_many :photo_albums, dependent: :destroy
   has_many :program_photo_import_tags, dependent: :destroy
 
   attr_accessor :permanent_link, :edit_photos, :edit_additional_fields
 
   accepts_nested_attributes_for :additional_fields, allow_destroy: true
-  accepts_nested_attributes_for :photos, allow_destroy: true
+  # accepts_nested_attributes_for :photos, allow_destroy: true
   accepts_nested_attributes_for :program_photo_import_tags, allow_destroy: true
   attr_accessible :additional_fields_attributes, allow_destroy: true
   attr_accessible :set_active_date, :set_inactive_date, :description,
@@ -119,8 +120,8 @@ class Program < ActiveRecord::Base
               photo_id: item['id'],
               caption: !item['caption'].nil? ? item['caption']['text'] : nil,
               from_user_username: !item['user'].nil? ? item['user']['username'] : nil,
-
-              photo_album_id: 0 # Temporary
+              from_user_full_name: !item['user'].nil? ? item['user']['full_name'] : nil,
+              from_user_id: !item['user'].nil? ? item['user']['id'] : nil
             }
             save_imported_photo(:instagram, item['images']['standard_resolution']['url'], attrs)
           end
@@ -151,9 +152,9 @@ class Program < ActiveRecord::Base
                   photo_id: media.id,
                   caption: item.text,
                   from_user_username: item.from_user,
-                  twitter_image_service: :twitter,
-
-                  photo_album_id: 0
+                  from_user_full_name: item.from_user_name,
+                  from_user_id: item.from_user_id,
+                  twitter_image_service: :twitter
                 }
                 save_imported_photo(:twitter, media.media_url, attrs)
               end
@@ -169,9 +170,9 @@ class Program < ActiveRecord::Base
                     photo_id: photo[:id],
                     caption: item.text,
                     from_user_username: item.from_user,
-                    twitter_image_service: photo[:twitter_image_service],
-
-                    photo_album_id: 0
+                    from_user_full_name: item.from_user_name,
+                    from_user_id: item.from_user_id,
+                    twitter_image_service: photo[:twitter_image_service]
                   }
                   save_imported_photo(:twitter, photo[:url], attrs)
                 end
@@ -235,14 +236,18 @@ class Program < ActiveRecord::Base
 
           # If we get an OK response from the server, then save the photo
           if response.code == 200
-            photo[:id] = tumblr_page_id
-            photo[:url] = response['response']['posts'][0]['photos'][0]['original_size']['url']
-            photo[:twitter_image_service] = :tumblr
-            return photo
+            # If there is a photo in this post, then save it
+            if !response['response']['posts'][0]['photos'].nil?
+              photo[:id] = tumblr_page_id
+              photo[:url] = response['response']['posts'][0]['photos'][0]['original_size']['url']
+              photo[:twitter_image_service] = :tumblr
+              return photo
+            end
           end
         end
       end
     end
+
     return nil
   end
 
@@ -278,7 +283,9 @@ class Program < ActiveRecord::Base
           photo[:original_photo_id] = attrs[:photo_id]
           photo[:caption] = attrs[:caption]
           photo[:from_user_username] = attrs[:from_user_username]
-          photo[:photo_album_id] = attrs[:photo_album_id]
+          photo[:from_user_full_name] = attrs[:from_user_full_name]
+          photo[:from_user_id] = attrs[:from_user_id]
+
           photo[:is_approved] = false if self.moderate_photos
 
           photo.save

@@ -401,6 +401,22 @@ RailsAdmin.config do |config|
       field :is_required
     end
   end
+  config.model PhotoAlbum do
+    parent Program
+    object_label_method do
+      :object_label
+    end
+
+    edit do
+      field :program do
+        nested_form false
+      end
+      field :name
+      field :photos do
+        nested_form false
+      end
+    end
+  end
   config.model ProgramPhotoImportTag do
     parent Program
     object_label_method :object_label
@@ -416,18 +432,43 @@ RailsAdmin.config do |config|
       field :tag
     end
   end
+  config.model PhotoAlbumPhotoImportTag do
+    parent PhotoAlbum
+    object_label_method :object_label
+
+    edit do
+      field :photo_album
+      field :tag
+    end
+    nested do
+      field :photo_album do
+        visible false
+      end
+      field :tag
+    end
+  end
   config.model Photo do
-    parent Program
+    parent PhotoAlbum
     configure :program, :belongs_to_association
     object_label_method :object_label
 
     list do
+      sort_by :position
+      sort_reverse false
+      items_per_page 50
+
+      field :caption
+      field :from_user_username
       field :file, :string do
         formatted_value do
           show_photo_url = bindings[:view].rails_admin.show_url('photo', bindings[:object].id)
-          image_tag = bindings[:view].cl_image_tag(bindings[:object].file.filename, crop: :fit, :width => 225, :height => 225)
+          image_tag = bindings[:view].cl_image_tag(bindings[:object].file.filename, crop: :fit, :width => 200, :height => 200)
           "<a href=\"#{show_photo_url}\">#{image_tag}</a>".html_safe
         end
+      end
+      field :photo_album
+      field :position do
+        help "Required. Position determines the in which order the photos will appear in a photo album."
       end
       field :is_approved
     end
@@ -441,7 +482,7 @@ RailsAdmin.config do |config|
     end
     edit do
       group :file_info do
-        field :program
+        field :photo_album
         field :file do
           partial 'cl_form_file_upload'
 
@@ -465,7 +506,6 @@ RailsAdmin.config do |config|
         end
       end
       group :additional_info do
-        field :title
         field :caption do
           read_only do
             !bindings[:object].from_service.blank?
@@ -473,18 +513,21 @@ RailsAdmin.config do |config|
         end
       end
       group :social_media_info do
+        help "The following fields are set automatically if the photo was pulled from a social media service"
+        active false
+
         field :from_service do
           read_only true
           label "Pulled from"
-          help "This is automatically set if the image was pulled from a service, such as Twitter or Instagram."
+          help "The service that the photo was pulled from (Twitter, Instagram, etc.)"
         end
         field :from_twitter_image_service do
           read_only true
-          label "This is automatically set if the image was pulled from an image hosting provider, via Twitter."
+          label "If the photo was pulled from Twitter, then this will show which image service the photo was pulled from"
         end
         field :from_user_full_name do
           read_only true
-          label "Full name of poster"
+          label "Poster's full name"
         end
         field :from_user_username do
           read_only true
@@ -495,7 +538,6 @@ RailsAdmin.config do |config|
           label "Poster's user ID"
         end
       end
-      field :photo_album_id
     end
     nested do
 
