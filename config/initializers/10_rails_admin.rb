@@ -432,21 +432,6 @@ RailsAdmin.config do |config|
       field :tag
     end
   end
-  config.model PhotoAlbumPhotoImportTag do
-    parent PhotoAlbum
-    object_label_method :object_label
-
-    edit do
-      field :photo_album
-      field :tag
-    end
-    nested do
-      field :photo_album do
-        visible false
-      end
-      field :tag
-    end
-  end
   config.model Photo do
     parent PhotoAlbum
     configure :program, :belongs_to_association
