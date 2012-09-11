@@ -7,32 +7,33 @@ Facelauncher::Application.routes.draw do
 
   # The API
   resources :programs, :only => [:index, :show]
+  resources :photo_albums, :only => [:index, :show]
   resources :photos, :only => [:index, :show]
   resources :signups, :only => [:create]
 
-  # API Taster
-  if Rails.env.development?
-    mount ApiTaster::Engine => '/api_taster'
-    ApiTaster.routes do
-      desc 'Get a __program__'
-      get '/programs/:id', {
-        :id => 1,
-        :format => :json
-      }
-
-      desc 'Post a __signup__'
-      post '/signups', {
-        :format => :json,
-        :signup => {
-        :program_id => 1,
-        :program_access_key => '0625e21b0495c2eee75effbdf2016dc6',
-        :email => 'john_doe@test.com',
-        :first_name => 'John',
-        :last_name => 'Doe',
-        :ip_address => '255.255.255.255' }
-      }
-    end
-  end
+#  # API Taster
+#  if Rails.env.development?
+#    mount ApiTaster::Engine => '/api_taster'
+#    ApiTaster.routes do
+#      desc 'Get a __program__'
+#      get '/programs/:id', {
+#        :id => 1,
+#        :format => :json
+#      }
+#
+#      desc 'Post a __signup__'
+#      post '/signups', {
+#        :format => :json,
+#        :signup => {
+#        :program_id => 1,
+#        :program_access_key => '0625e21b0495c2eee75effbdf2016dc6',
+#        :email => 'john_doe@test.com',
+#        :first_name => 'John',
+#        :last_name => 'Doe',
+#        :ip_address => '255.255.255.255' }
+#      }
+#    end
+#  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

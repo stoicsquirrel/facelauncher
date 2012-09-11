@@ -1,11 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.8'
-
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
 gem 'pg'
+
 # gem 'postgres_ext'
 # gem 'activerecord-postgres-hstore'
 # gem 'activerecord-postgres-array'
@@ -22,7 +19,6 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'api_taster'
 gem 'carmen',   '>= 1.0.0.beta2'
 gem 'carrierwave'
 gem 'cloudinary'
@@ -31,21 +27,14 @@ gem 'httparty'
 gem 'jquery-rails'
 gem 'koala'
 gem 'rails_admin'
-gem 'queue_classic'
 gem 'thin'
 gem 'twitter'
 
 # To use ActiveModel has_secure_password
-gem 'bcrypt-ruby', '~> 3.0.0'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
+# gem 'bcrypt-ruby', '~> 3.0.0'
 
 # Use unicorn as the app server
 # gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
 
 # To use debugger
 group :development do

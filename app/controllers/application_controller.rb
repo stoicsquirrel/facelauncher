@@ -4,8 +4,10 @@ class ApplicationController < ActionController::Base
   def authenticate
     authenticate_with_http_basic do |u, p|
       @program = Program.find(u.to_i)
-      # Send a simple 403 header response if not authenticated.
-      head :forbidden unless @program.authenticate(p)
+      # Exit the method and continue if authenticated.
+      return if @program.authenticate(p)
     end
+    # Send a simple 403 header response if not authenticated.
+    head :forbidden
   end
 end
