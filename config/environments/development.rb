@@ -1,3 +1,5 @@
+$stdout.sync = true # Required for Foreman to output correctly
+
 Facelauncher::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 

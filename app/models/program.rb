@@ -106,6 +106,12 @@ class Program < ActiveRecord::Base
     self.active && (self.set_active_date.blank? || (!self.set_active_date.blank? && self.set_active_date < Date.now)) && (self.set_inactive_date.blank? || (!self.set_inactive_date.blank? && self.set_inactive_date > Date.now))
   end
 
+  def get_photos_by_tags
+    get_instagram_photos_by_tags
+    get_twitter_photos_by_tags
+  end
+  # handle_asynchronously :get_photos_by_tags
+
   def get_instagram_photos_by_tags
     if !self.instagram_client_id.blank?
       # Iterate through all of the program's tags

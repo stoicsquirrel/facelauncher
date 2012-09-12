@@ -3,9 +3,18 @@ Facelauncher::Application.routes.draw do
 
   root :to => 'rails_admin/main#dashboard'
 
+  # RailsAdmin
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
-  # The API
+  # Resque
+  require 'resque/server'
+  require 'resque_scheduler/server'
+  mount Resque::Server.new, :at => "/resque"
+
+  # DJ Mon
+  # mount DjMon::Engine => 'dj_mon'
+
+  # Facelauncher API
   resources :programs, :only => [:index, :show]
   resources :photo_albums, :only => [:index, :show]
   resources :photos, :only => [:index, :show]
