@@ -207,8 +207,8 @@ class Program < ActiveRecord::Base
     if match.nil?
       begin
         expanded_expanded_url = HTTParty.get(expanded_url, follow_redirects: false).headers["location"]
-      rescue Errno::ETIMEDOUT
-        # If the request times out, continue to the next item.
+      rescue Errno::ETIMEDOUT, HTTParty::UnsupportedURIScheme
+        # If the request times out or we get a bad URL, continue to the next item.
         return nil
       end
       if !expanded_expanded_url.nil?
