@@ -110,7 +110,6 @@ class Program < ActiveRecord::Base
     get_instagram_photos_by_tags
     get_twitter_photos_by_tags
   end
-  # handle_asynchronously :get_photos_by_tags
 
   def get_instagram_photos_by_tags
     if !self.instagram_client_id.blank?
@@ -141,53 +140,48 @@ class Program < ActiveRecord::Base
 
     # Iterate through all of the program's tags.
     self.program_photo_import_tags.each do |tag|
-      # Pull tweets with the current tag that have images.
-      begin
-        # Pull up to 1000 Twitter entries
-        10.times do |i|
-          page = i + 1
-          results = client.search("##{tag.tag}", include_entities: true, rpp: 100, page: page).results
-          # If there are no results on this page, then we're done
-          break if results.count == 0
-          # Iterate through results on this page
-          results.each do |item|
-            if item.media.any?
-              # Determine if there are any included images (hosted by Twitter/Photobucket).
-              item.media.each do |media|
+      # Pull up to 1000 tweets with the current tag that have images.
+      10.times do |i|
+        page = i + 1
+        results = client.search("##{tag.tag}", include_entities: true, rpp: 100, page: page).results
+        # If there are no results on this page, then we're done
+        break if results.count == 0
+        # Iterate through results on this page
+        results.each do |item|
+          if item.media.any?
+            # Determine if there are any included images (hosted by Twitter/Photobucket).
+            item.media.each do |media|
+              attrs = {
+                photo_id: media.id,
+                caption: item.text,
+                from_user_username: item.from_user,
+                from_user_full_name: item.from_user_name,
+                from_user_id: item.from_user_id,
+                twitter_image_service: :twitter
+              }
+              save_imported_photo(:twitter, media.media_url, attrs)
+            end
+          elsif item.urls.any?
+            # Determine if there are any images hosted on services such as Twitpic, YFrog, etc.
+            item.urls.each do |url|
+              expanded_url = !url.expanded_url.blank? ? url.expanded_url : url.url
+              photo = get_photo_from_service(expanded_url)
+
+              # If we found a photo, then save it
+              unless photo.nil?
                 attrs = {
-                  photo_id: media.id,
+                  photo_id: photo[:id],
                   caption: item.text,
                   from_user_username: item.from_user,
                   from_user_full_name: item.from_user_name,
                   from_user_id: item.from_user_id,
-                  twitter_image_service: :twitter
+                  twitter_image_service: photo[:twitter_image_service]
                 }
-                save_imported_photo(:twitter, media.media_url, attrs)
-              end
-            elsif item.urls.any?
-              # Determine if there are any images hosted on services such as Twitpic, YFrog, etc.
-              item.urls.each do |url|
-                expanded_url = !url.expanded_url.blank? ? url.expanded_url : url.url
-                photo = get_photo_from_service(expanded_url)
-
-                # If we found a photo, then save it
-                unless photo.nil?
-                  attrs = {
-                    photo_id: photo[:id],
-                    caption: item.text,
-                    from_user_username: item.from_user,
-                    from_user_full_name: item.from_user_name,
-                    from_user_id: item.from_user_id,
-                    twitter_image_service: photo[:twitter_image_service]
-                  }
-                  save_imported_photo(:twitter, photo[:url], attrs)
-                end
+                save_imported_photo(:twitter, photo[:url], attrs)
               end
             end
           end
         end
-      rescue Twitter::Error::ClientError
-        # TODO: Record error in the queue log.
       end
     end
   end
@@ -211,7 +205,12 @@ class Program < ActiveRecord::Base
     # call this function again with the redirect URL.
     # If there is no redirect, then the method ends.
     if match.nil?
-      expanded_expanded_url = HTTParty.get(expanded_url, follow_redirects: false).headers["location"]
+      begin
+        expanded_expanded_url = HTTParty.get(expanded_url, follow_redirects: false).headers["location"]
+      rescue Errno::ETIMEDOUT
+        # If the request times out, continue to the next item.
+        return nil
+      end
       if !expanded_expanded_url.nil?
         return get_photo_from_service(URI::encode(expanded_expanded_url))
       end
@@ -230,11 +229,21 @@ class Program < ActiveRecord::Base
         unless self.tumblr_consumer_key.blank?
           # If this is a tmblr.co URL, then it must be a redirect.
           if (/tmblr\.co/ =~ expanded_url) >= 0
-            tumblr_page_url = URI::encode(HTTParty.get(expanded_url, follow_redirects: false).headers["location"])
+            begin
+              tumblr_page_url = URI::encode(HTTParty.get(expanded_url, follow_redirects: false).headers["location"])
+            rescue Errno::ETIMEDOUT
+              # If the request times out, continue to the next item.
+              return nil
+            end
           else
             tumblr_page_url = expanded_url
           end
-          expanded_tumblr_page_url = URI::encode(HTTParty.get(tumblr_page_url, follow_redirects: false).headers["location"])
+          begin
+            expanded_tumblr_page_url = URI::encode(HTTParty.get(tumblr_page_url, follow_redirects: false).headers["location"])
+          rescue Errno::ETIMEDOUT
+            # If the request times out, continue to the next item.
+            return nil
+          end
           tumblr_page_info = /^https?\:\/\/(?<username>\S+)\.tumblr.com\/post\/(?<page_id>\d+)\/?\S*$/.match(expanded_tumblr_page_url)
           tumblr_page_id = tumblr_page_info[:page_id]
           tumblr_user_id = tumblr_page_info[:username]
