@@ -239,9 +239,8 @@ RailsAdmin.config do |config|
       end
       controller do
         Proc.new do
-          @object.get_instagram_photos_by_tags
-          @object.get_twitter_photos_by_tags
-          flash[:success] = t("admin.flash.successful", :name => @model_config.label, :action => t("admin.actions.import_photos.done"))
+          Resque.enqueue(PhotoImportWorker, @object.id)
+          flash[:success] = t("admin.flash.enqueued", :name => @model_config.label, :action => t("admin.actions.import_photos.enqueued"))
           redirect_to back_or_index
         end
       end
@@ -415,6 +414,12 @@ RailsAdmin.config do |config|
       field :photos do
         nested_form false
       end
+    end
+    modal do
+      field :program do
+        nested_form false
+      end
+      field :name
     end
   end
   config.model ProgramPhotoImportTag do

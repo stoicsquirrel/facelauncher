@@ -27,6 +27,8 @@ gem 'httparty'
 gem 'jquery-rails'
 gem 'koala'
 gem 'rails_admin'
+gem 'resque'
+gem 'resque-scheduler'
 gem 'thin'
 gem 'twitter'
 
@@ -38,5 +40,6 @@ gem 'twitter'
 
 # To use debugger
 group :development do
+  gem 'foreman'
   gem 'pry-rails'
 end

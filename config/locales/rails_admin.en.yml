@@ -1,5 +1,7 @@
 en:
   admin:
+    flash:
+      enqueued: "%{name} will begin %{action} shortly"
     actions:
       activate:
         title: "Activate %{object_label}"
@@ -37,6 +39,7 @@ en:
         breadcrumb: "Import photos"
         link: "Import photos"
         done: "imported photos"
+        enqueued: "importing photos"
       bulk_approve:
         title: "Approve %{model_label_plural}"
         menu: "Multiple approve"
