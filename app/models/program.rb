@@ -3,6 +3,8 @@ class Program < ActiveRecord::Base
   has_many :additional_fields, dependent: :destroy
   has_many :photos
   has_many :photo_albums, dependent: :destroy
+  has_many :videos
+  has_many :video_playlists, dependent: :destroy
   has_many :program_photo_import_tags, dependent: :destroy
 
   attr_accessor :permanent_link, :edit_photos, :edit_additional_fields

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  program: 
+  name: MyString
+  sort_videos_by: MyString
+
+two:
+  program: 
+  name: MyString
+  sort_videos_by: MyString
