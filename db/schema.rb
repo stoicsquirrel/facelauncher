@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120910184120) do
+ActiveRecord::Schema.define(:version => 20120912223131) do
 
   create_table "additional_fields", :force => true do |t|
     t.integer  "program_id",                 :null => false
@@ -24,27 +24,18 @@ ActiveRecord::Schema.define(:version => 20120910184120) do
 
   add_index "additional_fields", ["program_id"], :name => "index_programs_additional_fields_on_program_id"
 
-  create_table "photo_album_photo_import_tags", :force => true do |t|
-    t.integer  "photo_album_id"
-    t.string   "tag",            :limit => 50
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
-  end
-
-  add_index "photo_album_photo_import_tags", ["photo_album_id"], :name => "index_photo_album_photo_import_tags_on_photo_album_id"
-
   create_table "photo_albums", :force => true do |t|
     t.integer  "program_id"
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                                               :null => false
+    t.datetime "updated_at",                                               :null => false
+    t.string   "sort_photos_by", :limit => 25, :default => "position ASC", :null => false
   end
 
   add_index "photo_albums", ["program_id"], :name => "index_photo_albums_on_program_id"
 
   create_table "photos", :force => true do |t|
     t.string   "file"
-    t.string   "title"
     t.text     "caption"
     t.integer  "like_count"
     t.integer  "comment_count"
@@ -56,9 +47,10 @@ ActiveRecord::Schema.define(:version => 20120910184120) do
     t.datetime "created_at",                                   :null => false
     t.datetime "updated_at",                                   :null => false
     t.integer  "position",                   :default => 0,    :null => false
-    t.integer  "photo_album_id",                               :null => false
+    t.integer  "photo_album_id"
     t.boolean  "is_approved",                :default => true, :null => false
     t.string   "from_twitter_image_service"
+    t.integer  "program_id"
   end
 
   create_table "program_photo_import_tags", :force => true do |t|
@@ -150,5 +142,36 @@ ActiveRecord::Schema.define(:version => 20120910184120) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
+
+  create_table "video_playlists", :force => true do |t|
+    t.integer  "program_id"
+    t.string   "name"
+    t.string   "sort_videos_by", :limit => 25, :default => "position ASC", :null => false
+    t.datetime "created_at",                                               :null => false
+    t.datetime "updated_at",                                               :null => false
+  end
+
+  add_index "video_playlists", ["program_id"], :name => "index_video_playlists_on_program_id"
+
+  create_table "video_tags", :force => true do |t|
+    t.integer  "video_id",                 :null => false
+    t.string   "tag",        :limit => 50, :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+  end
+
+  add_index "video_tags", ["video_id"], :name => "index_video_tags_on_video_id"
+
+  create_table "videos", :force => true do |t|
+    t.text     "embed_code"
+    t.text     "caption"
+    t.integer  "position",          :default => 0,    :null => false
+    t.boolean  "is_active",         :default => true, :null => false
+    t.string   "frame"
+    t.integer  "video_playlist_id",                   :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+    t.integer  "program_id"
+  end
 
 end

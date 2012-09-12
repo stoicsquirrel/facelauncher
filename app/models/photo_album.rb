@@ -3,14 +3,15 @@ class PhotoAlbum < ActiveRecord::Base
   has_many :photos
 
   attr_accessible :photos_attributes, allow_destroy: true
-  attr_accessible :program_id, :name
+  attr_accessible :program_id, :name, :sort_photos_by
 
   validates :program, presence: true
   validates :name, presence: true
+  validates :sort_photos_by, presence: true
 
   def approved_photos
     self.photos.select([:id, :file, :caption, :from_user_username,
-      :from_user_full_name, :from_user_id, :from_service, :position, :photo_album_id,
+      :from_user_full_name, :from_user_id, :from_service, :position,
       :from_twitter_image_service]).approved
   end
 
