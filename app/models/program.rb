@@ -213,7 +213,7 @@ class Program < ActiveRecord::Base
     if match.nil?
       expanded_expanded_url = HTTParty.get(expanded_url, follow_redirects: false).headers["location"]
       if !expanded_expanded_url.nil?
-        return get_photo_from_service(expanded_expanded_url)
+        return get_photo_from_service(URI::encode(expanded_expanded_url))
       end
     else
       case match[:service]
@@ -228,12 +228,13 @@ class Program < ActiveRecord::Base
       # Pull image from Tumblr
       when 'tumblr.com', 'tmblr.co'
         unless self.tumblr_consumer_key.blank?
+          # If this is a tmblr.co URL, then it must be a redirect.
           if (/tmblr\.co/ =~ expanded_url) >= 0
-            tumblr_page_url = HTTParty.get(expanded_url, follow_redirects: false).headers["location"]
+            tumblr_page_url = URI::encode(HTTParty.get(expanded_url, follow_redirects: false).headers["location"])
           else
             tumblr_page_url = expanded_url
           end
-          expanded_tumblr_page_url = HTTParty.get(tumblr_page_url, follow_redirects: false).headers["location"]
+          expanded_tumblr_page_url = URI::encode(HTTParty.get(tumblr_page_url, follow_redirects: false).headers["location"])
           tumblr_page_info = /^https?\:\/\/(?<username>\S+)\.tumblr.com\/post\/(?<page_id>\d+)\/?\S*$/.match(expanded_tumblr_page_url)
           tumblr_page_id = tumblr_page_info[:page_id]
           tumblr_user_id = tumblr_page_info[:username]
