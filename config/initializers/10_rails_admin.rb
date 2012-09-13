@@ -240,6 +240,7 @@ RailsAdmin.config do |config|
       controller do
         Proc.new do
           Resque.enqueue(PhotoImportWorker, @object.id)
+
           flash[:success] = t("admin.flash.enqueued", :name => @model_config.label, :action => t("admin.actions.import_photos.enqueued"))
           redirect_to back_or_index
         end
