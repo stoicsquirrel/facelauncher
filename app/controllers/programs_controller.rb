@@ -19,7 +19,7 @@ class ProgramsController < ApplicationController
     respond_to do |format|
       format.json do
         if !@program.active?
-          render json: { active: false }
+          render json: { active: false, program_id: params[:id] }
         else
           render json: @program, only: [
             :active, :facebook_app_id, :facebook_is_like_gated, :google_analytics_tracking_code,
