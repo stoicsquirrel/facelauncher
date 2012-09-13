@@ -5,7 +5,7 @@ class Video < ActiveRecord::Base
   scope :active, where(is_active: true)
 
   mount_uploader :frame, PhotoUploader
-  attr_accessible :caption, :embed_code, :is_active, :position, :frame, :video_playlist_id
+  attr_accessible :program_id, :caption, :embed_code, :is_active, :position, :frame, :video_playlist_id
 
   validates :position, presence: true, numericality: { greater_than_or_equal_to: 0 }
 end
