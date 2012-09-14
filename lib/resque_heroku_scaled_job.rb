@@ -6,7 +6,7 @@ module ResqueHerokuScaledJob
 
     def initialize(queue)
       @queue = queue
-      if ENV.key? 'HEROKU_API_KEY' && ENV.key? 'HEROKU_APP_NAME'
+      if ENV.key?('HEROKU_API_KEY') && ENV.key?('HEROKU_APP_NAME')
         @heroku = Heroku::API.new
       else
         raise ArgumentError, "ENV['HEROKU_API_KEY'] is not set.", caller
@@ -26,7 +26,7 @@ module ResqueHerokuScaledJob
   def after_enqueue_scale_workers_up(*args)
     # If ENV['HEROKU_API_KEY'] is set, then instantiate a HerokuScaler. If not, then
     # do not use the scaler.
-    if ENV.key? 'HEROKU_API_KEY' and ENV.key? 'HEROKU_APP_NAME'
+    if ENV.key?('HEROKU_API_KEY') and ENV.key?('HEROKU_APP_NAME')
       @@scaler = HerokuScaler.new(@queue)
       @@scaler.workers = 1 if job_count > 0
     end
