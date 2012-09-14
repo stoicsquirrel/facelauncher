@@ -12,6 +12,6 @@ class VideoPlaylist < ActiveRecord::Base
   validates :sort_videos_by, presence: true
 
   def approved_videos
-    self.videos.select([:id, :embed_code, :caption, :position]).approved
+    self.videos.select([:id, :embed_code, :caption, :position, :screenshot]).approved
   end
 end
