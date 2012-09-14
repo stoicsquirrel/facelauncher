@@ -1,6 +1,7 @@
 class Photo < ActiveRecord::Base
   belongs_to :photo_album
   belongs_to :program
+  has_many :photo_tags
 
   scope :approved, where(is_approved: true)
 

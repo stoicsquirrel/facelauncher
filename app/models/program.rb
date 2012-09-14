@@ -12,8 +12,8 @@ class Program < ActiveRecord::Base
   accepts_nested_attributes_for :additional_fields, allow_destroy: true
   # accepts_nested_attributes_for :photos, allow_destroy: true
   accepts_nested_attributes_for :program_photo_import_tags, allow_destroy: true
-  attr_accessible :additional_fields_attributes, allow_destroy: true
-  attr_accessible :set_active_date, :set_inactive_date, :description,
+  attr_accessible :additional_fields_attributes,
+                  :set_active_date, :set_inactive_date, :description,
                   :facebook_app_id, :facebook_app_secret, :facebook_is_like_gated,
                   :google_analytics_tracking_code, :name, :short_name, :app_url,
                   :repo, :moderate_signups, :moderate_photos, :permanent_link, :edit_photos,

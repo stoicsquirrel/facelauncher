@@ -533,6 +533,26 @@ RailsAdmin.config do |config|
 
     end
   end
+  config.model VideoPlaylist do
+    parent Program
+
+    edit do
+      field :program do
+        nested_form false
+      end
+      field :name
+      field :videos do
+        help ''
+        #nested_form false
+      end
+    end
+    modal do
+      field :program do
+        nested_form false
+      end
+      field :name
+    end
+  end
   config.model Signup do
     parent Program
     configure :program, :belongs_to_association

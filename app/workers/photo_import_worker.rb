@@ -7,9 +7,5 @@ class PhotoImportWorker
   def self.perform(program_id)
     program = Program.find(program_id)
     program.get_photos_by_tags
-
-    if Rails.env.production?
-      @heroku.post_ps_scale(ENV['HEROKU_APP_NAME'], 'photo_import_queue', 0)
-    end
   end
 end
