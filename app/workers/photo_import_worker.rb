@@ -1,4 +1,7 @@
+require './lib/resque_heroku_scaled_job'
+
 class PhotoImportWorker
+  extend ResqueHerokuScaledJob
   @queue = :photo_import_queue
 
   def self.perform(program_id)

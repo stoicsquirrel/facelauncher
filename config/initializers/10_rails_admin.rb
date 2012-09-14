@@ -239,13 +239,6 @@ RailsAdmin.config do |config|
       end
       controller do
         Proc.new do
-          Resque.before_fork do
-            if Rails.env.production?
-              require 'heroku-api'
-              @heroku = Heroku::API.new if @heroku.nil?
-              @heroku.post_ps_scale(ENV['HEROKU_APP_NAME'], 'photo_import_queue', 1)
-            end
-          end
           Resque.enqueue(PhotoImportWorker, @object.id)
           flash[:success] = t("admin.flash.enqueued", :name => @model_config.label, :action => t("admin.actions.import_photos.enqueued"))
           redirect_to back_or_index
