@@ -11,13 +11,12 @@ Facelauncher::Application.routes.draw do
   require 'resque_scheduler/server'
   mount Resque::Server.new, :at => "/resque"
 
-  # DJ Mon
-  # mount DjMon::Engine => 'dj_mon'
-
   # Facelauncher API
   resources :programs, :only => [:index, :show]
   resources :photo_albums, :only => [:index, :show]
   resources :photos, :only => [:index, :show]
+  resources :video_playlists, :only => [:index, :show]
+  resources :videos, :only => [:index, :show]
   resources :signups, :only => [:create]
 
 #  # API Taster

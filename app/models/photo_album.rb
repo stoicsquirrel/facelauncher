@@ -2,8 +2,10 @@ class PhotoAlbum < ActiveRecord::Base
   belongs_to :program, inverse_of: :photo_albums
   has_many :photos
 
-  attr_accessible :photos_attributes, allow_destroy: true
-  attr_accessible :program_id, :name, :sort_photos_by
+  attr_accessible :photos_attributes, :program_id, :name, :sort_photos_by
+
+  # Uncomment to allow editing of photos from the photo album edit page.
+  # accepts_nested_attributes_for :photos, allow_destroy: true
 
   validates :program, presence: true
   validates :name, presence: true
