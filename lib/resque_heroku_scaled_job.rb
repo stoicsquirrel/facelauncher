@@ -36,8 +36,16 @@ module ResqueHerokuScaledJob
     @@scaler.workers = 0 if !@@scaler.nil? && job_count == 0
   end
 
+  def on_failure_scale_workers_down(*args)
+    @@scaler.workers = 0 if !@@scaler.nil? && job_count == 0
+  end
+
   def job_count
     Resque.info[:pending].to_i
+  end
+
+  def scale_down
+    @@scaler.workers = 0 if !@@scaler.nil? && job_count == 0
   end
 end
 
