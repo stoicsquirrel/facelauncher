@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120912223131) do
+ActiveRecord::Schema.define(:version => 20120914191711) do
 
   create_table "additional_fields", :force => true do |t|
     t.integer  "program_id",                 :null => false
@@ -33,6 +33,15 @@ ActiveRecord::Schema.define(:version => 20120912223131) do
   end
 
   add_index "photo_albums", ["program_id"], :name => "index_photo_albums_on_program_id"
+
+  create_table "photo_tags", :force => true do |t|
+    t.integer  "photo_id"
+    t.string   "tag"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "photo_tags", ["photo_id"], :name => "index_photo_tags_on_photo_id"
 
   create_table "photos", :force => true do |t|
     t.string   "file"
@@ -63,23 +72,23 @@ ActiveRecord::Schema.define(:version => 20120912223131) do
   add_index "program_photo_import_tags", ["program_id"], :name => "index_program_photo_import_tags_on_program_id"
 
   create_table "programs", :force => true do |t|
-    t.string   "name",                                              :null => false
+    t.string   "name",                                                            :null => false
     t.string   "description"
     t.string   "facebook_app_id"
     t.string   "facebook_app_secret"
     t.string   "google_analytics_tracking_code"
     t.string   "app_url"
     t.string   "repo"
-    t.datetime "created_at",                                        :null => false
-    t.datetime "updated_at",                                        :null => false
-    t.boolean  "active",                         :default => true,  :null => false
+    t.datetime "created_at",                                                      :null => false
+    t.datetime "updated_at",                                                      :null => false
+    t.boolean  "active",                                       :default => true,  :null => false
     t.datetime "set_active_date"
     t.datetime "set_inactive_date"
     t.string   "facebook_app_access_token"
     t.boolean  "facebook_is_like_gated"
-    t.string   "short_name",                     :default => "",    :null => false
-    t.string   "program_access_key",             :default => "",    :null => false
-    t.boolean  "moderate_signups",               :default => false, :null => false
+    t.string   "short_name",                     :limit => 50, :default => "",    :null => false
+    t.string   "program_access_key",                           :default => "",    :null => false
+    t.boolean  "moderate_signups",                             :default => false, :null => false
     t.string   "instagram_client_id"
     t.string   "instagram_client_secret"
     t.boolean  "moderate_photos"
@@ -166,8 +175,8 @@ ActiveRecord::Schema.define(:version => 20120912223131) do
     t.text     "embed_code"
     t.text     "caption"
     t.integer  "position",          :default => 0,    :null => false
-    t.boolean  "is_active",         :default => true, :null => false
-    t.string   "frame"
+    t.boolean  "is_approved",       :default => true, :null => false
+    t.string   "screenshot"
     t.integer  "video_playlist_id",                   :null => false
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false

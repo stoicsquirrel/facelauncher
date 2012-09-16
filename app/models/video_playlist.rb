@@ -5,7 +5,7 @@ class VideoPlaylist < ActiveRecord::Base
   attr_accessible :videos_attributes, :program_id, :name, :sort_videos_by
 
   # Uncomment to allow editing of videos from the video playlist edit page.
-  # accepts_nested_attributes_for :videos, allow_destroy: true
+  accepts_nested_attributes_for :videos, allow_destroy: true
 
   validates :program, presence: true
   validates :name, presence: true

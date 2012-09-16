@@ -412,7 +412,14 @@ RailsAdmin.config do |config|
       end
       field :name
       field :photos do
-        nested_form false
+        associated_collection_cache_all false
+        associated_collection_scope do
+          video_playlist = bindings[:object]
+          Proc.new do |scope|
+            scope = scope.where(photo_id: photo_album.photo_id) if !photo_album.nil?
+          end
+        end
+        help ''
       end
     end
     modal do
@@ -420,6 +427,9 @@ RailsAdmin.config do |config|
         nested_form false
       end
       field :name
+      field :photos do
+        visible false
+      end
     end
   end
   config.model ProgramPhotoImportTag do
@@ -439,7 +449,6 @@ RailsAdmin.config do |config|
   end
   config.model Photo do
     parent PhotoAlbum
-    configure :program, :belongs_to_association
     object_label_method :object_label
 
     list do
@@ -481,7 +490,9 @@ RailsAdmin.config do |config|
           pretty_value do
             if value.presence
               if self.image
-                bindings[:view].cl_image_tag(bindings[:object].file.filename, crop: :limit, width: 800, height: 800)
+                filename = bindings[:object].file.filename
+                image_tag = bindings[:view].cl_image_tag(filename, crop: :limit, width: 350, height: 350, title: "View full sized image")
+                "<a href=\"#{bindings[:view].cl_image_path(filename)}\" target=\"view_image\">#{image_tag}</a>".html_safe
               end
             end
           end
@@ -529,9 +540,9 @@ RailsAdmin.config do |config|
         end
       end
     end
-    nested do
-
-    end
+  end
+  config.model PhotoTag do
+    visible false
   end
   config.model VideoPlaylist do
     parent Program
@@ -542,8 +553,14 @@ RailsAdmin.config do |config|
       end
       field :name
       field :videos do
+        associated_collection_cache_all false
+        associated_collection_scope do
+          video_playlist = bindings[:object]
+          Proc.new do |scope|
+            scope = scope.where(video_id: video_playlist.video_id) if !video_playlist.nil?
+          end
+        end
         help ''
-        #nested_form false
       end
     end
     modal do
@@ -551,7 +568,76 @@ RailsAdmin.config do |config|
         nested_form false
       end
       field :name
+      field :videos do
+        visible false
+      end
     end
+  end
+  config.model Video do
+    parent VideoPlaylist
+
+    list do
+      sort_by :position
+      sort_reverse false
+      items_per_page 50
+
+      field :embed_code
+      field :caption
+      field :screenshot, :string do
+        formatted_value do
+          show_video_url = bindings[:view].rails_admin.show_url('video', bindings[:object].id)
+          image_tag = bindings[:view].cl_image_tag(bindings[:object].screenshot.filename, crop: :fit, :width => 200, :height => 200)
+          "<a href=\"#{show_video_url}\">#{image_tag}</a>".html_safe
+        end
+      end
+      field :video_playlist
+      field :position
+      field :is_approved
+    end
+    show do
+      field :embed_code do
+        label "Preview from embed code"
+        formatted_value do
+          bindings[:object].embed_code.html_safe
+        end
+      end
+      field :caption
+      field :screenshot, :string do
+        formatted_value do
+          bindings[:view].cl_image_tag(bindings[:object].screenshot.filename, crop: :limit, width: 800, height: 800)
+        end
+      end
+      field :video_playlist
+      field :position
+      field :is_approved
+    end
+    edit do
+      field :embed_code
+      field :caption
+      field :screenshot do
+        partial 'cl_form_file_upload'
+
+        # Modified from rails_admin/lib/rails_admin/config/fields/types/carrierwave.rb
+        # to use cl_image_tag instead of image_tag.
+        pretty_value do
+          if value.presence
+            if self.image
+              filename = bindings[:object].screenshot.filename
+              image_tag = bindings[:view].cl_image_tag(filename, crop: :limit, width: 350, height: 350, title: "View full sized image")
+              "<a href=\"#{bindings[:view].cl_image_path(filename)}\" target=\"view_image\">#{image_tag}</a>".html_safe
+            end
+          end
+        end
+      end
+      field :video_playlist
+      field :position do
+        help "Required. Position determines the in which order the photos will appear in a photo album."
+      end
+      field :is_approved
+    end
+  end
+  config.model VideoTag do
+    visible false
   end
   config.model Signup do
     parent Program
