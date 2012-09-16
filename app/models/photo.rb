@@ -1,5 +1,5 @@
 class Photo < ActiveRecord::Base
-  belongs_to :photo_album
+  belongs_to :photo_album, inverse_of: :photos
   belongs_to :program
   has_many :photo_tags
 
@@ -11,7 +11,7 @@ class Photo < ActiveRecord::Base
                   :title, :file_cache, :remove_file, :photo_album_id,
                   :position, :is_approved
 
-  # validates :photo_album, presence: true
+  validates :photo_album, presence: true
   validates :position, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   def approve

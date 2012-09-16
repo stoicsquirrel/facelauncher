@@ -31,12 +31,7 @@ RailsAdmin.config do |config|
     end
     export do; end
     show do
-
-    end
-    create do
-      field :permanent_link do
-        visible false
-      end
+      # TODO
     end
     edit do
       group :management do

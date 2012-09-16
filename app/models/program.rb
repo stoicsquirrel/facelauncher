@@ -209,7 +209,7 @@ class Program < ActiveRecord::Base
     if match.nil?
       begin
         expanded_expanded_url = HTTParty.get(expanded_url, follow_redirects: false).headers["location"]
-      rescue Timeout::Error, HTTParty::UnsupportedURIScheme
+      rescue StandardError # If there is any error, just continue to the next item.
         # If the request times out or we get a bad URL, continue to the next item.
         return nil
       end
@@ -233,7 +233,7 @@ class Program < ActiveRecord::Base
           if (/tmblr\.co/ =~ expanded_url) >= 0
             begin
               tumblr_page_url = URI::encode(HTTParty.get(expanded_url, follow_redirects: false).headers["location"])
-            rescue Timeout::Error
+            rescue StandardError
               # If the request times out, continue to the next item.
               return nil
             end
@@ -242,7 +242,7 @@ class Program < ActiveRecord::Base
           end
           begin
             expanded_tumblr_page_url = URI::encode(HTTParty.get(tumblr_page_url, follow_redirects: false).headers["location"])
-          rescue Timeout::Error
+          rescue StandardError
             # If the request times out, continue to the next item.
             return nil
           end
