@@ -433,7 +433,7 @@ RailsAdmin.config do |config|
     end
   end
   config.model ProgramPhotoImportTag do
-    parent Program
+    visible false
     object_label_method :object_label
 
     edit do

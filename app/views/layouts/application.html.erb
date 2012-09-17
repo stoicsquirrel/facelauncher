@@ -8,18 +8,30 @@
   <script type="text/javascript">
     window.fbAsyncInit = function() {
       FB.init({
-        appId: '#{@program.facebook_app_id}',
+        appId: '<%= @program.facebook_app_id %>',
         status: true,
         cookie: true,
         xfbml: true
       });
       FB.Canvas.setSize();
-      fbInitHook();
-    };
+      if (typeof(fbAfterInit) !== "undefined")
+        fbAfterInit();
 
-    function sizeChangeCallback() {
-      FB.Canvas.setSize();
-    }
+      FB.getLoginStatus(function(response) {
+        if (response.status === "connected") {
+          if (typeof(fbUserConnected) !== "undefined")
+            fbUserConnected();
+        }
+        else if (response.status === 'not_authorized') {
+          if (typeof(fbUserNotAuthorized) !== "undefined")
+            fbUserNotAuthorized();
+        }
+        else {
+          if (typeof(fbUserNotConnected) !== "undefined")
+            fbUserNotConnected();
+        }
+      });
+    };
 
     // Load the SDK Asynchronously
     (function(d){

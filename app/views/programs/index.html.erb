@@ -1,8 +1,0 @@
-<% i = 0 %>
-<% @programs.first.photos.each do |photo| %>
-  <% if i < 10 %>
-    <%= cl_image_tag(photo.file.filename) %>
-  <% else %>
-    <% break %>
-  <% end %>
-<% end %>
