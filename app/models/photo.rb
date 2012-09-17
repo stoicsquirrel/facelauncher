@@ -11,7 +11,6 @@ class Photo < ActiveRecord::Base
                   :title, :file_cache, :remove_file, :photo_album_id,
                   :position, :is_approved
 
-  validates :photo_album, presence: true
   validates :position, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   def approve

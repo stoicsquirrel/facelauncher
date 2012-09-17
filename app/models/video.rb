@@ -9,7 +9,6 @@ class Video < ActiveRecord::Base
   attr_accessible :program_id, :caption, :embed_code, :is_approved, :position,
                   :screenshot, :screenshot_cache, :remove_screenshot, :video_playlist_id
 
-  validates :video_playlist, presence: true
   validates :position, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   def approve
@@ -22,18 +21,18 @@ class Video < ActiveRecord::Base
     self.save
   end
 
-  def self.approve(photos)
-    photos.each do |photo|
-      photo.approve
+  def self.approve(videos)
+    videos.each do |video|
+      video.approve
     end
-    return photos
+    return videos
   end
 
-  def self.unapprove(photos)
-    photos.each do |photo|
-      photo.unapprove
+  def self.unapprove(videos)
+    videos.each do |video|
+      video.unapprove
     end
-    return photos
+    return videos
   end
 
   def approved?

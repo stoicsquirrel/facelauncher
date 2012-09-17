@@ -25,9 +25,18 @@ class PhotosController < ApplicationController
   # GET /photos/1.json
   def show
     # Pull the selected photo, if approved.
-    @photo = Photo.find(params[:id]).approved
+    @photo = Photo.approved.find(params[:id])
 
     respond_to do |format|
+      format.html do
+        @program = @photo.program
+        deep_link = true
+        if deep_link && !@program.app_url.blank?
+          redirect_to "#{@program.app_url}#photo=#{@photo.id}"
+        else
+          redirect_to @photo.file.url
+        end
+      end
       format.json do
         render json: @photo, only: [
           :id, :file, :title, :caption, :from_user_username, :from_user_full_name,
