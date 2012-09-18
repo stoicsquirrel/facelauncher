@@ -244,24 +244,27 @@ class Program < ActiveRecord::Base
           end
           begin
             expanded_tumblr_page_url = URI::encode(HTTParty.get(tumblr_page_url, follow_redirects: false).headers["location"])
+            logger.info "Expanded Tumblr URL: #{expanded_tumblr_page_url}"
           rescue StandardError
             # If the request times out, continue to the next item.
             return nil
           end
           tumblr_page_info = /^https?\:\/\/(?<username>\S+)\.tumblr.com\/post\/(?<page_id>\d+)\/?\S*$/.match(expanded_tumblr_page_url)
-          tumblr_page_id = tumblr_page_info[:page_id]
-          tumblr_user_id = tumblr_page_info[:username]
-          response = HTTParty.get("https://api.tumblr.com/v2/blog/#{tumblr_user_id}.tumblr.com/posts/photo",
-            query: {api_key: self.tumblr_consumer_key, id: tumblr_page_id})
+          if !tumblr_page_info.nil?
+            tumblr_page_id = tumblr_page_info[:page_id]
+            tumblr_user_id = tumblr_page_info[:username]
+            response = HTTParty.get("https://api.tumblr.com/v2/blog/#{tumblr_user_id}.tumblr.com/posts/photo",
+              query: {api_key: self.tumblr_consumer_key, id: tumblr_page_id})
 
-          # If we get an OK response from the server, then save the photo
-          if response.code == 200
-            # If there is a photo in this post, then save it
-            if !response['response']['posts'][0]['photos'].nil?
-              photo[:id] = tumblr_page_id
-              photo[:url] = response['response']['posts'][0]['photos'][0]['original_size']['url']
-              photo[:twitter_image_service] = :tumblr
-              return photo
+            # If we get an OK response from the server, then save the photo
+            if response.code == 200
+              # If there is a photo in this post, then save it
+              if !response['response']['posts'][0]['photos'].nil?
+                photo[:id] = tumblr_page_id
+                photo[:url] = response['response']['posts'][0]['photos'][0]['original_size']['url']
+                photo[:twitter_image_service] = :tumblr
+                return photo
+              end
             end
           end
         end
