@@ -7,6 +7,8 @@ class Program < ActiveRecord::Base
   has_many :video_playlists, dependent: :destroy
   has_many :program_photo_import_tags, dependent: :destroy
 
+  scope :active_scope, lambda { where(active: true).where("set_active_date < ?", Time.now).where("set_inactive_date > ?", Time.now) }
+
   attr_accessor :permanent_link, :edit_photos, :edit_additional_fields
 
   accepts_nested_attributes_for :additional_fields, allow_destroy: true
@@ -105,7 +107,7 @@ class Program < ActiveRecord::Base
   end
 
   def active?
-    self.active && (self.set_active_date.blank? || (!self.set_active_date.blank? && self.set_active_date < Date.now)) && (self.set_inactive_date.blank? || (!self.set_inactive_date.blank? && self.set_inactive_date > Date.now))
+    self.active && (self.set_active_date.blank? || (!self.set_active_date.blank? && self.set_active_date < Time.now)) && (self.set_inactive_date.blank? || (!self.set_inactive_date.blank? && self.set_inactive_date > Time.now))
   end
 
   def get_photos_by_tags
