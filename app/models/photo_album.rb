@@ -12,9 +12,15 @@ class PhotoAlbum < ActiveRecord::Base
   validates :sort_photos_by, presence: true
 
   def approved_photos
+    case self.sort_photos_by.downcase
+    when "position asc", "position desc", "id asc", "id desc"
+      order = self.sort_photos_by.downcase
+    else
+      order = 'id ASC'
+    end
     self.photos.select([:id, :file, :caption, :from_user_username,
       :from_user_full_name, :from_user_id, :from_service, :position,
-      :from_twitter_image_service]).approved
+      :from_twitter_image_service]).approved.order(order)
   end
 
   private

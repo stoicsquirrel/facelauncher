@@ -278,7 +278,18 @@ class Program < ActiveRecord::Base
     # Save the image only if it doesn't already exist in our database
     if !self.photos.where(original_photo_id: attrs[:photo_id].to_s, from_service: service.to_s).exists?
       # Get the URL of this image and save it, if we get a response from the server
-      response = HTTParty.get(photo_url)
+      begin
+        response = HTTParty.get(photo_url)
+      rescue Timeout::Error
+        # Try again once if the request times out, then quit.
+        begin
+          response = HTTParty.get(photo_url)
+        rescue StandardError
+          return nil
+        end
+      rescue StandardError
+        return nil
+      end
       if response.code == 200
         # Get the type of image file. There may not be an extension, so let's look at the mime type.
         case response.headers['content-type']

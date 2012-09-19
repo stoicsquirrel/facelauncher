@@ -12,6 +12,12 @@ class VideoPlaylist < ActiveRecord::Base
   validates :sort_videos_by, presence: true
 
   def approved_videos
-    self.videos.select([:id, :embed_code, :caption, :position, :screenshot]).approved
+    case self.sort_videos_by.downcase
+    when "position asc", "position desc", "id asc", "id desc"
+      order = self.sort_videos_by.downcase
+    else
+      order = 'id ASC'
+    end
+    self.videos.select([:id, :embed_code, :caption, :position, :screenshot]).approved.order(order)
   end
 end
