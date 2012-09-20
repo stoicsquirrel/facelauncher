@@ -63,7 +63,7 @@ RailsAdmin.config do |config|
         field :description
         field :app_url do
           label "App URL"
-          help "Optional. Length up to 255. This is the URL to the client app, and is required when the program is active."
+          help "Optional. Length up to 255. This is the URL to the client app, and is required when the program is active. For Facebook apps, use the URL on Facebook."
         end
         field :moderate_signups do
           help "Required. Determines whether signups to this program must be approved."
