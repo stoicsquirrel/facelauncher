@@ -452,11 +452,10 @@ RailsAdmin.config do |config|
     object_label_method :object_label
 
     list do
-      sort_by :position
+      sort_by :updated_at
       sort_reverse false
       items_per_page 50
 
-      field :caption
       field :from_user_username
       field :file, :string do
         formatted_value do
@@ -469,6 +468,7 @@ RailsAdmin.config do |config|
       field :position do
         help "Required. Position determines the in which order the photos will appear in a photo album."
       end
+      field :updated_at
       field :is_approved
     end
     show do

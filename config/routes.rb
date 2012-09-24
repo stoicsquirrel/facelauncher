@@ -14,7 +14,7 @@ Facelauncher::Application.routes.draw do
   # Facelauncher API
   resources :programs, :only => [:index, :show]
   resources :photo_albums, :only => [:index, :show]
-  resources :photos, :only => [:index, :show]
+  resources :photos, :only => [:index, :show, :create]
   resources :video_playlists, :only => [:index, :show]
   resources :videos, :only => [:index, :show]
   resources :signups, :only => [:create]

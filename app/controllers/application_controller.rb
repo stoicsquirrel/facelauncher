@@ -10,4 +10,13 @@ class ApplicationController < ActionController::Base
     # Send a simple 403 header response if not authenticated.
     head :forbidden
   end
+
+  # Allow JSON requests to bypass CSRF verification.
+  def verified_request?
+    if request.content_type == "application/json"
+      true
+    else
+      super()
+    end
+  end
 end
