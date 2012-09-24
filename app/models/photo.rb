@@ -12,6 +12,7 @@ class Photo < ActiveRecord::Base
                   :position, :is_approved
 
   validates :position, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :file, presence: true
 
   def approve
     self.is_approved = true

@@ -1,4 +1,6 @@
 class PhotosController < ApplicationController
+  before_filter :authenticate, :only => :create
+
   # GET /photos
   # GET /photos.json
   def index
@@ -42,6 +44,25 @@ class PhotosController < ApplicationController
           :id, :file, :title, :caption, :from_user_username, :from_user_full_name,
           :from_user_id, :from_service, :position, :photo_album_id, :from_twitter_image_service
         ]
+      end
+    end
+  end
+
+  # POST /photos
+  # POST /photos.json
+  def create
+    @photo = Photo.new(params[:photo])
+
+    respond_to do |format|
+      if @photo.save
+        format.json do
+          binding.pry
+          render json: { :id => @photo.id, :filename => File.basename(@photo.file.url) }
+        end
+      else
+        format.json do
+          head :bad_request
+        end
       end
     end
   end
