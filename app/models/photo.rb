@@ -5,11 +5,13 @@ class Photo < ActiveRecord::Base
 
   scope :approved, where(is_approved: true)
 
+  accepts_nested_attributes_for :photo_tags, allow_destroy: true
+
   mount_uploader :file, PhotoUploader
   attr_accessible :caption, :comment_count, :file, :from_service, :from_user_full_name,
                   :from_user_id, :from_user_username, :like_count, :original_file_id,
                   :title, :file_cache, :remove_file, :photo_album_id,
-                  :position, :is_approved
+                  :position, :is_approved, :photo_tags_attributes
 
   validates :position, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :file, presence: true
