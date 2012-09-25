@@ -456,7 +456,11 @@ RailsAdmin.config do |config|
       sort_reverse false
       items_per_page 50
 
-      field :from_user_username
+      field :caption
+      field :from_user_username do
+        label "Username"
+        column_width 80
+      end
       field :file, :string do
         formatted_value do
           show_photo_url = bindings[:view].rails_admin.show_url('photo', bindings[:object].id)
@@ -464,14 +468,15 @@ RailsAdmin.config do |config|
           "<a href=\"#{show_photo_url}\">#{image_tag}</a>".html_safe
         end
       end
-      field :photo_album
-      field :position do
-        help "Required. Position determines the in which order the photos will appear in a photo album."
+      field :photo_album do
+        column_width 100
       end
       field :updated_at do
         strftime_format "%Y-%m-%d %l:%M%P"
       end
-      field :is_approved
+      field :is_approved do
+        label "<i class=\"icon-check\" title=\"Approved\" alt=\"Approved\"></i>".html_safe
+      end
     end
     show do
       field :file, :string do
@@ -479,7 +484,9 @@ RailsAdmin.config do |config|
           bindings[:view].cl_image_tag(bindings[:object].file.filename, crop: :limit, width: 800, height: 800)
         end
       end
-      field :is_approved
+      field :is_approved do
+        label "Approved"
+      end
     end
     edit do
       group :file_info do
