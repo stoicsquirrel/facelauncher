@@ -19,7 +19,7 @@ class PhotoAlbumsController < ApplicationController
             approved_photos = []
             photo_album.photos.approved.each do |photo|
               approved_photos << { id: photo.id,
-                                   file: photo.file,
+                                   file: { url: photo.file.url },
                                    caption: photo.caption,
                                    from_user_username: photo.from_user_username,
                                    from_user_full_name: photo.from_user_full_name,
@@ -55,7 +55,7 @@ class PhotoAlbumsController < ApplicationController
           approved_photos = []
           @photo_album.photos.approved.each do |photo|
             approved_photos << { id: photo.id,
-                                 file: photo.file,
+                                 file: { url: photo.file.url },
                                  caption: photo.caption,
                                  from_user_username: photo.from_user_username,
                                  from_user_full_name: photo.from_user_full_name,
