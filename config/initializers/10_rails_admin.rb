@@ -456,6 +456,9 @@ RailsAdmin.config do |config|
       sort_reverse false
       items_per_page 50
 
+      field :id do
+        label "ID"
+      end
       field :caption
       field :from_user_username do
         label "Username"
