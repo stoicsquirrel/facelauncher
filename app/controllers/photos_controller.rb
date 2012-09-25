@@ -56,7 +56,6 @@ class PhotosController < ApplicationController
     respond_to do |format|
       if @photo.save
         format.json do
-          binding.pry
           render json: { :id => @photo.id, :filename => File.basename(@photo.file.url) }
         end
       else
