@@ -9,34 +9,62 @@ class VideoPlaylistsController < ApplicationController
       @video_playlists = VideoPlaylist.where(program_id: params[:program_id])
     end
 
-    respond_to do |format|
-      format.json do
+    #respond_to do |format|
+    #  format.json do
         if include_videos?
-          render json: @video_playlists, only: [:id, :program_id, :name, :screenshot],
-            methods: [:approved_videos]
+          output = []
+          @video_playlists.each do |video_playlist|
+            approved_videos = []
+            video_playlist.videos.approved.each do |video|
+              approved_videos << { id: video.id,
+                                   caption: video.caption,
+                                   embed_code: video.embed_code,
+                                   position: video.position,
+                                   screenshot: video.screenshot,
+                                   tags: video.video_tags.select([:id, :tag]) }
+            end
+            output << { id: video_playlist.id,
+                        program_id: video_playlist.program_id,
+                        name: video_playlist.name,
+                        approved_videos: approved_videos
+                      }
+          end
+          render json: output
         else
           render json: @video_playlists, only: [:id, :program_id, :name, :screenshot]
         end
-      end
-    end
+    #  end
+    #end
   end
 
   # GET /video_playlists/1
   # GET /video_playlists/1.json
   def show
     # Pull the selected video playlist.
-    @video_playlist = Video.find(params[:id])
+    @video_playlist = VideoPlaylist.find(params[:id])
 
-    respond_to do |format|
-      format.json do
+    #respond_to do |format|
+    #  format.json do
         if include_videos?
-          render json: @video_playlist, only: [:id, :program_id, :name, :screenshot],
-            methods: [:approved_videos]
+          approved_videos = []
+          @video_playlist.videos.approved.each do |video|
+            approved_videos << { id: video.id,
+                                 caption: video.caption,
+                                 embed_code: video.embed_code,
+                                 position: video.position,
+                                 screenshot: video.screenshot,
+                                 tags: video.video_tags.select([:id, :tag]) }
+          end
+          render json: { id: @video_playlist.id,
+                         program_id: @video_playlist.program_id,
+                         name: @video_playlist.name,
+                         approved_videos: approved_videos
+                       }
         else
           render json: @video_playlist, only: [:id, :program_id, :name, :screenshot]
         end
-      end
-    end
+    #  end
+    #end
   end
 
   private

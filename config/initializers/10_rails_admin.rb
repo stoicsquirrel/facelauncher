@@ -385,7 +385,7 @@ RailsAdmin.config do |config|
 
   end
   config.model AdditionalField do
-    parent Program
+    visible false
     object_label_method :object_label
 
     list do
@@ -517,6 +517,17 @@ RailsAdmin.config do |config|
         field :is_approved do
           read_only true
         end
+        field :photo_tags do
+          label "Tags"
+          associated_collection_cache_all false
+          associated_collection_scope do
+            photo_tag = bindings[:object]
+            Proc.new do |scope|
+              scope = scope.where(photo_id: photo_tag.photo_id) if !photo_tag.nil?
+            end
+          end
+          help ''
+        end
       end
       group :additional_info do
         field :caption do
@@ -555,6 +566,10 @@ RailsAdmin.config do |config|
   end
   config.model PhotoTag do
     visible false
+
+    nested do
+      field :tag
+    end
   end
   config.model VideoPlaylist do
     parent Program
@@ -646,10 +661,25 @@ RailsAdmin.config do |config|
         help "Required. Position determines the in which order the photos will appear in a photo album."
       end
       field :is_approved
+      field :video_tags do
+        label "Tags"
+        associated_collection_cache_all false
+        associated_collection_scope do
+          video_tag = bindings[:object]
+          Proc.new do |scope|
+            scope = scope.where(photo_id: video_tag.photo_id) if !video_tag.nil?
+          end
+        end
+        help ''
+      end
     end
   end
   config.model VideoTag do
     visible false
+
+    nested do
+      field :tag
+    end
   end
   config.model Signup do
     parent Program

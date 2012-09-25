@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   # Allow JSON requests to bypass CSRF verification.
   def verified_request?
-    if request.format.json? || request.content_type == "application/json"
+    if (!request.format.nil? && request.format.json?) || request.content_type == "application/json"
       true
     else
       super
