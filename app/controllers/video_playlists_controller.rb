@@ -20,7 +20,7 @@ class VideoPlaylistsController < ApplicationController
                                    caption: video.caption,
                                    embed_code: video.embed_code,
                                    position: video.position,
-                                   screenshot: video.screenshot,
+                                   screenshot: { url: video.screenshot.url },
                                    tags: video.video_tags.select([:id, :tag]) }
             end
             output << { id: video_playlist.id,
@@ -52,7 +52,7 @@ class VideoPlaylistsController < ApplicationController
                                  caption: video.caption,
                                  embed_code: video.embed_code,
                                  position: video.position,
-                                 screenshot: video.screenshot,
+                                 screenshot: { url: video.screenshot.url },
                                  tags: video.video_tags.select([:id, :tag]) }
           end
           render json: { id: @video_playlist.id,
