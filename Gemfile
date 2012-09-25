@@ -29,15 +29,10 @@ gem 'jquery-rails'
 gem 'koala'
 gem 'rails_admin'
 gem 'resque'
-gem 'resque-scheduler'
-gem 'thin'
 gem 'twitter'
 
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# Use unicorn as the app server
-# gem 'unicorn'
+# User unicorn as the app server
+gem 'unicorn'
 
 # To use debugger
 group :development do

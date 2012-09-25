@@ -8,7 +8,6 @@ Facelauncher::Application.routes.draw do
 
   # Resque
   require 'resque/server'
-  require 'resque_scheduler/server'
   mount Resque::Server.new, :at => "/resque"
 
   # Facelauncher API

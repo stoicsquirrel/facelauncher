@@ -468,7 +468,9 @@ RailsAdmin.config do |config|
       field :position do
         help "Required. Position determines the in which order the photos will appear in a photo album."
       end
-      field :updated_at
+      field :updated_at do
+        strftime_format "%Y-%m-%d %l:%M%P"
+      end
       field :is_approved
     end
     show do
