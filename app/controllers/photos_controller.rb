@@ -9,16 +9,28 @@ class PhotosController < ApplicationController
       @photos = Photo.where(photo_album_id: params[:photo_album_id]).approved.order("position ASC")
     elsif !params[:program_id].nil?
       @photos = Photo.where(program_id: params[:program_id]).approved.order("position ASC")
-#    else
-#      @photos = Photo.approved.order("position ASC")
     end
 
     respond_to do |format|
       format.json do
-        render json: @photos, only: [
-          :id, :file, :caption, :from_user_username, :from_user_full_name,
-          :from_user_id, :from_service, :position, :photo_album_id, :from_twitter_image_service
-        ]
+        photos = []
+        @photos.each do |photo|
+          photos << {
+            id: photo.id,
+            photo_album_id: photo.photo_album_id,
+            file: { url: photo.file.url },
+            caption: photo.caption,
+            from_user_username: photo.from_user_username,
+            from_user_full_name: photo.from_user_full_name,
+            from_user_id: photo.from_user_id,
+            from_service: photo.from_service,
+            position: photo.position,
+            from_twitter_image_service: photo.from_twitter_image_service,
+            tags: photo.photo_tags.select([:id, :tag])
+          }
+        end
+
+        render json: photos
       end
     end
   end
@@ -30,20 +42,20 @@ class PhotosController < ApplicationController
     @photo = Photo.approved.find(params[:id])
 
     respond_to do |format|
-      format.html do
-        @program = @photo.program
-        deep_link = true
-        if deep_link && !@program.app_url.blank?
-          redirect_to "#{@program.app_url}#photo=#{@photo.id}"
-        else
-          redirect_to @photo.file.url
-        end
-      end
       format.json do
-        render json: @photo, only: [
-          :id, :file, :title, :caption, :from_user_username, :from_user_full_name,
-          :from_user_id, :from_service, :position, :photo_album_id, :from_twitter_image_service
-        ]
+        render json: {
+          id: @photo.id,
+          photo_album_id: @photo.photo_album_id,
+          file: { url: @photo.file.url },
+          caption: @photo.caption,
+          from_user_username: @photo.from_user_username,
+          from_user_full_name: @photo.from_user_full_name,
+          from_user_id: @photo.from_user_id,
+          from_service: @photo.from_service,
+          position: @photo.position,
+          from_twitter_image_service: @photo.from_twitter_image_service,
+          tags: @photo.photo_tags.select([:id, :tag])
+        }
       end
     end
   end
