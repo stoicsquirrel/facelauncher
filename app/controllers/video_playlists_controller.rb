@@ -15,7 +15,7 @@ class VideoPlaylistsController < ApplicationController
           output = []
           @video_playlists.each do |video_playlist|
             approved_videos = []
-            video_playlist.videos.approved.each do |video|
+            video_playlist.videos.approved.order(video_playlist.sort_order).each do |video|
               approved_videos << { id: video.id,
                                    caption: video.caption,
                                    embed_code: video.embed_code,
@@ -47,7 +47,7 @@ class VideoPlaylistsController < ApplicationController
     #  format.json do
         if include_videos?
           approved_videos = []
-          @video_playlist.videos.approved.each do |video|
+          @video_playlist.videos.approved.order(@video_playlist.sort_order).each do |video|
             approved_videos << { id: video.id,
                                  caption: video.caption,
                                  embed_code: video.embed_code,
