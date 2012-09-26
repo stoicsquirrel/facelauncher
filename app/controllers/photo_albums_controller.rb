@@ -17,7 +17,7 @@ class PhotoAlbumsController < ApplicationController
           output = []
           @photo_albums.each do |photo_album|
             approved_photos = []
-            photo_album.photos.approved.each do |photo|
+            photo_album.photos.approved.order(photo_album.sort_order).each do |photo|
               approved_photos << { id: photo.id,
                                    file: { url: photo.file.url },
                                    caption: photo.caption,
@@ -53,7 +53,7 @@ class PhotoAlbumsController < ApplicationController
     #  format.json do
         if include_photos?
           approved_photos = []
-          @photo_album.photos.approved.each do |photo|
+          @photo_album.photos.approved.order(@photo_album.sort_order).each do |photo|
             approved_photos << { id: photo.id,
                                  file: { url: photo.file.url },
                                  caption: photo.caption,
