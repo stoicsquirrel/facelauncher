@@ -18,7 +18,10 @@ class PhotosController < ApplicationController
           photos << {
             id: photo.id,
             photo_album_id: photo.photo_album_id,
-            file: { url: photo.file.url },
+            file: {
+              url: photo.file.url,
+              filename: File.basename(photo.file.url)
+            },
             caption: photo.caption,
             from_user_username: photo.from_user_username,
             from_user_full_name: photo.from_user_full_name,
@@ -46,7 +49,10 @@ class PhotosController < ApplicationController
         render json: {
           id: @photo.id,
           photo_album_id: @photo.photo_album_id,
-          file: { url: @photo.file.url },
+          file: {
+            url: @photo.file.url,
+            filename: File.basename(@photo.file.url)
+          },
           caption: @photo.caption,
           from_user_username: @photo.from_user_username,
           from_user_full_name: @photo.from_user_full_name,
