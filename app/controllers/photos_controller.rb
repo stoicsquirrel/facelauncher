@@ -13,6 +13,7 @@ class PhotosController < ApplicationController
 
     respond_to do |format|
       format.json do
+        # TODO: Add check to determine if there are any photos. If not return an error.
         photos = []
         @photos.each do |photo|
           photos << {
@@ -29,7 +30,9 @@ class PhotosController < ApplicationController
             from_service: photo.from_service,
             position: photo.position,
             from_twitter_image_service: photo.from_twitter_image_service,
-            tags: photo.photo_tags.select([:id, :tag])
+            tags: photo.photo_tags.select([:id, :tag]),
+            created_at: photo.created_at,
+            updated_at: photo.updated_at
           }
         end
 
@@ -60,7 +63,9 @@ class PhotosController < ApplicationController
           from_service: @photo.from_service,
           position: @photo.position,
           from_twitter_image_service: @photo.from_twitter_image_service,
-          tags: @photo.photo_tags.select([:id, :tag])
+          tags: @photo.photo_tags.select([:id, :tag]),
+          created_at: @photo.created_at,
+          updated_at: @photo.updated_at
         }
       end
     end

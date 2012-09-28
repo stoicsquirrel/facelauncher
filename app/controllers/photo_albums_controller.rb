@@ -27,7 +27,9 @@ class PhotoAlbumsController < ApplicationController
                                    from_service: photo.from_service,
                                    position: photo.position,
                                    from_twitter_image_service: photo.from_twitter_image_service,
-                                   tags: photo.photo_tags.select([:id, :tag]) }
+                                   tags: photo.photo_tags.select([:id, :tag]),
+                                   created_at: photo.created_at,
+                                   updated_at: photo.updated_at }
             end
             output << { id: photo_album.id,
                         program_id: photo_album.program_id,
@@ -63,7 +65,9 @@ class PhotoAlbumsController < ApplicationController
                                  from_service: photo.from_service,
                                  position: photo.position,
                                  from_twitter_image_service: photo.from_twitter_image_service,
-                                 tags: photo.photo_tags.select([:id, :tag]) }
+                                 tags: photo.photo_tags.select([:id, :tag]),
+                                 created_at: photo.created_at,
+                                 updated_at: photo.updated_at }
           end
           render json: { id: @photo_album.id,
                          program_id: @photo_album.program_id,

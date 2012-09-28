@@ -21,7 +21,9 @@ class VideoPlaylistsController < ApplicationController
                                    embed_code: video.embed_code,
                                    position: video.position,
                                    screenshot: { url: video.screenshot.url },
-                                   tags: video.video_tags.select([:id, :tag]) }
+                                   tags: video.video_tags.select([:id, :tag]),
+                                   created_at: video.created_at,
+                                   updated_at: video.updated_at }
             end
             output << { id: video_playlist.id,
                         program_id: video_playlist.program_id,
@@ -53,7 +55,9 @@ class VideoPlaylistsController < ApplicationController
                                  embed_code: video.embed_code,
                                  position: video.position,
                                  screenshot: { url: video.screenshot.url },
-                                 tags: video.video_tags.select([:id, :tag]) }
+                                 tags: video.video_tags.select([:id, :tag]),
+                                 created_at: video.created_at,
+                                 updated_at: video.updated_at }
           end
           render json: { id: @video_playlist.id,
                          program_id: @video_playlist.program_id,
