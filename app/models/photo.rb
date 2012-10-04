@@ -13,8 +13,15 @@ class Photo < ActiveRecord::Base
                   :title, :file_cache, :remove_file, :photo_album_id, :program_id,
                   :position, :is_approved, :photo_tags_attributes
 
+  validates :program_id, presence: true
   validates :position, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :file, presence: true
+
+  before_save :update_program
+
+  def update_program
+    self.program.update_attribute(:photos_updated_at, DateTime.now)
+  end
 
   def approve
     self.is_approved = true

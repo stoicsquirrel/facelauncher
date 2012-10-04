@@ -614,6 +614,9 @@ RailsAdmin.config do |config|
       items_per_page 50
 
       field :embed_code
+      field :embed_id do
+        label "Embed Id"
+      end
       field :caption
       field :screenshot, :string do
         formatted_value do
@@ -633,6 +636,9 @@ RailsAdmin.config do |config|
           bindings[:object].embed_code.html_safe
         end
       end
+      field :embed_id do
+        label "Embed Id"
+      end
       field :caption
       field :screenshot, :string do
         formatted_value do
@@ -645,6 +651,9 @@ RailsAdmin.config do |config|
     end
     edit do
       field :embed_code
+      field :embed_id do
+        label "Embed Id"
+      end
       field :caption
       field :screenshot do
         partial 'cl_form_file_upload'

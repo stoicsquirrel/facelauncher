@@ -11,7 +11,29 @@ class VideosController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: @videos, only: [:id, :embed_code, :caption, :position, :screenshot]
+        # TODO: Add check to determine if there are any videos. If not return an error.
+        videos = []
+        unless @videos.nil?
+          @videos.each do |video|
+            videos << {
+              id: video.id,
+              video_playlist_id: video.video_playlist_id,
+              embed_code: video.embed_code,
+              embed_id: video.embed_id,
+              caption: video.caption,
+              position: video.position,
+              screenshot: {
+                url: video.screenshot.url,
+                filename: File.basename(video.screenshot.url)
+              },
+              tags: video.video_tags.select([:id, :tag]),
+              created_at: video.created_at,
+              updated_at: video.updated_at
+            }
+          end
+        end
+
+        render json: videos
       end
     end
   end
@@ -20,11 +42,25 @@ class VideosController < ApplicationController
   # GET /video/1.json
   def show
     # Pull the selected video, if approved.
-    @video = Video.find(params[:id]).approved
+    @video = Video.approved.find(params[:id])
 
     respond_to do |format|
       format.json do
-        render json: @video, only: [:id, :embed_code, :caption, :position, :screenshot]
+        render json: {
+          id: @video.id,
+          video_playlist_id: @video.video_playlist_id,
+          embed_code: @video.embed_code,
+          embed_id: @video.embed_id,
+          caption: @video.caption,
+          position: @video.position,
+          screenshot: {
+            url: @video.screenshot.url,
+            filename: File.basename(@video.screenshot.url)
+          },
+          tags: @video.video_tags.select([:id, :tag]),
+          created_at: @video.created_at,
+          updated_at: @video.updated_at
+        }
       end
     end
   end
