@@ -29,8 +29,8 @@ class PhotoAlbum < ActiveRecord::Base
     return order
   end
 
-  private
-  def object_label
-    "#{self.program.name} - #{self.name}" unless self.program.nil?
-  end
+#  private
+#  def object_label
+#    "#{self.program.name} - #{self.name}" unless self.program.nil?
+#  end
 end

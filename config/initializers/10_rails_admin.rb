@@ -402,9 +402,6 @@ RailsAdmin.config do |config|
   end
   config.model PhotoAlbum do
     parent Program
-    object_label_method do
-      :object_label
-    end
 
     edit do
       field :program do
@@ -457,27 +454,34 @@ RailsAdmin.config do |config|
       items_per_page 50
 
       field :id do
-        label "ID"
+        label "Id"
       end
       field :caption
-      field :from_user_username do
-        label "Username"
-        column_width 80
-      end
+#      field :from_user_username do
+#        label "Username"
+#        column_width 80
+#      end
       field :file, :string do
+        column_width 125
         formatted_value do
           show_photo_url = bindings[:view].rails_admin.show_url('photo', bindings[:object].id)
-          image_tag = bindings[:view].cl_image_tag(bindings[:object].file.filename, crop: :fit, :width => 200, :height => 200)
+          image_tag = bindings[:view].cl_image_tag(bindings[:object].file.filename, crop: :fill, :width => 125, :height => 125)
           "<a href=\"#{show_photo_url}\">#{image_tag}</a>".html_safe
         end
       end
+      field :program do
+        column_width 70
+      end
       field :photo_album do
-        column_width 100
+        label "Album"
+        column_width 70
       end
       field :updated_at do
+        column_width 130
         strftime_format "%Y-%m-%d %l:%M%P"
       end
       field :is_approved do
+        column_width 24
         label "<i class=\"icon-check\" title=\"Approved\" alt=\"Approved\"></i>".html_safe
       end
     end
@@ -493,6 +497,7 @@ RailsAdmin.config do |config|
     end
     edit do
       group :file_info do
+        field :program
         field :photo_album
         field :file do
           partial 'cl_form_file_upload'
