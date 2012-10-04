@@ -20,6 +20,9 @@
 /log/*.log
 /tmp
 
+# Ignore temporary upload files.
+/public/uploads/tmp
+
 # Ignore YARD artifacts
 /.yardoc
 

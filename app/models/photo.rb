@@ -20,7 +20,7 @@ class Photo < ActiveRecord::Base
   before_save :update_program
 
   def update_program
-    self.program.update_attribute(:photos_updated_at, DateTime.now)
+    self.program.update_attribute(:photos_updated_at, DateTime.now) unless self.program.nil?
   end
 
   def approve

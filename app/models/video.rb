@@ -15,6 +15,12 @@ class Video < ActiveRecord::Base
   validates :program_id, presence: true
   validates :position, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
+  before_save :update_program
+
+  def update_program
+    self.program.update_attribute(:videos_updated_at, DateTime.now) unless self.program.nil?
+  end
+
   def approve
     self.is_approved = true
     self.save
