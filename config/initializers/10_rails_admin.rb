@@ -625,11 +625,26 @@ RailsAdmin.config do |config|
           "<a href=\"#{show_video_url}\">#{image_tag}</a>".html_safe
         end
       end
-      field :video_playlist
+      field :program do
+        column_width 70
+      end
+      field :video_playlist do
+        label "Playlist"
+        column_width 70
+      end
       field :position
-      field :is_approved
+      field :updated_at do
+        column_width 90
+        strftime_format "%Y-%m-%d %l:%M%P"
+      end
+      field :is_approved do
+        column_width 24
+        label "<i class=\"icon-check\" title=\"Approved\" alt=\"Approved\"></i>".html_safe
+      end
     end
     show do
+      field :program
+      field :video_playlist
       field :embed_code do
         label "Preview from embed code"
         formatted_value do
@@ -645,11 +660,12 @@ RailsAdmin.config do |config|
           bindings[:view].cl_image_tag(bindings[:object].screenshot.filename, crop: :limit, width: 800, height: 800)
         end
       end
-      field :video_playlist
       field :position
       field :is_approved
     end
     edit do
+      field :program
+      field :video_playlist
       field :embed_code
       field :embed_id do
         label "Embed Id"
@@ -670,7 +686,6 @@ RailsAdmin.config do |config|
           end
         end
       end
-      field :video_playlist
       field :position do
         help "Required. Position determines the in which order the photos will appear in a photo album."
       end
