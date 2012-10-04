@@ -457,10 +457,10 @@ RailsAdmin.config do |config|
         label "Id"
       end
       field :caption
-#      field :from_user_username do
-#        label "Username"
-#        column_width 80
-#      end
+      field :from_user_username do
+        label "Username"
+        column_width 80
+      end
       field :file, :string do
         column_width 125
         formatted_value do
@@ -477,7 +477,7 @@ RailsAdmin.config do |config|
         column_width 70
       end
       field :updated_at do
-        column_width 130
+        column_width 90
         strftime_format "%Y-%m-%d %l:%M%P"
       end
       field :is_approved do
