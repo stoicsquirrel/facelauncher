@@ -62,3 +62,11 @@ button[name="_continue"] {
   display: block;
   margin-bottom: 5px;
 }
+
+body.rails_admin {
+  .table {
+    .caption_field {
+      white-space: normal !important;
+    }
+  }
+}

@@ -15,25 +15,27 @@ class PhotosController < ApplicationController
       format.json do
         # TODO: Add check to determine if there are any photos. If not return an error.
         photos = []
-        @photos.each do |photo|
-          photos << {
-            id: photo.id,
-            photo_album_id: photo.photo_album_id,
-            file: {
-              url: photo.file.url,
-              filename: File.basename(photo.file.url)
-            },
-            caption: photo.caption,
-            from_user_username: photo.from_user_username,
-            from_user_full_name: photo.from_user_full_name,
-            from_user_id: photo.from_user_id,
-            from_service: photo.from_service,
-            position: photo.position,
-            from_twitter_image_service: photo.from_twitter_image_service,
-            tags: photo.photo_tags.select([:id, :tag]),
-            created_at: photo.created_at,
-            updated_at: photo.updated_at
-          }
+        unless @photos.nil?
+          @photos.each do |photo|
+            photos << {
+              id: photo.id,
+              photo_album_id: photo.photo_album_id,
+              file: {
+                url: photo.file.url,
+                filename: File.basename(photo.file.url)
+              },
+              caption: photo.caption,
+              from_user_username: photo.from_user_username,
+              from_user_full_name: photo.from_user_full_name,
+              from_user_id: photo.from_user_id,
+              from_service: photo.from_service,
+              position: photo.position,
+              from_twitter_image_service: photo.from_twitter_image_service,
+              tags: photo.photo_tags.select([:id, :tag]),
+              created_at: photo.created_at,
+              updated_at: photo.updated_at
+            }
+          end
         end
 
         render json: photos
