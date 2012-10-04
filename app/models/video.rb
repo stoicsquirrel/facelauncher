@@ -8,10 +8,11 @@ class Video < ActiveRecord::Base
   accepts_nested_attributes_for :video_tags, allow_destroy: true
 
   mount_uploader :screenshot, PhotoUploader
-  attr_accessible :program_id, :caption, :embed_code, :is_approved, :position,
+  attr_accessible :program_id, :caption, :embed_code, :embed_id, :is_approved, :position,
                   :screenshot, :screenshot_cache, :remove_screenshot, :video_playlist_id,
                   :video_tags_attributes
 
+  validates :program_id, presence: true
   validates :position, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   def approve

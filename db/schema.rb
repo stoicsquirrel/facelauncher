@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120914191711) do
+ActiveRecord::Schema.define(:version => 20121004204712) do
 
   create_table "additional_fields", :force => true do |t|
     t.integer  "program_id",                 :null => false
@@ -97,6 +97,8 @@ ActiveRecord::Schema.define(:version => 20120914191711) do
     t.string   "twitter_oauth_token"
     t.string   "twitter_oauth_token_secret"
     t.string   "tumblr_consumer_key"
+    t.datetime "photos_updated_at"
+    t.datetime "videos_updated_at"
   end
 
   create_table "rails_admin_histories", :force => true do |t|
@@ -181,6 +183,7 @@ ActiveRecord::Schema.define(:version => 20120914191711) do
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
     t.integer  "program_id"
+    t.string   "embed_id"
   end
 
 end

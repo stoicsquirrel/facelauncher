@@ -158,6 +158,8 @@ RailsAdmin.config do |config|
         field :updated_at do
           visible true
         end
+        field :photos_updated_at
+        field :videos_updated_at
         field :signups
       end
     end
