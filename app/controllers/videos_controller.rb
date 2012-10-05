@@ -20,6 +20,8 @@ class VideosController < ApplicationController
               video_playlist_id: video.video_playlist_id,
               embed_code: video.embed_code,
               embed_id: video.embed_id,
+              title: video.title,
+              subtitle: video.subtitle,
               caption: video.caption,
               position: video.position,
               screenshot: {
@@ -51,6 +53,8 @@ class VideosController < ApplicationController
           video_playlist_id: @video.video_playlist_id,
           embed_code: @video.embed_code,
           embed_id: @video.embed_id,
+          title: @video.title,
+          subtitle: @video.subtitle,
           caption: @video.caption,
           position: @video.position,
           screenshot: {
