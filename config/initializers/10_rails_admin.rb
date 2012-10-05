@@ -613,11 +613,6 @@ RailsAdmin.config do |config|
       sort_reverse false
       items_per_page 50
 
-      field :embed_code
-      field :embed_id do
-        label "Embed Id"
-      end
-      field :caption
       field :screenshot, :string do
         formatted_value do
           show_video_url = bindings[:view].rails_admin.show_url('video', bindings[:object].id)
@@ -654,6 +649,8 @@ RailsAdmin.config do |config|
       field :embed_id do
         label "Embed Id"
       end
+      field :title
+      field :subtitle
       field :caption
       field :screenshot, :string do
         formatted_value do
@@ -670,6 +667,8 @@ RailsAdmin.config do |config|
       field :embed_id do
         label "Embed Id"
       end
+      field :title
+      field :subtitle
       field :caption
       field :screenshot do
         partial 'cl_form_file_upload'

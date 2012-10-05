@@ -10,7 +10,7 @@ class Video < ActiveRecord::Base
   mount_uploader :screenshot, PhotoUploader
   attr_accessible :program_id, :caption, :embed_code, :embed_id, :is_approved, :position,
                   :screenshot, :screenshot_cache, :remove_screenshot, :video_playlist_id,
-                  :video_tags_attributes
+                  :video_tags_attributes, :title, :subtitle
 
   validates :program_id, presence: true
   validates :position, presence: true, numericality: { greater_than_or_equal_to: 0 }

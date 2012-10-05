@@ -9,14 +9,16 @@ class VideoPlaylistsController < ApplicationController
       @video_playlists = VideoPlaylist.where(program_id: params[:program_id])
     end
 
-    #respond_to do |format|
-    #  format.json do
+    respond_to do |format|
+      format.json do
         if include_videos?
           output = []
           @video_playlists.each do |video_playlist|
             approved_videos = []
             video_playlist.videos.approved.order(video_playlist.sort_order).each do |video|
               approved_videos << { id: video.id,
+                                   title: video.title,
+                                   subtitle: video.subtitle,
                                    caption: video.caption,
                                    embed_code: video.embed_code,
                                    position: video.position,
@@ -35,8 +37,8 @@ class VideoPlaylistsController < ApplicationController
         else
           render json: @video_playlists, only: [:id, :program_id, :name, :screenshot]
         end
-    #  end
-    #end
+      end
+    end
   end
 
   # GET /video_playlists/1
@@ -45,12 +47,14 @@ class VideoPlaylistsController < ApplicationController
     # Pull the selected video playlist.
     @video_playlist = VideoPlaylist.find(params[:id])
 
-    #respond_to do |format|
-    #  format.json do
+    respond_to do |format|
+      format.json do
         if include_videos?
           approved_videos = []
           @video_playlist.videos.approved.order(@video_playlist.sort_order).each do |video|
             approved_videos << { id: video.id,
+                                 title: video.title,
+                                 subtitle: video.subtitle,
                                  caption: video.caption,
                                  embed_code: video.embed_code,
                                  position: video.position,
@@ -67,8 +71,8 @@ class VideoPlaylistsController < ApplicationController
         else
           render json: @video_playlist, only: [:id, :program_id, :name, :screenshot]
         end
-    #  end
-    #end
+      end
+    end
   end
 
   private
