@@ -1,6 +1,6 @@
 class Video < ActiveRecord::Base
   belongs_to :video_playlist, inverse_of: :videos
-  belongs_to :program
+  belongs_to :program, touch: true
   has_many :video_tags
 
   scope :approved, where(is_approved: true)
