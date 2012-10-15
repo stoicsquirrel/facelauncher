@@ -304,7 +304,7 @@ class Program < ActiveRecord::Base
         FileUtils.mkdir_p("#{Rails.root}/tmp/images/#{service.to_s}") # Make the temp directory if one doesn't exist
 
         File.open("#{Rails.root}/tmp/images/#{service.to_s}/#{attrs[:photo_id]}#{ext}", "w") do |file|
-          file.binmode # File must be downloaded in binary mode
+          file.binmode # File must be opened in binary mode
 
           # Save the file
           file << response.body
