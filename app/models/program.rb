@@ -147,7 +147,22 @@ class Program < ActiveRecord::Base
       # Pull up to 1000 tweets with the current tag that have images.
       10.times do |i|
         page = i + 1
-        results = client.search("##{tag.tag}", include_entities: true, rpp: 100, page: page).results
+
+        retry_attempts = 0
+        begin
+          results = client.search("##{tag.tag}", include_entities: true, rpp: 100, page: page).results
+        rescue Twitter::Error::ServiceUnavailable
+          # If Twitter is over capacity or unavailable, then wait five seconds and try again up to two times.
+          if retry_attempts < 3
+            retry_attempts += 1
+            sleep 5
+            retry
+          else
+            # If we've exhausted all retry attempts, then stop.
+            raise
+          end
+        end
+
         # If there are no results on this page, then we're done
         break if results.count == 0
         # Iterate through results on this page
