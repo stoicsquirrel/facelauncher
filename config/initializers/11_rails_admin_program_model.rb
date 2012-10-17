@@ -133,6 +133,13 @@ RailsAdmin.config do |config|
       end
       group :twitter_info do
         active false
+        help %Q(To pull Twitter tweets and their associated photos, it is necessary to enter
+                a consumer key and consumer secret from a Twitter app. Go to
+                <a href="https://dev.twitter.com/" target="_blank">Twitter's developer
+                site <i class=\"icon-external-link\"></i></a> to create and manage your
+                Twitter apps. To pull photos associated with a tweet that are originated
+                on Tumblr, a Tumblr consumer key is also needed.).html_safe
+
         field :twitter_consumer_key do
           label "Consumer key"
         end
