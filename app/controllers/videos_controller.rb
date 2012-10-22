@@ -15,7 +15,7 @@ class VideosController < ApplicationController
         videos = []
         unless @videos.nil?
           @videos.each do |video|
-            if !video.screenshot.nil?
+            if !video.screenshot.blank?
               screenshot = {
                 url: video.screenshot.url,
                 filename: File.basename(video.screenshot.url)
@@ -51,7 +51,7 @@ class VideosController < ApplicationController
 
     respond_to do |format|
       format.json do
-        if !@video.screenshot.nil?
+        if !@video.screenshot.blank?
           screenshot = {
             url: @video.screenshot.url,
             filename: File.basename(@video.screenshot.url)
