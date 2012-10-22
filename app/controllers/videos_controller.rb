@@ -15,6 +15,12 @@ class VideosController < ApplicationController
         videos = []
         unless @videos.nil?
           @videos.each do |video|
+            if !video.screenshot.nil?
+              screenshot = {
+                url: video.screenshot.url,
+                filename: File.basename(video.screenshot.url)
+              }
+            end
             videos << {
               id: video.id,
               video_playlist_id: video.video_playlist_id,
@@ -24,10 +30,7 @@ class VideosController < ApplicationController
               subtitle: video.subtitle,
               caption: video.caption,
               position: video.position,
-              screenshot: !video.screenshot.nil? ? {
-                url: video.screenshot.url,
-                filename: File.basename(video.screenshot.url)
-              } : nil,
+              screenshot: screenshot,
               tags: video.video_tags.select([:id, :tag]),
               created_at: video.created_at,
               updated_at: video.updated_at
@@ -48,6 +51,12 @@ class VideosController < ApplicationController
 
     respond_to do |format|
       format.json do
+        if !@video.screenshot.nil?
+          screenshot = {
+            url: @video.screenshot.url,
+            filename: File.basename(@video.screenshot.url)
+          }
+        end
         render json: {
           id: @video.id,
           video_playlist_id: @video.video_playlist_id,
@@ -57,10 +66,7 @@ class VideosController < ApplicationController
           subtitle: @video.subtitle,
           caption: @video.caption,
           position: @video.position,
-          screenshot: {
-            url: @video.screenshot.url,
-            filename: File.basename(@video.screenshot.url)
-          },
+          screenshot: screenshot,
           tags: @video.video_tags.select([:id, :tag]),
           created_at: @video.created_at,
           updated_at: @video.updated_at
