@@ -5,10 +5,17 @@ class PhotosController < ApplicationController
   # GET /photos.json
   def index
     # Pull photos in the selected program or photo album that are approved.
+    if !params[:next_id].nil?
+      #query = ActiveRecord::Base.connection.raw_connection.prepare("SELECT row_num FROM (SELECT ROW_NUMBER() OVER(ORDER BY position ASC, updated_at DESC) AS row_num, id FROM :table) AS sub WHERE sub.id = :next_id")
+      #offset = query.execute(:table => self.class.table_name, :next_id => params[:next_id])
+      #query.close
+    end
+
+    offset = params[:offset]
     if !params[:photo_album_id].nil?
-      @photos = Photo.where(photo_album_id: params[:photo_album_id]).approved.order("position ASC")
+      @photos = Photo.where(photo_album_id: params[:photo_album_id]).approved.order("position ASC, updated_at DESC").limit(params[:limit]).offset(offset)
     elsif !params[:program_id].nil?
-      @photos = Photo.where(program_id: params[:program_id]).approved.order("position ASC")
+      @photos = Photo.where(program_id: params[:program_id]).approved.order("position ASC, updated_at DESC").limit(params[:limit]).offset(offset)
     end
 
     respond_to do |format|

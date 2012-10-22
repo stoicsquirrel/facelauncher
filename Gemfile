@@ -21,6 +21,7 @@ group :assets do
 end
 
 gem 'carmen',   '>= 1.0.0.beta2'
+gem 'cancan'
 gem 'carrierwave'
 gem 'cloudinary'
 gem 'devise'
