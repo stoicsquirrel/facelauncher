@@ -24,10 +24,10 @@ class VideosController < ApplicationController
               subtitle: video.subtitle,
               caption: video.caption,
               position: video.position,
-              screenshot: {
+              screenshot: !video.screenshot.nil? ? {
                 url: video.screenshot.url,
                 filename: File.basename(video.screenshot.url)
-              },
+              } : nil,
               tags: video.video_tags.select([:id, :tag]),
               created_at: video.created_at,
               updated_at: video.updated_at
