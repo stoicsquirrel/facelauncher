@@ -540,6 +540,9 @@ RailsAdmin.config do |config|
             !bindings[:object].from_service.blank?
           end
         end
+        field :additional_info_1
+        field :additional_info_2
+        field :additional_info_3
       end
       group :social_media_info do
         help "The following fields are set automatically if the photo was pulled from a social media service"
