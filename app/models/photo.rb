@@ -23,7 +23,7 @@ class Photo < ActiveRecord::Base
   before_create :download_file, :approve_unless_moderated
 
   def update_program
-    self.program.update_attribute(:photos_updated_at, DateTime.now) unless self.program.nil?
+    self.program.photos_updated_at = DateTime.now unless self.program.nil?
   end
 
   def download_file
@@ -58,6 +58,8 @@ class Photo < ActiveRecord::Base
   def approve_unless_moderated
     if !self.program.nil? && self.program.moderate_photos
       self.is_approved = false
+      # This is necessary because the method will return false, halting execution of the save.
+      return true
     end
 
     return true  # This is required because the previous line (false) will cancel DB commit.
