@@ -10,7 +10,7 @@ class Photo < ActiveRecord::Base
   mount_uploader :file, PhotoUploader
   attr_accessor :file_url
   attr_accessible :caption, :comment_count, :file, :file_url, :from_service, :from_user_full_name,
-                  :from_user_id, :from_user_username, :like_count, :original_file_id, :title,
+                  :from_user_id, :from_user_username, :like_count, :original_photo_id, :title,
                   :file_cache, :remove_file, :photo_album_id, :program_id, :position,
                   :is_approved, :photo_tags_attributes, :additional_info_1, :additional_info_2,
                   :additional_info_3
