@@ -335,8 +335,6 @@ class Program < ActiveRecord::Base
           photo[:from_user_full_name] = attrs[:from_user_full_name]
           photo[:from_user_id] = attrs[:from_user_id]
 
-          photo[:is_approved] = false if self.moderate_photos
-
           photo.save
         end
       end

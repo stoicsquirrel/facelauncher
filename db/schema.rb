@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121005183147) do
+ActiveRecord::Schema.define(:version => 20121026161546) do
 
   create_table "additional_fields", :force => true do |t|
     t.integer  "program_id",                 :null => false
@@ -60,6 +60,9 @@ ActiveRecord::Schema.define(:version => 20121005183147) do
     t.boolean  "is_approved",                :default => true, :null => false
     t.string   "from_twitter_image_service"
     t.integer  "program_id"
+    t.string   "additional_info_1"
+    t.string   "additional_info_2"
+    t.string   "additional_info_3"
   end
 
   create_table "program_photo_import_tags", :force => true do |t|
