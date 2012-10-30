@@ -24,5 +24,16 @@ class Ability
     #   can :update, Article, :published => true
     #
     # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
+
+    can :read, :all
+    if user
+      can :access, :rails_admin
+      can :dashboard
+      if user.role == 'admin'
+        can :manage, :all
+      elsif user.role == 'moderator'
+        can :manage, [Photo, PhotoAlbum, PhotoTag, Video, VideoPlaylist, VideoTag]
+      end
+    end
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121026161546) do
+ActiveRecord::Schema.define(:version => 20121029015805) do
 
   create_table "additional_fields", :force => true do |t|
     t.integer  "program_id",                 :null => false
@@ -104,6 +104,13 @@ ActiveRecord::Schema.define(:version => 20121026161546) do
     t.datetime "videos_updated_at"
   end
 
+  create_table "programs_accessible_by_users", :force => true do |t|
+    t.integer  "program_id"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "rails_admin_histories", :force => true do |t|
     t.text     "message"
     t.string   "username"
@@ -151,6 +158,7 @@ ActiveRecord::Schema.define(:version => 20121026161546) do
     t.datetime "locked_at"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
+    t.string   "role"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

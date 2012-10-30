@@ -1,24 +1,28 @@
 class Program < ActiveRecord::Base
-  has_many :signups, dependent: :destroy #, inverse_of: :program
-  has_many :additional_fields, dependent: :destroy
+  has_many :programs_accessible_by_users, inverse_of: :program
+  has_many :users, through: :programs_accessible_by_users
+  has_many :signups, dependent: :destroy, inverse_of: :program
+  has_many :additional_fields, dependent: :destroy, inverse_of: :program
   has_many :photos
-  has_many :photo_albums, dependent: :destroy
+  has_many :photo_albums, dependent: :destroy, inverse_of: :program
   has_many :videos
-  has_many :video_playlists, dependent: :destroy
-  has_many :program_photo_import_tags, dependent: :destroy
+  has_many :video_playlists, dependent: :destroy, inverse_of: :program
+  has_many :program_photo_import_tags, dependent: :destroy, inverse_of: :program
 
   scope :active_scope, lambda { where(active: true).where("set_active_date < ?", Time.now).where("set_inactive_date > ?", Time.now) }
 
-  attr_accessor :permanent_link, :edit_photos, :edit_additional_fields
+  attr_accessor :permanent_link, :link_to_program_photos, :link_to_program_videos,
+                :edit_photos, :edit_additional_fields
 
   accepts_nested_attributes_for :additional_fields, allow_destroy: true
   # accepts_nested_attributes_for :photos, allow_destroy: true
   accepts_nested_attributes_for :program_photo_import_tags, allow_destroy: true
-  attr_accessible :additional_fields_attributes,
+  #accepts_nested_attributes_for :users, allow_destroy: false
+  attr_accessible :additional_fields_attributes, :role, :user_ids,
                   :set_active_date, :set_inactive_date, :description,
                   :facebook_app_id, :facebook_app_secret, :facebook_is_like_gated,
                   :google_analytics_tracking_code, :name, :short_name, :app_url,
-                  :repo, :moderate_signups, :moderate_photos, :permanent_link, :edit_photos,
+                  :repo, :moderate_signups, :moderate_photos, :edit_photos,
                   :edit_additional_fields, :instagram_client_id, :instagram_client_secret,
                   :program_photo_import_tags_attributes, :tumblr_consumer_key,
                   :twitter_consumer_key, :twitter_consumer_secret,

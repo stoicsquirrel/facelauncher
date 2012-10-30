@@ -1,4 +1,10 @@
 class User < ActiveRecord::Base
+	has_many :programs_accessible_by_users
+	has_many :programs, through: :programs_accessible_by_users
+	belongs_to :users
+
+	ROLES = %w[admin moderator]
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
