@@ -38,7 +38,7 @@ class PhotosController < ApplicationController
               from_service: photo.from_service,
               position: photo.position,
               from_twitter_image_service: photo.from_twitter_image_service,
-              tags: photo.photo_tags.select([:id, :tag]),
+              tags: photo.photo_tags.select([:id, :tag]), # TODO: Remove this line
               created_at: photo.created_at,
               updated_at: photo.updated_at
             }

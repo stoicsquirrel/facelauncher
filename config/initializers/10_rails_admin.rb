@@ -7,6 +7,9 @@ RailsAdmin.config do |config|
   # require 'i18n'
   # I18n.default_locale = :de
 
+  config.authorize_with :cancan
+  config.compact_show_view = false
+
   config.current_user_method { current_user } # auto-generated
 
   # If you want to track changes on your models:
@@ -712,7 +715,11 @@ RailsAdmin.config do |config|
       field :tag
     end
   end
+  config.model ProgramsAccessibleByUser do
+    visible false
+  end
   config.model Signup do
+    visible false
     parent Program
     configure :program, :belongs_to_association
     configure :is_valid, :boolean
