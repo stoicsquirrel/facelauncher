@@ -119,7 +119,13 @@ RailsAdmin.config do |config|
         field :updated_at do
           visible true
         end
-      end      
+      end
+
+      group :additional_fields do
+        field :additional_info_1
+        field :additional_info_2
+        field :additional_info_3
+      end
     end
     edit do
       group :moderator_info do
@@ -253,6 +259,7 @@ RailsAdmin.config do |config|
       end
       group :additional_info do
         active false
+        
         field :google_analytics_tracking_code do
           label "GA tracking code"
           help "Optional. Length up to 255. For Google Analytics."
@@ -267,9 +274,15 @@ RailsAdmin.config do |config|
         field :updated_at do
           visible true
         end
-
-#        field :signups
       end
+      group :additional_fields do
+        active false
+
+        field :additional_info_1
+        field :additional_info_2
+        field :additional_info_3
+      end
+#        field :signups
     end
     create do; end
     update do; end

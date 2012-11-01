@@ -13,6 +13,8 @@
 # Ignore migrations.
 # /db/migrate
 
+/db/structure.sql
+
 # Ignore local database settings.
 /config/database.yml
 
