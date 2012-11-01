@@ -26,7 +26,8 @@ class Program < ActiveRecord::Base
                   :edit_additional_fields, :instagram_client_id, :instagram_client_secret,
                   :program_photo_import_tags_attributes, :tumblr_consumer_key,
                   :twitter_consumer_key, :twitter_consumer_secret,
-                  :twitter_oauth_token, :twitter_oauth_token_secret
+                  :twitter_oauth_token, :twitter_oauth_token_secret,
+                  :additional_info_1, :additional_info_2, :additional_info_3
 
   validate :facebook_app_secret, :validate_fb_app_id_and_secret
   validates :name, presence: true

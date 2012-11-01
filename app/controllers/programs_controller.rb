@@ -23,8 +23,11 @@ class ProgramsController < ApplicationController
         else
           render json: @program, only: [
             :active, :app_url, :facebook_app_id, :facebook_app_secret, :facebook_is_like_gated,
-            :google_analytics_tracking_code, :name, :set_active_date, :set_inactive_date, :short_name],
-            methods: [:photo_tags]
+            :google_analytics_tracking_code, :name, :set_active_date, :set_inactive_date, :short_name,
+            :additional_info_1, :additional_info_2, :additional_info_3, :created_at, :updated_at,
+            :photos_updated_at, :videos_updated_at
+          ],
+          methods: [:photo_tags]
         end
       end
     end
