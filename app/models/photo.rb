@@ -56,7 +56,9 @@ class Photo < ActiveRecord::Base
   end
 
   def approve_unless_moderated
-    self.is_approved = false if self.moderate_photos
+    if !self.program.nil? && self.program.moderate_photos
+      self.is_approved = false
+    end
   end
 
   def approve
