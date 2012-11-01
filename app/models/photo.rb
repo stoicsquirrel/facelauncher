@@ -59,6 +59,8 @@ class Photo < ActiveRecord::Base
     if !self.program.nil? && self.program.moderate_photos
       self.is_approved = false
     end
+
+    return true  # This is required because the previous line (false) will cancel DB commit.
   end
 
   def approve
