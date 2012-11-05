@@ -1,7 +1,6 @@
 class User < ActiveRecord::Base
-	has_many :programs_accessible_by_users
+  has_many :programs_accessible_by_users, inverse_of: :user
 	has_many :programs, through: :programs_accessible_by_users
-	belongs_to :users
 
 	ROLES = %w[admin moderator]
 
@@ -12,6 +11,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
+  attr_accessible :email, :password, :password_confirmation, :remember_me,
+                  :role, :program_ids
   # attr_accessible :title, :body
 end
