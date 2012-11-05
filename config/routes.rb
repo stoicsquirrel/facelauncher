@@ -18,7 +18,7 @@ Facelauncher::Application.routes.draw do
   resources :video_playlists, :only => [:index, :show]
   resources :videos, :only => [:index, :show]
   resources :video_tags, :only => [:index, :show]
-  resources :signups, :only => [:create]
+#  resources :signups, :only => [:create]
 
 #  # API Taster
 #  if Rails.env.development?

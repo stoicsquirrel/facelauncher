@@ -385,8 +385,17 @@ RailsAdmin.config do |config|
   # All fields marked as 'hidden' won't be shown anywhere in the rails_admin unless you mark them as visible. (visible(true))
 
   config.model User do
-
+    edit do
+      field :email
+      field :password
+      field :password_confirmation
+      field :role
+      field :programs do
+        inverse_of :users
+      end
+    end
   end
+
   config.model AdditionalField do
     visible false
     object_label_method :object_label
