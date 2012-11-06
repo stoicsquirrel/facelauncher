@@ -87,6 +87,7 @@ class PhotosController < ApplicationController
     @photo = Photo.new(params[:photo])
 
     respond_to do |format|
+      begin
       if @photo.save
         format.json do
           render json: { :id => @photo.id, :filename => File.basename(@photo.file.url) }
@@ -94,6 +95,11 @@ class PhotosController < ApplicationController
       else
         format.json do
           head :bad_request
+        end
+      end
+      rescue Exception => err
+        format.json do
+          render json: { error: { photo: @photo } }
         end
       end
     end

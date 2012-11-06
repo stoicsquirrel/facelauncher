@@ -19,8 +19,8 @@ class Photo < ActiveRecord::Base
   validates :file, presence: true, :if => "file_url.nil?"
   validates :file_url, presence: true, :if => "file.nil?"
 
-  #before_save :update_program
-  #before_create :download_file, :approve_unless_moderated
+  before_save :update_program
+  before_create :download_file, :approve_unless_moderated
 
   def update_program
     self.program.update_attribute(:photos_updated_at, DateTime.now) unless self.program.nil?
