@@ -19,43 +19,43 @@ class Photo < ActiveRecord::Base
   validates :file, presence: true, :if => "file_url.nil?"
   validates :file_url, presence: true, :if => "file.nil?"
 
-  before_save :update_program
-  before_create :download_file, :approve_unless_moderated
+  #before_save :update_program
+  #before_create :download_file, :approve_unless_moderated
 
   def update_program
     self.program.update_attribute(:photos_updated_at, DateTime.now) unless self.program.nil?
   end
 
-#  def download_file
-#    # If a file URL is passed in, then download that file, and continue below to save it.
-#    unless self.file_url.nil?
-#      Faraday.new do |conn|
-#        conn.adapter :net_http
-#
-#        # Try to pull the image file, and save it (using a tmp file), if good.
-#        response = conn.get(self.file_url)
-#        if response.status == 200
-#          # Look at the mime type to make sure that this is an image file.
-#          if response.headers['content-type'] =~ /^image\/(jpeg|gif|png)$/
-#            # Make a temporary image file and save it if the file is good
-#            FileUtils.mkdir_p("#{Rails.root}/tmp/images/uploaded_from_app") # Make the temp directory if one doesn't exist
-#            # Get the file name.
-#            filename = File.basename(self.file_url)
-#            # Open a new tmp file for writing, then save and send the file.
-#            File.open("#{Rails.root}/tmp/images/uploaded_from_app/#{filename}", "w+") do |file|
-#              file.binmode # File must be opened in binary mode
-#
-#              # Save the file
-#              file << response.body
-#              self.file.store! file
-#            end
-#          end
-#        end
-#      end
-#    end
-#
-#    return true
-#  end
+  def download_file
+    # If a file URL is passed in, then download that file, and continue below to save it.
+    unless self.file_url.nil?
+      Faraday.new do |conn|
+        conn.adapter :net_http
+
+        # Try to pull the image file, and save it (using a tmp file), if good.
+        response = conn.get(self.file_url)
+        if response.status == 200
+          # Look at the mime type to make sure that this is an image file.
+          if response.headers['content-type'] =~ /^image\/(jpeg|gif|png)$/
+            # Make a temporary image file and save it if the file is good
+            FileUtils.mkdir_p("#{Rails.root}/tmp/images/uploaded_from_app") # Make the temp directory if one doesn't exist
+            # Get the file name.
+            filename = File.basename(self.file_url)
+            # Open a new tmp file for writing, then save and send the file.
+            File.open("#{Rails.root}/tmp/images/uploaded_from_app/#{filename}", "w+") do |file|
+              file.binmode # File must be opened in binary mode
+
+              # Save the file
+              file << response.body
+              self.file.store! file
+            end
+          end
+        end
+      end
+    end
+
+    return true
+  end
 
   def approve_unless_moderated
     if !self.program.nil? && self.program.moderate_photos
