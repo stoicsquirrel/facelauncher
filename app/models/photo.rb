@@ -53,6 +53,8 @@ class Photo < ActiveRecord::Base
         end
       end
     end
+
+    return true
   end
 
   def approve_unless_moderated
