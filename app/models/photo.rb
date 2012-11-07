@@ -10,7 +10,7 @@ class Photo < ActiveRecord::Base
   mount_uploader :file, PhotoUploader
   attr_accessor :file_url
   attr_accessible :caption, :comment_count, :file, :file_url, :from_service, :from_user_full_name,
-                  :from_user_id, :from_user_username, :like_count, :original_file_id, :title,
+                  :from_user_id, :from_user_username, :like_count, :original_photo_id, :title,
                   :file_cache, :remove_file, :photo_album_id, :program_id, :position,
                   :is_approved, :photo_tags_attributes, :additional_info_1, :additional_info_2,
                   :additional_info_3
@@ -23,7 +23,7 @@ class Photo < ActiveRecord::Base
   before_create :download_file, :approve_unless_moderated
 
   def update_program
-    self.program.update_attribute(:photos_updated_at, DateTime.now) unless self.program.nil?
+    self.program.photos_updated_at = DateTime.now unless self.program.nil?
   end
 
   def download_file
@@ -60,6 +60,8 @@ class Photo < ActiveRecord::Base
   def approve_unless_moderated
     if !self.program.nil? && self.program.moderate_photos
       self.is_approved = false
+      # This is necessary because the method will return false, halting execution of the save.
+      return true
     end
 
     return true  # This is required because the previous line (false) will cancel DB commit.
