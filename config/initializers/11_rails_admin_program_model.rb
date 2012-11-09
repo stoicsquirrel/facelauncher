@@ -76,7 +76,7 @@ RailsAdmin.config do |config|
 #          formatted_value do
 #            "<a href=\"#{bindings[:object].facebook_app_settings_url}\" target=\"blank\">#{bindings[:object].facebook_app_settings_url}</a> <i class=\"icon-external-link\"></i>".html_safe unless bindings[:object].facebook_app_settings_url.blank?
 #          end
-#        end        
+#        end
 #      end
 #
 #      group :instagram_info do
@@ -159,13 +159,13 @@ RailsAdmin.config do |config|
         field :description
         field :app_url do
           label "App URL"
-          help "Optional. Length up to 255. This is the URL to the client app, and is required when the program is active. For Facebook apps, use the URL on Facebook."
+          help "Deprecated! Optional. Length up to 255. This is the URL to the client app, and is required when the program is active. For Facebook apps, use the URL on Facebook."
         end
 #        field :moderate_signups do
 #          help "Required. Determines whether signups to this program must be approved."
 #        end
         field :moderate_photos do
-          help "Required. Determines whether photos program must be approved."
+          help "Optional. Determines whether photos program must be approved."
         end
         field :active do
           read_only true
@@ -204,28 +204,30 @@ RailsAdmin.config do |config|
       end
       group :facebook_info do
         active false
-        help "The app ID and app secret can be found on the Facebook app's settings page."
+        help "Deprecated! The app ID and app secret can be found on the Facebook app's settings page."
         field :facebook_app_id do
           label "App ID"
+          help "Deprecated! Optional. Length up to 30."
         end
         field :facebook_app_secret do
           label "App secret"
+          help "Deprecated! Optional. Length up to 60."
         end
         field :facebook_app_access_token do
           read_only true
           label "App access token"
-          help "The access token will be pulled from Facebook whenever the app ID or secret have been changed."
+          help "Deprecated! The access token will be pulled from Facebook whenever the app ID or secret have been changed."
         end
         field :facebook_app_settings_url do
           label "App settings URL"
-          help 'You must be logged in to Facebook as an admin of this app in order to see this page.'
+          help 'Deprecated! You must be logged in to Facebook as an admin of this app in order to see this page.'
           formatted_value do
             "<a href=\"#{bindings[:object].facebook_app_settings_url}\" target=\"blank\">#{bindings[:object].facebook_app_settings_url}</a> <i class=\"icon-external-link\"></i>".html_safe unless bindings[:object].facebook_app_settings_url.blank?
           end
         end
         field :facebook_is_like_gated do
           label "Like gated"
-          help "Required. Determines whether this program uses like-gate functionality."
+          help "Deprecated! Optional. Determines whether this program uses like-gate functionality."
         end
       end
       group :instagram_info do
@@ -259,10 +261,10 @@ RailsAdmin.config do |config|
       end
       group :additional_info do
         active false
-        
+
         field :google_analytics_tracking_code do
           label "GA tracking code"
-          help "Optional. Length up to 255. For Google Analytics."
+          help "Deprecated! Optional. Length up to 255. For Google Analytics."
         end
         field :set_active_date
         field :set_inactive_date
@@ -282,9 +284,42 @@ RailsAdmin.config do |config|
         field :additional_info_2
         field :additional_info_3
       end
-#        field :signups
+      group :apps do
+        field :program_apps
+      end
     end
     create do; end
     update do; end
+  end
+
+  config.model ProgramApp do
+    visible false
+
+    nested do
+      field :app_url do
+        label "App URL"
+        help "Optional. Length up to 255. This is the front-facing URL, and is required when the program is active. Use the Facebook app URL for Facebook apps."
+      end
+      field :name
+      field :description
+      field :facebook_app_id do
+        label "Facebook app ID"
+      end
+      field :facebook_app_secret
+      field :facebook_app_access_token do
+        read_only true
+        help "The access token will be pulled from Facebook whenever the app ID or secret have been changed."
+      end
+      field :facebook_app_settings_url do
+        label "Facebook app settings URL"
+        help 'You must be logged in to Facebook as an admin of this app in order to view this page.'
+        formatted_value do
+          "<a href=\"#{bindings[:object].facebook_app_settings_url}\" target=\"blank\">#{bindings[:object].facebook_app_settings_url}</a> <i class=\"icon-external-link\"></i>".html_safe unless bindings[:object].facebook_app_settings_url.blank?
+        end
+      end
+      field :google_analytics_tracking_code do
+        label "Google Analytics tracking code"
+      end
+    end
   end
 end

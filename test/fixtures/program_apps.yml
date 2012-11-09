@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  program: 
+  app_url: MyString
+  name: MyString
+  description: MyString
+  facebook_app_id: MyString
+  facebook_app_secret: MyString
+  facebook_app_access_token: MyString
+  google_analytics_tracking_code: MyString
+
+two:
+  program: 
+  app_url: MyString
+  name: MyString
+  description: MyString
+  facebook_app_id: MyString
+  facebook_app_secret: MyString
+  facebook_app_access_token: MyString
+  google_analytics_tracking_code: MyString
