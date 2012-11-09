@@ -185,6 +185,13 @@ RailsAdmin.config do |config|
       end
       group :developer_info do
         active false
+
+        field :id do
+          visible true
+          read_only true
+          label "Program ID"
+          help "The program ID must be entered into your app's settings."
+        end
         field :program_access_key do
           read_only true
           label "Program access key"
@@ -294,8 +301,15 @@ RailsAdmin.config do |config|
 
   config.model ProgramApp do
     visible false
+    object_label_method :object_label
 
     nested do
+      field :id do
+        visible true
+        read_only true
+        label "App ID"
+        help "The app ID must be entered into your app's settings."
+      end
       field :app_url do
         label "App URL"
         help "Optional. Length up to 255. This is the front-facing URL, and is required when the program is active. Use the Facebook app URL for Facebook apps."
