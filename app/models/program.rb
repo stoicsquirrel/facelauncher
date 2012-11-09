@@ -40,6 +40,7 @@ class Program < ActiveRecord::Base
   validates :instagram_client_id, length: { maximum: 32 }
   validates :instagram_client_secret, length: { maximum: 32 }
 
+  # TODO: Remove from this model.
   def validate_fb_app_id_and_secret
     if !facebook_app_id.blank? && !facebook_app_secret.blank?
       begin
