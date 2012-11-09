@@ -4,3 +4,6 @@ en:
       program_photo_import_tag:
         one: "Tag for photo import"
         other: "Tags for photo import"
+      program_app:
+        one: "App"
+        other: "Apps"

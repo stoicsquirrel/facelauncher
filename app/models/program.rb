@@ -1,4 +1,5 @@
 class Program < ActiveRecord::Base
+  has_many :program_apps, dependent: :destroy, inverse_of: :program
   has_many :programs_accessible_by_users, inverse_of: :program
   has_many :users, through: :programs_accessible_by_users
   has_many :signups, dependent: :destroy, inverse_of: :program
@@ -14,11 +15,12 @@ class Program < ActiveRecord::Base
   attr_accessor :permanent_link, :link_to_program_photos, :link_to_program_videos,
                 :edit_photos, :edit_additional_fields
 
+  accepts_nested_attributes_for :program_apps, allow_destroy: true
   accepts_nested_attributes_for :additional_fields, allow_destroy: true
   # accepts_nested_attributes_for :photos, allow_destroy: true
   accepts_nested_attributes_for :program_photo_import_tags, allow_destroy: true
   #accepts_nested_attributes_for :users, allow_destroy: false
-  attr_accessible :additional_fields_attributes, :role, :user_ids,
+  attr_accessible :program_apps_attributes, :additional_fields_attributes, :role, :user_ids,
                   :set_active_date, :set_inactive_date, :description,
                   :facebook_app_id, :facebook_app_secret, :facebook_is_like_gated,
                   :google_analytics_tracking_code, :name, :short_name, :app_url,
@@ -107,6 +109,7 @@ class Program < ActiveRecord::Base
     self.program_photo_import_tags.select([:tag])
   end
 
+  # TODO: Remove from this model.
   def facebook_app_settings_url
     !self.facebook_app_id.blank? ? "https://developers.facebook.com/apps/#{self.facebook_app_id}/" : ''
   end

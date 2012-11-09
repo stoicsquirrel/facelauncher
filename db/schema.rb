@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121029015805) do
+ActiveRecord::Schema.define(:version => 20121109172233) do
 
   create_table "additional_fields", :force => true do |t|
     t.integer  "program_id",                 :null => false
@@ -65,6 +65,21 @@ ActiveRecord::Schema.define(:version => 20121029015805) do
     t.string   "additional_info_3"
   end
 
+  create_table "program_apps", :force => true do |t|
+    t.integer  "program_id",                                   :null => false
+    t.string   "app_url"
+    t.string   "name",                                         :null => false
+    t.string   "description"
+    t.string   "facebook_app_id",                :limit => 30
+    t.string   "facebook_app_secret",            :limit => 60
+    t.string   "facebook_app_access_token",      :limit => 60
+    t.string   "google_analytics_tracking_code", :limit => 20
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+  end
+
+  add_index "program_apps", ["program_id"], :name => "index_program_apps_on_program_id"
+
   create_table "program_photo_import_tags", :force => true do |t|
     t.integer  "program_id",               :null => false
     t.string   "tag",        :limit => 50, :null => false
@@ -102,6 +117,9 @@ ActiveRecord::Schema.define(:version => 20121029015805) do
     t.string   "tumblr_consumer_key"
     t.datetime "photos_updated_at"
     t.datetime "videos_updated_at"
+    t.string   "additional_info_1"
+    t.string   "additional_info_2"
+    t.string   "additional_info_3"
   end
 
   create_table "programs_accessible_by_users", :force => true do |t|
