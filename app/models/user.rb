@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
   has_many :programs_accessible_by_users, inverse_of: :user
-	has_many :programs, through: :programs_accessible_by_users
+  has_many :programs, through: :programs_accessible_by_users
 
-	ROLES = %w[admin moderator]
+  ROLES = %w[admin moderator]
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
