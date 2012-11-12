@@ -32,7 +32,7 @@ class Ability
       if user.role == 'admin'
         can :manage, :all
       elsif user.role == 'moderator'
-        can :manage, [Photo, PhotoAlbum, PhotoTag, Video, VideoPlaylist, VideoTag]
+        can :manage, [Photo, PhotoAlbum, PhotoTag, Video, VideoPlaylist, VideoTag] #, :program => { :users => { :id => user.id } } if user.programs.any?
       end
     end
   end
