@@ -72,11 +72,17 @@ body.rails_admin {
 }
 
 .carrierwave_type > .controls > .toggle {
-  a.loading {
+  a {
     display: block;
-    width: 200px;
-    height: 75px;
-    background: image-url("loading.gif") no-repeat 50% 50%;
-    background-size: 32px 32px;
+
+    &.loading {
+      width: 200px;
+      height: 75px;
+      background: image-url("loading.gif") no-repeat 50% 50%;
+      background-size: 32px 32px;
+    }
+    &.new {
+      display: none;
+    }
   }
 }
