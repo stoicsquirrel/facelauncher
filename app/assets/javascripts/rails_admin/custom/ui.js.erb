@@ -7,35 +7,37 @@ $(document).ready(function() {
     .attr("src", $avatar.attr("src").replace("?s=30", "?s=90"))
     .attr("width", "30")
     .attr("height", "30");
+  //.end();
 
   $(".show_in_app_member_link > a").attr("target", "_blank");
 
   /* File Uploader */
   $(".cloudinary-fileupload")
     .bind("fileuploadsubmit", function(e, data) {
-      $(this).siblings("a")
+      $(this).siblings("a.image_preview_link")
+        .removeClass("new")
         .addClass("loading")
       .children("img")
         .hide();
-    })
-    .bind("fileuploadprogressall", function(e, data) {
-      console.log(data);
+      //.end();
     })
     .bind("cloudinarydone", function(e, data) {
-    var thumbUrl = ["http://res.cloudinary.com",
-                    $.cloudinary.config().cloud_name,
-                    data.result.resource_type,
-                    "upload",
-                    "c_limit,h_350,w_350",
-                    data.result.path].join('/');
+      var thumbUrl = ["http://res.cloudinary.com",
+                      $.cloudinary.config().cloud_name,
+                      data.result.resource_type,
+                      "upload",
+                      "c_limit,h_350,w_350",
+                      data.result.path].join('/');
 
-    $(this).siblings("a")
-      .attr("href", data.result.url)
-    .children("img")
-      .attr("src", thumbUrl)
-      .show();
-  })
-  .siblings("a").children("img").load(function() {
-    $(this).parent("a").removeClass("loading");
-  });
+      $(this).siblings("a.image_preview_link")
+        .attr("href", data.result.url)
+      .children("img")
+        .attr("src", thumbUrl)
+        .show();
+      //.end();
+    })
+    .siblings("a.image_preview_link").children("img").load(function() {
+      $(this).parent("a").removeClass("loading");
+    });
+  //.end();
 });

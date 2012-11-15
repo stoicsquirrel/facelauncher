@@ -520,9 +520,12 @@ RailsAdmin.config do |config|
             if value.presence
               if self.image
                 filename = bindings[:object].file.filename
-                image_tag = bindings[:view].cl_image_tag(filename, crop: :limit, width: 350, height: 350, title: "View full sized image")
-                "<a href=\"#{bindings[:view].cl_image_path(filename)}\" target=\"view_image\">#{image_tag}</a>".html_safe
+                image_tag = bindings[:view].cl_image_tag(filename, crop: :limit, width: 350, height: 350, title: "View full sized image", alt: '')
+                "<a class=\"image_preview_link\" href=\"#{bindings[:view].cl_image_path(filename)}\" target=\"view_image\">#{image_tag}</a>".html_safe
               end
+            else
+              image_tag = bindings[:view].image_tag("blank.gif", title: "View full sized image", alt: '')
+              "<a class=\"image_preview_link new\" href=\"#\" target=\"view_image\"><img src=\"\"></a>".html_safe
             end
           end
 
@@ -694,8 +697,11 @@ RailsAdmin.config do |config|
           if value.presence
             if self.image
               filename = bindings[:object].screenshot.filename
-              image_tag = bindings[:view].cl_image_tag(filename, crop: :limit, width: 350, height: 350, title: "View full sized image")
+              image_tag = bindings[:view].cl_image_tag(filename, crop: :limit, width: 350, height: 350, title: "View full sized image", alt: '')
               "<a href=\"#{bindings[:view].cl_image_path(filename)}\" target=\"view_image\">#{image_tag}</a>".html_safe
+            else
+              image_tag = bindings[:view].image_tag("blank.gif", title: "View full sized image", alt: '')
+              "<a class=\"new\" href=\"#\" target=\"view_image\"><img src=\"\"></a>".html_safe
             end
           end
         end
