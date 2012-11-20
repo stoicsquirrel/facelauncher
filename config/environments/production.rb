@@ -32,7 +32,7 @@ Facelauncher::Application.configure do
 
   # Fix for Heroku logging with Unicorn server
   config.logger = Logger.new(STDOUT)
-  config.logger.level = Logger.const_get(ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'INFO')  
+  config.logger.level = Logger.const_get(ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'INFO')
 
   # See everything in the log (default is :info)
   # config.log_level = :debug
@@ -52,11 +52,16 @@ Facelauncher::Application.configure do
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
 
-  # Disable delivery errors, bad email addresses will be ignored
-  # config.action_mailer.raise_delivery_errors = false
-
-  # CHANGE ME!
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.default_url_options = { 'bigfuel-facelauncher.herokuapp.com' }
+  config.action_mailer.smtp_settings = {
+    :address  => "smtp.mandrillapp.com",
+    :port  => 587,
+    :user_name  => "asavar",
+    :password  => "2dca9dab-7156-4c0a-8ce3-0b3a53db6fcf",
+    :authentication  => "plain"
+  }
 
   # Enable threaded mode
   # config.threadsafe!
