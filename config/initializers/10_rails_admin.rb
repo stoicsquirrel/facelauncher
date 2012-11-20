@@ -415,6 +415,14 @@ RailsAdmin.config do |config|
   config.model PhotoAlbum do
     parent Program
 
+    export do
+      field :id do
+        label "ID"
+      end
+      field :name
+      field :created_at
+      field :updated_at
+    end
     edit do
       field :program do
         nested_form false
@@ -459,6 +467,37 @@ RailsAdmin.config do |config|
   config.model Photo do
     parent PhotoAlbum
     object_label_method :object_label
+
+    export do
+      field :id do
+        label "ID"
+      end
+      field :file
+      field :caption
+      field :from_service do
+        label "Social media"
+        export_value do
+          bindings[:object].from_service.titleize unless bindings[:object].from_service.nil?
+        end
+      end
+      field :from_user_id do
+        label "User ID"
+      end
+      field :from_user_username do
+        label "Username"
+      end
+      field :from_user_full_name do
+        label "User's full name"
+      end
+      field :is_approved do
+        label "Approved"
+      end
+      field :created_at
+      field :updated_at
+      field :photo_tags do
+        label "Tags"
+      end
+    end
 
     list do
       sort_by :updated_at
@@ -590,6 +629,9 @@ RailsAdmin.config do |config|
   config.model PhotoTag do
     visible false
 
+    export do
+      field :tag
+    end
     nested do
       field :tag
     end
