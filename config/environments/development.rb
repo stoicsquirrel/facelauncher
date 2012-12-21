@@ -21,9 +21,10 @@ Facelauncher::Application.configure do
   config.action_mailer.smtp_settings = {
     :address  => "smtp.mandrillapp.com",
     :port  => 587,
+    :enable_starttls_auto => true,
     :user_name  => "asavar",
     :password  => "2dca9dab-7156-4c0a-8ce3-0b3a53db6fcf",
-    :authentication  => "plain"
+    :authentication  => "login"
   }
 
   # Print deprecation notices to the Rails logger

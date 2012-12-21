@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.9'
 gem 'pg'
 gem 'heroku-api'
 
@@ -40,4 +40,9 @@ gem 'unicorn'
 group :development do
   gem 'foreman'
   gem 'pry-rails'
+end
+
+group :test do
+  gem 'minitest-rails'
+  gem 'turn'
 end
