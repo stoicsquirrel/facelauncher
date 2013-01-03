@@ -24,7 +24,7 @@ class Photo < ActiveRecord::Base
 
   def update_program
     unless self.program.nil?
-      self.program.photos_updated_at = DateTime.now
+      self.program.update_attribute(:photos_updated_at, DateTime.now)
       self.program.program_apps.each do |program_app|
         program_app.clear_cache
       end
