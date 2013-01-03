@@ -1,7 +1,7 @@
 class ProgramApp < ActiveRecord::Base
   belongs_to :program
-  attr_accessible :app_url, :description, :facebook_app_access_token, :facebook_app_id,
-                  :facebook_app_secret, :google_analytics_tracking_code, :name
+  attr_accessible :app_url, :clear_cache_url, :description, :facebook_app_access_token,
+                  :facebook_app_id, :facebook_app_secret, :google_analytics_tracking_code, :name
 
   validates :name, presence: true
   validates :facebook_app_id, length: { maximum: 30 }
@@ -55,6 +55,22 @@ class ProgramApp < ActiveRecord::Base
       errors.add(:facebook_app_secret, "must be entered if a Facebook app ID has been entered.")
     elsif facebook_app_id.blank? and facebook_app_secret.blank?
       self.facebook_app_access_token = ''
+    end
+  end
+
+  def clear_cache
+    unless self.clear_cache_url.blank?
+      Faraday.new do |conn|
+        conn.request :url_encoded
+        conn.adapter :net_http
+        conn.params = {
+          program_id: self.program.id,
+          key: self.program.program_access_key
+        }
+
+        response = conn.post(self.clear_cache_url)
+        puts "RESPONSE: " + response.body
+      end
     end
   end
 

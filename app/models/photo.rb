@@ -23,7 +23,12 @@ class Photo < ActiveRecord::Base
   before_create :download_file, :approve_unless_moderated
 
   def update_program
-    self.program.photos_updated_at = DateTime.now unless self.program.nil?
+    unless self.program.nil?
+      self.program.photos_updated_at = DateTime.now
+      self.program.program_apps.each do |program_app|
+        program_app.clear_cache
+      end
+    end
   end
 
   def download_file

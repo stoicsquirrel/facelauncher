@@ -314,6 +314,10 @@ RailsAdmin.config do |config|
         label "App URL"
         help "Optional. Length up to 255. This is the front-facing URL, and is required when the program is active. Use the Facebook app URL for Facebook apps."
       end
+      field :clear_cache_url do
+        label "Clear cache URL"
+        help "Optional. Length up to 255. This is the URL used by Facelauncher to immediately clear the cache in the client app from the admin tool."
+      end
       field :name
       field :description
       field :facebook_app_id do
