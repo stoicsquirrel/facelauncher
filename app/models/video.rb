@@ -18,7 +18,12 @@ class Video < ActiveRecord::Base
   before_save :update_program
 
   def update_program
-    self.program.update_attribute(:videos_updated_at, DateTime.now) unless self.program.nil?
+    unless self.program.nil?
+      self.program.update_attribute(:videos_updated_at, DateTime.now)
+      self.program.program_apps.each do |program_app|
+        program_app.clear_cache
+      end
+    end
   end
 
   def approve
