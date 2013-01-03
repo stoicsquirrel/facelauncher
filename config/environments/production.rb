@@ -54,7 +54,7 @@ Facelauncher::Application.configure do
 
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = { 'bigfuel-facelauncher.herokuapp.com' }
+  config.action_mailer.default_url_options = { :host => 'bigfuel-facelauncher.herokuapp.com' }
   config.action_mailer.smtp_settings = {
     :address  => "smtp.mandrillapp.com",
     :port  => 587,
