@@ -4,6 +4,7 @@
 [class*=" icon-"] {
   background: none !important;
   color: black;
+  line-height: 14px !important;
 }
 a,
 a:hover {
@@ -25,6 +26,15 @@ button[name="_continue"] {
   [class^="icon-"],
   [class*=" icon-"] {
     color: black !important;
+  }
+}
+
+legend {
+  [class^="icon-"],
+  [class*=" icon-"] {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
   }
 }
 
