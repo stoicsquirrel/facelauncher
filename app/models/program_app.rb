@@ -59,18 +59,9 @@ class ProgramApp < ActiveRecord::Base
   end
 
   def clear_cache
+    puts "CLEAR_CACHE"
     unless self.clear_cache_url.blank?
-      Faraday.new do |conn|
-        conn.request :url_encoded
-        conn.adapter :net_http
-        conn.params = {
-          program_id: self.program.id,
-          key: self.program.program_access_key
-        }
-
-        response = conn.post(self.clear_cache_url)
-        puts "RESPONSE: " + response.body
-      end
+      Resque.enqueue(CacheClearingWorker, self.id)
     end
   end
 

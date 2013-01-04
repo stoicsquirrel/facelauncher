@@ -16,13 +16,11 @@ class Video < ActiveRecord::Base
   validates :position, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   before_save :update_program
+  before_destroy :update_program
 
   def update_program
     unless self.program.nil?
       self.program.update_attribute(:videos_updated_at, DateTime.now)
-      self.program.program_apps.each do |program_app|
-        program_app.clear_cache
-      end
     end
   end
 
