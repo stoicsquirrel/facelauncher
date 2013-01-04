@@ -87,6 +87,13 @@ class Program < ActiveRecord::Base
   end
 
   before_create :generate_program_access_key
+  after_save :clear_app_caches
+
+  def clear_app_caches
+    self.program_apps.each do |program_app|
+      program_app.clear_cache
+    end
+  end
 
   def authenticate(key)
     self.program_access_key == key

@@ -20,14 +20,12 @@ class Photo < ActiveRecord::Base
   validates :file_url, presence: true, :if => "file.nil?"
 
   before_save :update_program
+  before_destroy :update_program
   before_create :download_file, :approve_unless_moderated
 
   def update_program
     unless self.program.nil?
       self.program.update_attribute(:photos_updated_at, DateTime.now)
-      self.program.program_apps.each do |program_app|
-        program_app.clear_cache
-      end
     end
   end
 
