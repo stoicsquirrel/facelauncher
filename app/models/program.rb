@@ -127,8 +127,10 @@ class Program < ActiveRecord::Base
   end
 
   def get_photos_by_tags
-    get_instagram_photos_by_tags
-    get_twitter_photos_by_tags
+    if self.active?
+      get_instagram_photos_by_tags
+      get_twitter_photos_by_tags
+    end
   end
 
   def get_instagram_photos_by_tags
