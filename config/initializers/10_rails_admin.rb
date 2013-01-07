@@ -217,21 +217,28 @@ RailsAdmin.config do |config|
       end
       controller do
         Proc.new do
-          @object.generate_program_access_key
+          if request.get?
+            respond_to do |format|
+              format.html { render @action.template_name }
+              format.js   { render @action.template_name, :layout => false }
+            end
+          elsif request.post?
+            @object.generate_program_access_key
 
-          if @object.save
-            flash[:success] = t("admin.flash.successful", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
-            redirect_path = :back
-          else
-            flash[:error] = t("admin.flash.error", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
-            redirect_path = back_or_index
+            if @object.save
+              flash[:success] = t("admin.flash.successful", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+              redirect_path = :back
+            else
+              flash[:error] = t("admin.flash.error", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+              redirect_path = back_or_index
+            end
+
+            redirect_to back_or_index
           end
-
-          redirect_to redirect_path
         end
       end
 
-      http_methods [:get]
+      http_methods [:get, :post]
       i18n_key :regenerate_program_access_key
       link_icon 'icon-refresh'
     end

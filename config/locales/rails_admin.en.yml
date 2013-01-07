@@ -59,4 +59,5 @@ en:
       are_you_sure_you_want_to_deactivate_the_object: "Are you sure you want to deactivate the %{model_name}"
       are_you_sure_you_want_to_validate_the_object: "Are you sure you want to validate the %{model_name}"
       are_you_sure_you_want_to_invalidate_the_object: "Are you sure you want to invalidate the %{model_name}"
+      are_you_sure_you_want_to_regenerate_the_program_access_key: "Are you sure you want to regenerate the program access key for %{model_name}"
 
