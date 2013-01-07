@@ -1,4 +1,4 @@
-@import "custom/font-awesome.css";
+/*@import "custom/font-awesome.css";
 
 [class^="icon-"],
 [class*=" icon-"] {
@@ -6,6 +6,28 @@
   color: black;
   line-height: 14px !important;
 }
+
+legend {
+  [class^="icon-"],
+  [class*=" icon-"] {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+}
+*/
+
+/* Set correct FontAwesome font location */
+$fontAwesomePath: "font" !default;
+@font-face {
+  font-family: 'FontAwesome';
+  src: url(font-path('#{$fontAwesomePath}.eot'));
+  src: url(font-path('#{$fontAwesomePath}.eot') + '?#iefix') format("embedded-opentype"), url(font-path('#{$fontAwesomePath}.woff')) format("woff"), url(font-path('#{$fontAwesomePath}.ttf')) format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Set list icon links to black with no underline on hover, except in buttons */
 a,
 a:hover {
   [class^="icon-"],
@@ -29,15 +51,7 @@ button[name="_continue"] {
   }
 }
 
-legend {
-  [class^="icon-"],
-  [class*=" icon-"] {
-    font-size: 16px;
-    width: 16px;
-    height: 16px;
-  }
-}
-
+/* External link icon */
 .controls,
 .prettyprint {
   i.icon-external-link {
@@ -45,6 +59,7 @@ legend {
   }
 }
 
+/* Nav bar avatar image */
 .navbar ul.pull-right > li > img {
   display: block;
   border-radius: 2px;
