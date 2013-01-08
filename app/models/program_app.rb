@@ -59,7 +59,6 @@ class ProgramApp < ActiveRecord::Base
   end
 
   def clear_cache
-    puts "CLEAR_CACHE"
     unless self.clear_cache_url.blank?
       Resque.enqueue(CacheClearingWorker, self.id)
     end

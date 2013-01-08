@@ -90,7 +90,7 @@ class Program < ActiveRecord::Base
   after_save :clear_app_caches
 
   def clear_app_caches
-    if !importing_photos? && (self.app_caches_clear_at.nil? || (!self.app_caches_cleared_at.nil? && self.app_caches_cleared_at < DateTime.now - 5))
+    if !importing_photos? && (self.app_caches_cleared_at.nil? || (!self.app_caches_cleared_at.nil? && self.app_caches_cleared_at < DateTime.now - 5))
       self.program_apps.each do |program_app|
         program_app.clear_cache
       end
