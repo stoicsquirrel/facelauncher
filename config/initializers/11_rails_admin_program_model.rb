@@ -142,6 +142,9 @@ RailsAdmin.config do |config|
             !bindings[:object].id.nil?
           end
         end
+        field :photos_imported_at do
+          read_only true
+        end
 #        field :edit_additional_fields do
 #          read_only true
 #          label "Additional fields"
@@ -201,7 +204,9 @@ RailsAdmin.config do |config|
           label "Git repository URL"
           help "Optional. Length up to 255. Use an SSH URL, such as git@github.com:bigfuel/facelauncher.git"
         end
-        # field :additional_fields
+        field :app_caches_cleared_at do
+          read_only true
+        end
       end
       group :admin_info do
         active false
@@ -226,6 +231,7 @@ RailsAdmin.config do |config|
           help "Deprecated! The access token will be pulled from Facebook whenever the app ID or secret have been changed."
         end
         field :facebook_app_settings_url do
+          read_only true
           label "App settings URL"
           help 'Deprecated! You must be logged in to Facebook as an admin of this app in order to see this page.'
           formatted_value do

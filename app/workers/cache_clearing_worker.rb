@@ -19,7 +19,8 @@ class CacheClearingWorker
       end
     rescue Faraday::Error::ConnectionFailed
       if retry_count > 0
-        Resque.enqueue(CacheClearingWorker, self.id, retry_count - 1)
+        retry_count -= 1
+        self.perform(program_app_id, retry_count)
       end
     end
   end

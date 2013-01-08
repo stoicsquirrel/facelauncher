@@ -40,7 +40,7 @@ class Program < ActiveRecord::Base
   validates :instagram_client_id, length: { maximum: 32 }
   validates :instagram_client_secret, length: { maximum: 32 }
 
-  # TODO: Remove from this model.
+  # Deprecated in Program. TODO: Remove from this model.
   def validate_fb_app_id_and_secret
     if !facebook_app_id.blank? && !facebook_app_secret.blank?
       begin
@@ -90,8 +90,11 @@ class Program < ActiveRecord::Base
   after_save :clear_app_caches
 
   def clear_app_caches
-    self.program_apps.each do |program_app|
-      program_app.clear_cache
+    if !importing_photos? && (self.app_caches_clear_at.nil? || (!self.app_caches_cleared_at.nil? && self.app_caches_cleared_at < DateTime.now - 5))
+      self.program_apps.each do |program_app|
+        program_app.clear_cache
+      end
+      self.update_attribute(:app_caches_cleared_at, DateTime.now)
     end
   end
 
@@ -126,10 +129,16 @@ class Program < ActiveRecord::Base
     self.active && (self.set_active_date.blank? || (!self.set_active_date.blank? && self.set_active_date < Time.now)) && (self.set_inactive_date.blank? || (!self.set_inactive_date.blank? && self.set_inactive_date > Time.now))
   end
 
+  def importing_photos?
+    @importing_photos
+  end
+
   def get_photos_by_tags
     if self.active?
       get_instagram_photos_by_tags
       get_twitter_photos_by_tags
+      self.update_attribute(:photos_imported_at, DateTime.now)
+      clear_app_caches
     end
   end
 
