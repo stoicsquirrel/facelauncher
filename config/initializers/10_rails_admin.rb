@@ -161,19 +161,20 @@ RailsAdmin.config do |config|
       link_icon 'icon-thumbs-down'
     end
 
-    member :approve_item do
+    member :approve do
       visible do
-        default_visible && bindings[:abstract_model].model_name == "Photo"
+        model_name = bindings[:abstract_model].model_name
+        default_visible && (model_name == "Photo" || model_name == "Video") && !bindings[:object].is_approved
       end
       controller do
         Proc.new do
-          @object.generate_program_access_key
+          @object.approve
 
           if @object.save
-            flash[:success] = t("admin.flash.successful", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+            flash[:success] = t("admin.flash.successful", :name => @model_config.label, :action => t("admin.actions.approve.done"))
             redirect_path = :back
           else
-            flash[:error] = t("admin.flash.error", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+            flash[:error] = t("admin.flash.error", :name => @model_config.label, :action => t("admin.actions.approve.done"))
             redirect_path = back_or_index
           end
 
@@ -182,23 +183,24 @@ RailsAdmin.config do |config|
       end
 
       http_methods [:get]
-      i18n_key :regenerate_program_access_key
+      i18n_key :approve
       link_icon 'icon-thumbs-up'
     end
 
-    member :unapprove_item do
+    member :unapprove do
       visible do
-        default_visible && bindings[:abstract_model].model_name == "Photo"
+        model_name = bindings[:abstract_model].model_name
+        default_visible && (model_name == "Photo" || model_name == "Video") && bindings[:object].is_approved
       end
       controller do
         Proc.new do
-          @object.generate_program_access_key
+          @object.unapprove
 
           if @object.save
-            flash[:success] = t("admin.flash.successful", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+            flash[:success] = t("admin.flash.successful", :name => @model_config.label, :action => t("admin.actions.unapprove.done"))
             redirect_path = :back
           else
-            flash[:error] = t("admin.flash.error", :name => @model_config.label, :action => t("admin.actions.regenerate_program_access_key.done"))
+            flash[:error] = t("admin.flash.error", :name => @model_config.label, :action => t("admin.actions.unapprove.done"))
             redirect_path = back_or_index
           end
 
@@ -207,7 +209,7 @@ RailsAdmin.config do |config|
       end
 
       http_methods [:get]
-      i18n_key :regenerate_program_access_key
+      i18n_key :unapprove
       link_icon 'icon-thumbs-down'
     end
 

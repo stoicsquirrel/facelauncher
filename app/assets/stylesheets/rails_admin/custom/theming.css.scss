@@ -40,13 +40,15 @@ button[name="_continue"] {
 
 .links,
 .nav {
-  .activate_member_link > a {
+  .activate_member_link > a,
+  .approve_member_link > a {
     [class^="icon-"],
     [class*=" icon-"] {
       color: green;
     }
   }
-  .deactivate_member_link > a {
+  .deactivate_member_link > a,
+  .unapprove_member_link > a {
     [class^="icon-"],
     [class*=" icon-"] {
       color: red;

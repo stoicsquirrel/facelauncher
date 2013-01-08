@@ -40,6 +40,18 @@ en:
         link: "Import photos"
         done: "imported photos"
         enqueued: "importing photos"
+      approve:
+        title: "Approve %{object_label}"
+        menu: "Approve"
+        breadcrumb: "Approve"
+        link: "Approve %{model_label}"
+        done: "Approved"
+      unapprove:
+        title: "Unapprove %{object_label}"
+        menu: "Unapprove"
+        breadcrumb: "Unapprove"
+        link: "Unapprove %{model_label}"
+        done: "Unapproved"
       bulk_approve:
         title: "Approve %{model_label_plural}"
         menu: "Multiple approve"
