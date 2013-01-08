@@ -1,32 +1,3 @@
-/*@import "custom/font-awesome.css";
-
-[class^="icon-"],
-[class*=" icon-"] {
-  background: none !important;
-  color: black;
-  line-height: 14px !important;
-}
-
-legend {
-  [class^="icon-"],
-  [class*=" icon-"] {
-    font-size: 16px;
-    width: 16px;
-    height: 16px;
-  }
-}
-*/
-
-/* Set correct FontAwesome font location */
-$fontAwesomePath: "font" !default;
-@font-face {
-  font-family: 'FontAwesome';
-  src: url(font-path('#{$fontAwesomePath}.eot'));
-  src: url(font-path('#{$fontAwesomePath}.eot') + '?#iefix') format("embedded-opentype"), url(font-path('#{$fontAwesomePath}.woff')) format("woff"), url(font-path('#{$fontAwesomePath}.ttf')) format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
 /* Set list icon links to black with no underline on hover, except in buttons */
 a,
 a:hover {
