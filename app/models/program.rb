@@ -90,7 +90,11 @@ class Program < ActiveRecord::Base
   after_save :clear_app_caches
 
   def clear_app_caches
-    if !importing_photos? && (self.app_caches_cleared_at.nil? || (!self.app_caches_cleared_at.nil? && self.app_caches_cleared_at < DateTime.now - 5))
+    puts "clear_app_caches:"
+    puts self.changed
+    c = self.changed
+    if !c.include?("app_caches_cleared_at") && !c.include?("photos_updated_at") &&!c.include?("videos_updated_at")
+      puts "CLEAR"
       self.program_apps.each do |program_app|
         program_app.clear_cache
       end
@@ -127,10 +131,6 @@ class Program < ActiveRecord::Base
 
   def active?
     self.active && (self.set_active_date.blank? || (!self.set_active_date.blank? && self.set_active_date < Time.now)) && (self.set_inactive_date.blank? || (!self.set_inactive_date.blank? && self.set_inactive_date > Time.now))
-  end
-
-  def importing_photos?
-    @importing_photos
   end
 
   def get_photos_by_tags

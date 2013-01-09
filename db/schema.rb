@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121109172233) do
+ActiveRecord::Schema.define(:version => 20130108221033) do
 
   create_table "additional_fields", :force => true do |t|
     t.integer  "program_id",                 :null => false
@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(:version => 20121109172233) do
     t.string   "google_analytics_tracking_code", :limit => 20
     t.datetime "created_at",                                   :null => false
     t.datetime "updated_at",                                   :null => false
+    t.string   "clear_cache_url"
   end
 
   add_index "program_apps", ["program_id"], :name => "index_program_apps_on_program_id"
@@ -120,6 +121,8 @@ ActiveRecord::Schema.define(:version => 20121109172233) do
     t.string   "additional_info_1"
     t.string   "additional_info_2"
     t.string   "additional_info_3"
+    t.datetime "photos_imported_at"
+    t.datetime "app_caches_cleared_at"
   end
 
   create_table "programs_accessible_by_users", :force => true do |t|

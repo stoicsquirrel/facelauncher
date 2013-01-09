@@ -1,6 +1,6 @@
 class Photo < ActiveRecord::Base
   belongs_to :photo_album, inverse_of: :photos
-  belongs_to :program, touch: true
+  belongs_to :program
   has_many :photo_tags
 
   scope :approved, where(is_approved: true)
@@ -25,7 +25,12 @@ class Photo < ActiveRecord::Base
 
   def update_program
     unless self.program.nil?
+      puts "PHOTO"
       self.program.update_attribute(:photos_updated_at, DateTime.now)
+      # Clear the app caches only if the photo was not recently imported.
+      if (!self.from_service.nil? && self.id_changed?) || self.from_service.nil?
+        self.program.clear_app_caches
+      end
     end
   end
 

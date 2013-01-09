@@ -21,6 +21,7 @@ class Video < ActiveRecord::Base
   def update_program
     unless self.program.nil?
       self.program.update_attribute(:videos_updated_at, DateTime.now)
+      self.program.clear_app_caches
     end
   end
 
