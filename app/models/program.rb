@@ -93,8 +93,8 @@ class Program < ActiveRecord::Base
     puts "clear_app_caches:"
     puts self.changed
     c = self.changed
-    if !c.include?("app_caches_cleared_at") && !c.include?("photos_updated_at") &&!c.include?("videos_updated_at")
-      puts "CLEAR"
+    if (!self.app_caches_cleared_at.nil? && self.app_caches_cleared_at < 2.minutes.ago) &&
+       !c.include?("app_caches_cleared_at")
       self.program_apps.each do |program_app|
         program_app.clear_cache
       end
