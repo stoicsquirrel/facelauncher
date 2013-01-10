@@ -25,7 +25,6 @@ class Photo < ActiveRecord::Base
 
   def update_program
     unless self.program.nil?
-      puts "PHOTO"
       self.program.update_attribute(:photos_updated_at, DateTime.now)
       # Clear the app caches only if the photo was not recently imported.
       if (!self.from_service.nil? && self.id_changed?) || self.from_service.nil?
