@@ -60,17 +60,17 @@ RailsAdmin.config do |config|
 
   #   # Found associations:
 
-  #     configure :program, :belongs_to_association 
+  #     configure :program, :belongs_to_association
 
   #   # Found columns:
 
-  #     configure :id, :integer 
-  #     configure :program_id, :integer         # Hidden 
-  #     configure :short_name, :string 
-  #     configure :label, :string 
-  #     configure :is_required, :boolean 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
+  #     configure :id, :integer
+  #     configure :program_id, :integer         # Hidden
+  #     configure :short_name, :string
+  #     configure :label, :string
+  #     configure :is_required, :boolean
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
 
   #   # Cross-section configuration:
 
@@ -106,20 +106,20 @@ RailsAdmin.config do |config|
 
   #   # Found associations:
 
-  #     configure :photo_tags, :has_many_association 
+  #     configure :photo_tags, :has_many_association
 
   #   # Found columns:
 
-  #     configure :id, :integer 
-  #     configure :file, :carrierwave 
-  #     configure :caption, :text 
-  #     configure :from_user_username, :string 
-  #     configure :from_user_full_name, :string 
-  #     configure :from_user_id, :string 
-  #     configure :from_service, :string 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
-  #     configure :is_approved, :boolean 
+  #     configure :id, :integer
+  #     configure :file, :carrierwave
+  #     configure :caption, :text
+  #     configure :from_user_username, :string
+  #     configure :from_user_full_name, :string
+  #     configure :from_user_id, :string
+  #     configure :from_service, :string
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
+  #     configure :is_approved, :boolean
 
   #   # Cross-section configuration:
 
@@ -159,10 +159,10 @@ RailsAdmin.config do |config|
 
   #   # Found columns:
 
-  #     configure :id, :integer 
-  #     configure :name, :string 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
+  #     configure :id, :integer
+  #     configure :name, :string
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
 
   #   # Cross-section configuration:
 
@@ -202,7 +202,7 @@ RailsAdmin.config do |config|
 
   #   # Found columns:
 
-  #     configure :tag, :string 
+  #     configure :tag, :string
 
   #   # Cross-section configuration:
 
@@ -238,50 +238,50 @@ RailsAdmin.config do |config|
 
   #   # Found associations:
 
-  #     configure :program_apps, :has_many_association 
-  #     configure :programs_accessible_by_users, :has_many_association 
-  #     configure :users, :has_many_association 
-  #     configure :signups, :has_many_association 
-  #     configure :additional_fields, :has_many_association 
-  #     configure :photos, :has_many_association 
-  #     configure :photo_albums, :has_many_association 
-  #     configure :videos, :has_many_association 
-  #     configure :video_playlists, :has_many_association 
-  #     configure :program_photo_import_tags, :has_many_association 
+  #     configure :program_apps, :has_many_association
+  #     configure :programs_accessible_by_users, :has_many_association
+  #     configure :users, :has_many_association
+  #     configure :signups, :has_many_association
+  #     configure :additional_fields, :has_many_association
+  #     configure :photos, :has_many_association
+  #     configure :photo_albums, :has_many_association
+  #     configure :videos, :has_many_association
+  #     configure :video_playlists, :has_many_association
+  #     configure :program_photo_import_tags, :has_many_association
 
   #   # Found columns:
 
-  #     configure :id, :integer 
-  #     configure :name, :string 
-  #     configure :description, :string 
-  #     configure :facebook_app_id, :string 
-  #     configure :facebook_app_secret, :string 
-  #     configure :google_analytics_tracking_code, :string 
-  #     configure :app_url, :string 
-  #     configure :repo, :string 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
-  #     configure :active, :boolean 
-  #     configure :set_active_date, :datetime 
-  #     configure :set_inactive_date, :datetime 
-  #     configure :facebook_app_access_token, :string 
-  #     configure :facebook_is_like_gated, :boolean 
-  #     configure :short_name, :string 
-  #     configure :program_access_key, :string 
-  #     configure :moderate_signups, :boolean 
-  #     configure :instagram_client_id, :string 
-  #     configure :instagram_client_secret, :string 
-  #     configure :moderate_photos, :boolean 
-  #     configure :twitter_consumer_key, :string 
-  #     configure :twitter_consumer_secret, :string 
-  #     configure :twitter_oauth_token, :string 
-  #     configure :twitter_oauth_token_secret, :string 
-  #     configure :tumblr_consumer_key, :string 
-  #     configure :photos_updated_at, :datetime 
-  #     configure :videos_updated_at, :datetime 
-  #     configure :additional_info_1, :string 
-  #     configure :additional_info_2, :string 
-  #     configure :additional_info_3, :string 
+  #     configure :id, :integer
+  #     configure :name, :string
+  #     configure :description, :string
+  #     configure :facebook_app_id, :string
+  #     configure :facebook_app_secret, :string
+  #     configure :google_analytics_tracking_code, :string
+  #     configure :app_url, :string
+  #     configure :repo, :string
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
+  #     configure :active, :boolean
+  #     configure :date_to_activate, :datetime
+  #     configure :date_to_deactivate, :datetime
+  #     configure :facebook_app_access_token, :string
+  #     configure :facebook_is_like_gated, :boolean
+  #     configure :short_name, :string
+  #     configure :program_access_key, :string
+  #     configure :moderate_signups, :boolean
+  #     configure :instagram_client_id, :string
+  #     configure :instagram_client_secret, :string
+  #     configure :moderate_photos, :boolean
+  #     configure :twitter_consumer_key, :string
+  #     configure :twitter_consumer_secret, :string
+  #     configure :twitter_oauth_token, :string
+  #     configure :twitter_oauth_token_secret, :string
+  #     configure :tumblr_consumer_key, :string
+  #     configure :photos_updated_at, :datetime
+  #     configure :videos_updated_at, :datetime
+  #     configure :additional_info_1, :string
+  #     configure :additional_info_2, :string
+  #     configure :additional_info_3, :string
 
   #   # Cross-section configuration:
 
@@ -317,22 +317,22 @@ RailsAdmin.config do |config|
 
   #   # Found associations:
 
-  #     configure :program, :belongs_to_association 
+  #     configure :program, :belongs_to_association
 
   #   # Found columns:
 
-  #     configure :id, :integer 
-  #     configure :program_id, :integer         # Hidden 
-  #     configure :app_url, :string 
-  #     configure :name, :string 
-  #     configure :description, :string 
-  #     configure :facebook_app_id, :string 
-  #     configure :facebook_app_secret, :string 
-  #     configure :facebook_app_access_token, :string 
-  #     configure :google_analytics_tracking_code, :string 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
-  #     configure :clear_cache_url, :string 
+  #     configure :id, :integer
+  #     configure :program_id, :integer         # Hidden
+  #     configure :app_url, :string
+  #     configure :name, :string
+  #     configure :description, :string
+  #     configure :facebook_app_id, :string
+  #     configure :facebook_app_secret, :string
+  #     configure :facebook_app_access_token, :string
+  #     configure :google_analytics_tracking_code, :string
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
+  #     configure :clear_cache_url, :string
 
   #   # Cross-section configuration:
 
@@ -368,15 +368,15 @@ RailsAdmin.config do |config|
 
   #   # Found associations:
 
-  #     configure :program, :belongs_to_association 
+  #     configure :program, :belongs_to_association
 
   #   # Found columns:
 
-  #     configure :id, :integer 
-  #     configure :program_id, :integer         # Hidden 
-  #     configure :tag, :string 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
+  #     configure :id, :integer
+  #     configure :program_id, :integer         # Hidden
+  #     configure :tag, :string
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
 
   #   # Cross-section configuration:
 
@@ -412,16 +412,16 @@ RailsAdmin.config do |config|
 
   #   # Found associations:
 
-  #     configure :program, :belongs_to_association 
-  #     configure :user, :belongs_to_association 
+  #     configure :program, :belongs_to_association
+  #     configure :user, :belongs_to_association
 
   #   # Found columns:
 
-  #     configure :id, :integer 
-  #     configure :program_id, :integer         # Hidden 
-  #     configure :user_id, :integer         # Hidden 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
+  #     configure :id, :integer
+  #     configure :program_id, :integer         # Hidden
+  #     configure :user_id, :integer         # Hidden
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
 
   #   # Cross-section configuration:
 
@@ -457,26 +457,26 @@ RailsAdmin.config do |config|
 
   #   # Found associations:
 
-  #     configure :program, :belongs_to_association 
+  #     configure :program, :belongs_to_association
 
   #   # Found columns:
 
-  #     configure :id, :integer 
-  #     configure :email, :string 
-  #     configure :first_name, :string 
-  #     configure :last_name, :string 
-  #     configure :address1, :string 
-  #     configure :address2, :string 
-  #     configure :city, :string 
-  #     configure :state, :string 
-  #     configure :zip, :string 
-  #     configure :ip_address, :string 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
-  #     configure :program_id, :integer         # Hidden 
-  #     configure :facebook_user_id, :string 
-  #     configure :country, :string 
-  #     configure :is_valid, :boolean 
+  #     configure :id, :integer
+  #     configure :email, :string
+  #     configure :first_name, :string
+  #     configure :last_name, :string
+  #     configure :address1, :string
+  #     configure :address2, :string
+  #     configure :city, :string
+  #     configure :state, :string
+  #     configure :zip, :string
+  #     configure :ip_address, :string
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
+  #     configure :program_id, :integer         # Hidden
+  #     configure :facebook_user_id, :string
+  #     configure :country, :string
+  #     configure :is_valid, :boolean
 
   #   # Cross-section configuration:
 
@@ -512,29 +512,29 @@ RailsAdmin.config do |config|
 
   #   # Found associations:
 
-  #     configure :programs_accessible_by_users, :has_many_association 
-  #     configure :programs, :has_many_association 
+  #     configure :programs_accessible_by_users, :has_many_association
+  #     configure :programs, :has_many_association
 
   #   # Found columns:
 
-  #     configure :id, :integer 
-  #     configure :email, :string 
-  #     configure :password, :password         # Hidden 
-  #     configure :password_confirmation, :password         # Hidden 
-  #     configure :reset_password_token, :string         # Hidden 
-  #     configure :reset_password_sent_at, :datetime 
-  #     configure :remember_created_at, :datetime 
-  #     configure :sign_in_count, :integer 
-  #     configure :current_sign_in_at, :datetime 
-  #     configure :last_sign_in_at, :datetime 
-  #     configure :current_sign_in_ip, :string 
-  #     configure :last_sign_in_ip, :string 
-  #     configure :failed_attempts, :integer 
-  #     configure :unlock_token, :string 
-  #     configure :locked_at, :datetime 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
-  #     configure :role, :string 
+  #     configure :id, :integer
+  #     configure :email, :string
+  #     configure :password, :password         # Hidden
+  #     configure :password_confirmation, :password         # Hidden
+  #     configure :reset_password_token, :string         # Hidden
+  #     configure :reset_password_sent_at, :datetime
+  #     configure :remember_created_at, :datetime
+  #     configure :sign_in_count, :integer
+  #     configure :current_sign_in_at, :datetime
+  #     configure :last_sign_in_at, :datetime
+  #     configure :current_sign_in_ip, :string
+  #     configure :last_sign_in_ip, :string
+  #     configure :failed_attempts, :integer
+  #     configure :unlock_token, :string
+  #     configure :locked_at, :datetime
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
+  #     configure :role, :string
 
   #   # Cross-section configuration:
 
@@ -570,25 +570,25 @@ RailsAdmin.config do |config|
 
   #   # Found associations:
 
-  #     configure :video_playlist, :belongs_to_association 
-  #     configure :program, :belongs_to_association 
-  #     configure :video_tags, :has_many_association 
+  #     configure :video_playlist, :belongs_to_association
+  #     configure :program, :belongs_to_association
+  #     configure :video_tags, :has_many_association
 
   #   # Found columns:
 
-  #     configure :id, :integer 
-  #     configure :embed_code, :text 
-  #     configure :caption, :text 
-  #     configure :position, :integer 
-  #     configure :is_approved, :boolean 
-  #     configure :screenshot, :carrierwave 
-  #     configure :video_playlist_id, :integer         # Hidden 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
-  #     configure :program_id, :integer         # Hidden 
-  #     configure :embed_id, :string 
-  #     configure :title, :string 
-  #     configure :subtitle, :string 
+  #     configure :id, :integer
+  #     configure :embed_code, :text
+  #     configure :caption, :text
+  #     configure :position, :integer
+  #     configure :is_approved, :boolean
+  #     configure :screenshot, :carrierwave
+  #     configure :video_playlist_id, :integer         # Hidden
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
+  #     configure :program_id, :integer         # Hidden
+  #     configure :embed_id, :string
+  #     configure :title, :string
+  #     configure :subtitle, :string
 
   #   # Cross-section configuration:
 
@@ -624,17 +624,17 @@ RailsAdmin.config do |config|
 
   #   # Found associations:
 
-  #     configure :program, :belongs_to_association 
-  #     configure :videos, :has_many_association 
+  #     configure :program, :belongs_to_association
+  #     configure :videos, :has_many_association
 
   #   # Found columns:
 
-  #     configure :id, :integer 
-  #     configure :program_id, :integer         # Hidden 
-  #     configure :name, :string 
-  #     configure :sort_videos_by, :string 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
+  #     configure :id, :integer
+  #     configure :program_id, :integer         # Hidden
+  #     configure :name, :string
+  #     configure :sort_videos_by, :string
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
 
   #   # Cross-section configuration:
 
@@ -670,15 +670,15 @@ RailsAdmin.config do |config|
 
   #   # Found associations:
 
-  #     configure :video, :belongs_to_association 
+  #     configure :video, :belongs_to_association
 
   #   # Found columns:
 
-  #     configure :id, :integer 
-  #     configure :video_id, :integer         # Hidden 
-  #     configure :tag, :string 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
+  #     configure :id, :integer
+  #     configure :video_id, :integer         # Hidden
+  #     configure :tag, :string
+  #     configure :created_at, :datetime
+  #     configure :updated_at, :datetime
 
   #   # Cross-section configuration:
 

@@ -2,30 +2,27 @@ class Program < ActiveRecord::Base
   has_many :program_apps, dependent: :destroy, inverse_of: :program
   has_many :programs_accessible_by_users, inverse_of: :program
   has_many :users, through: :programs_accessible_by_users
-  has_many :signups, dependent: :destroy, inverse_of: :program
-  has_many :additional_fields, dependent: :destroy, inverse_of: :program
   has_many :photos
   has_many :photo_albums, dependent: :destroy, inverse_of: :program
   has_many :videos
   has_many :video_playlists, dependent: :destroy, inverse_of: :program
   has_many :program_photo_import_tags, dependent: :destroy, inverse_of: :program
 
-  scope :active_scope, lambda { where(active: true).where("set_active_date < ?", Time.now).where("set_inactive_date > ?", Time.now) }
+  scope :active_scope, lambda { where(active: true) }
 
   attr_accessor :permanent_link, :link_to_program_photos, :link_to_program_videos,
-                :edit_photos, :edit_additional_fields
+                :edit_photos
 
   accepts_nested_attributes_for :program_apps, allow_destroy: true
-  accepts_nested_attributes_for :additional_fields, allow_destroy: true
   # accepts_nested_attributes_for :photos, allow_destroy: true
   accepts_nested_attributes_for :program_photo_import_tags, allow_destroy: true
   #accepts_nested_attributes_for :users, allow_destroy: false
-  attr_accessible :program_apps_attributes, :additional_fields_attributes, :role, :user_ids,
-                  :set_active_date, :set_inactive_date, :description,
+  attr_accessible :program_apps_attributes, :role, :user_ids,
+                  :date_to_activate, :date_to_deactivate, :description,
                   :facebook_app_id, :facebook_app_secret, :facebook_is_like_gated,
                   :google_analytics_tracking_code, :name, :short_name, :app_url,
-                  :repo, :moderate_signups, :moderate_photos, :edit_photos,
-                  :edit_additional_fields, :instagram_client_id, :instagram_client_secret,
+                  :repo, :moderate_photos, :edit_photos,
+                  :instagram_client_id, :instagram_client_secret,
                   :program_photo_import_tags_attributes, :tumblr_consumer_key,
                   :twitter_consumer_key, :twitter_consumer_secret,
                   :twitter_oauth_token, :twitter_oauth_token_secret,
@@ -89,9 +86,8 @@ class Program < ActiveRecord::Base
   before_create :generate_program_access_key
   after_save :clear_app_caches
 
+  # Todo: Test that all program_apps receive the clear_cache message.
   def clear_app_caches
-    puts "clear_app_caches:"
-    puts self.changed
     c = self.changed
     if (!self.app_caches_cleared_at.nil? && self.app_caches_cleared_at < 2.minutes.ago) &&
        !c.include?("app_caches_cleared_at")
@@ -121,7 +117,19 @@ class Program < ActiveRecord::Base
   end
 
   def photo_tags
-    self.program_photo_import_tags.select([:tag])
+    self.program_photo_import_tags.select([:tag]).map {|t| t.tag }
+  end
+
+  def activate_on_date
+    self.active = true if !self.date_to_activate.nil? && DateTime.now >= self.date_to_activate
+    self.date_to_activate = nil
+    self.save
+  end
+
+  def deactivate_on_date
+    self.active = false if !self.date_to_deactivate.nil? && DateTime.now >= self.date_to_deactivate
+    self.date_to_deactivate = nil
+    self.save
   end
 
   # TODO: Remove from this model.
@@ -129,20 +137,16 @@ class Program < ActiveRecord::Base
     !self.facebook_app_id.blank? ? "https://developers.facebook.com/apps/#{self.facebook_app_id}/" : ''
   end
 
-  def active?
-    self.active && (self.set_active_date.blank? || (!self.set_active_date.blank? && self.set_active_date < Time.now)) && (self.set_inactive_date.blank? || (!self.set_inactive_date.blank? && self.set_inactive_date > Time.now))
-  end
-
-  def get_photos_by_tags
+  def import_photos_by_tags
     if self.active?
-      get_instagram_photos_by_tags
-      get_twitter_photos_by_tags
+      import_instagram_photos_by_tags
+      import_twitter_photos_by_tags
       self.update_attribute(:photos_imported_at, DateTime.now)
       clear_app_caches
     end
   end
 
-  def get_instagram_photos_by_tags
+  def import_instagram_photos_by_tags
     if !self.instagram_client_id.blank?
       # Iterate through all of the program's tags
       self.program_photo_import_tags.each do |tag|
@@ -159,14 +163,14 @@ class Program < ActiveRecord::Base
               from_user_full_name: !item['user'].nil? ? item['user']['full_name'] : nil,
               from_user_id: !item['user'].nil? ? item['user']['id'] : nil
             }
-            save_imported_photo(:instagram, item['images']['standard_resolution']['url'], attrs)
+            download_and_save_photo(:instagram, item['images']['standard_resolution']['url'], attrs)
           end
         end
       end
     end
   end
 
-  def get_twitter_photos_by_tags
+  def import_twitter_photos_by_tags
     client = Twitter::Client.new
 
     # Iterate through all of the program's tags.
@@ -205,13 +209,13 @@ class Program < ActiveRecord::Base
                 from_user_id: item.from_user_id,
                 twitter_image_service: :twitter
               }
-              save_imported_photo(:twitter, media.media_url, attrs)
+              download_and_save_photo(:twitter, media.media_url, attrs)
             end
           elsif item.urls.any?
             # Determine if there are any images hosted on services such as Twitpic, YFrog, etc.
             item.urls.each do |url|
               expanded_url = !url.expanded_url.blank? ? url.expanded_url : url.url
-              photo = get_photo_from_service(expanded_url)
+              photo = import_photo(expanded_url)
 
               # If we found a photo, then save it
               unless photo.nil?
@@ -223,7 +227,7 @@ class Program < ActiveRecord::Base
                   from_user_id: item.from_user_id,
                   twitter_image_service: photo[:twitter_image_service]
                 }
-                save_imported_photo(:twitter, photo[:url], attrs)
+                download_and_save_photo(:twitter, photo[:url], attrs)
               end
             end
           end
@@ -235,7 +239,7 @@ class Program < ActiveRecord::Base
   private
 
   # Recursive function to open URLs and search for photos.
-  def get_photo_from_service(expanded_url)
+  def import_photo(expanded_url)
     photo = Hash.new
     twitter_image_service = nil
 
@@ -258,7 +262,7 @@ class Program < ActiveRecord::Base
         return nil
       end
       if !expanded_expanded_url.nil?
-        return get_photo_from_service(URI::encode(expanded_expanded_url))
+        return import_photo(URI::encode(expanded_expanded_url))
       end
     else
       case match[:service]
@@ -316,7 +320,7 @@ class Program < ActiveRecord::Base
     return nil
   end
 
-  def save_imported_photo(service, photo_url, attrs)
+  def download_and_save_photo(service, photo_url, attrs)
     # Save the image only if it doesn't already exist in our database
     if !self.photos.where(original_photo_id: attrs[:photo_id].to_s, from_service: service.to_s).exists?
       # Get the URL of this image and save it, if we get a response from the server

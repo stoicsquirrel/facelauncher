@@ -6,6 +6,6 @@ class PhotoImportWorker
 
   def self.perform(program_id)
     program = Program.find(program_id)
-    program.get_photos_by_tags
+    program.import_photos_by_tags
   end
 end

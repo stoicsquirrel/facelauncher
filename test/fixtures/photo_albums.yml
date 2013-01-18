@@ -1,9 +1,0 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
-
-one:
-  program: 
-  name: MyString
-
-two:
-  program: 
-  name: MyString

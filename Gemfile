@@ -43,6 +43,12 @@ group :development do
 end
 
 group :test do
-  gem 'minitest-rails'
+  gem 'factory_girl_rails'
   gem 'turn'
+  gem 'webmock'
+end
+
+group :test, :development do
+  gem 'minitest-rails'
+  gem 'pry'
 end

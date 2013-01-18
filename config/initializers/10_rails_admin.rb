@@ -366,22 +366,6 @@ RailsAdmin.config do |config|
     end
   end
 
-  config.model AdditionalField do
-    visible false
-    object_label_method :object_label
-
-    list do
-      field :program
-      field :short_name
-      field :label
-      field :is_required
-    end
-    nested do
-      field :short_name
-      field :label
-      field :is_required
-    end
-  end
   config.model PhotoAlbum do
     parent Program
 
@@ -744,72 +728,5 @@ RailsAdmin.config do |config|
   end
   config.model ProgramsAccessibleByUser do
     visible false
-  end
-  config.model Signup do
-    visible false
-    parent Program
-    configure :program, :belongs_to_association
-    configure :is_valid, :boolean
-    configure :id, :integer
-    configure :email, :string
-    configure :first_name, :string
-    configure :last_name, :string
-    configure :address1, :string
-    configure :address2, :string
-    configure :city, :string
-    configure :state, :string
-    configure :zip, :string
-    configure :ip_address, :string
-    configure :facebook_user_id, :string
-    configure :created_at, :datetime
-    configure :updated_at, :datetime
-
-    list do; end
-    export do; end
-    show do; end
-    edit do
-      group :basic_info do
-        field :program
-        field :email
-        field :first_name
-        field :last_name
-        field :address1
-        field :address2
-        field :city
-        field :state do
-          help "Optional."
-          render do
-            # Default to US for now. Also, place this function in a helper.
-            us_states = Carmen::Country.coded('US')
-            bindings[:form].select('state', us_states.subregions.map { |s| [s.name, s.code] })
-          end
-        end
-        field :zip
-        field :is_valid do
-          read_only true
-        end
-      end
-      group :additional_info do
-        field :facebook_user_id do
-          label "Facebook user ID"
-        end
-        field :ip_address do
-          read_only true
-        end
-        field :created_at do
-          visible true
-        end
-        field :updated_at do
-          visible true
-        end
-      end
-    end
-    create do
-    end
-    update do
-      field :program do
-        read_only true
-      end
-    end
   end
 end

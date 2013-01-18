@@ -11,18 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130108221033) do
-
-  create_table "additional_fields", :force => true do |t|
-    t.integer  "program_id",                 :null => false
-    t.string   "short_name",  :limit => 100, :null => false
-    t.string   "label"
-    t.boolean  "is_required",                :null => false
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
-  end
-
-  add_index "additional_fields", ["program_id"], :name => "index_programs_additional_fields_on_program_id"
+ActiveRecord::Schema.define(:version => 20130118222757) do
 
   create_table "photo_albums", :force => true do |t|
     t.integer  "program_id"
@@ -100,14 +89,13 @@ ActiveRecord::Schema.define(:version => 20130108221033) do
     t.string   "repo"
     t.datetime "created_at",                                        :null => false
     t.datetime "updated_at",                                        :null => false
-    t.boolean  "active",                         :default => true,  :null => false
-    t.datetime "set_active_date"
-    t.datetime "set_inactive_date"
+    t.boolean  "active",                         :default => false, :null => false
+    t.datetime "date_to_activate"
+    t.datetime "date_to_deactivate"
     t.string   "facebook_app_access_token"
     t.boolean  "facebook_is_like_gated"
     t.string   "short_name",                     :default => "",    :null => false
     t.string   "program_access_key",             :default => "",    :null => false
-    t.boolean  "moderate_signups",               :default => false, :null => false
     t.string   "instagram_client_id"
     t.string   "instagram_client_secret"
     t.boolean  "moderate_photos"
@@ -144,24 +132,6 @@ ActiveRecord::Schema.define(:version => 20130108221033) do
   end
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], :name => "index_rails_admin_histories"
-
-  create_table "signups", :force => true do |t|
-    t.string   "email",            :limit => 100, :null => false
-    t.string   "first_name",       :limit => 50
-    t.string   "last_name",        :limit => 50
-    t.string   "address1"
-    t.string   "address2"
-    t.string   "city",             :limit => 40
-    t.string   "state",            :limit => 2
-    t.string   "zip",              :limit => 9
-    t.string   "ip_address",       :limit => 15,  :null => false
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
-    t.integer  "program_id",                      :null => false
-    t.string   "facebook_user_id"
-    t.string   "country",          :limit => 2
-    t.boolean  "is_valid"
-  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false

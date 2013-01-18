@@ -3,8 +3,8 @@ RailsAdmin.config do |config|
     list do
       field :short_name
       field :name
-      field :set_active_date
-      field :set_inactive_date
+      field :date_to_activate
+      field :date_to_deactivate
       field :active
     end
     export do; end
@@ -109,8 +109,8 @@ RailsAdmin.config do |config|
           label "GA tracking code"
           help "Optional. Length up to 255. For Google Analytics."
         end
-        field :set_active_date
-        field :set_inactive_date
+        field :date_to_activate
+        field :date_to_deactivate
         field :photos_updated_at
         field :videos_updated_at
         field :created_at do
@@ -279,8 +279,8 @@ RailsAdmin.config do |config|
           label "GA tracking code"
           help "Deprecated! Optional. Length up to 255. For Google Analytics."
         end
-        field :set_active_date
-        field :set_inactive_date
+        field :date_to_activate
+        field :date_to_deactivate
         field :photos_updated_at
         field :videos_updated_at
         field :created_at do
